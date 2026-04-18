@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Golf Morning Edition — 2026-04-18</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --sans: 'Inter', system-ui, sans-serif;
+  --serif: 'Fraunces', Georgia, serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: #111;
+  color: #eee;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Cover ──────────────────────────────────────────────────── */
+.cover {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0A0E1A 0%, #1A2A1A 50%, #0D1B0D 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.015'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.cover-kicker {
+  font-family: var(--sans);
+  font-size: clamp(0.65rem, 1.5vw, 0.8rem);
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #7ECB8F;
+  margin-bottom: 1.5rem;
+}
+
+.cover-title {
+  font-family: var(--serif);
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  font-weight: 900;
+  line-height: 0.95;
+  color: #F5F0E8;
+  margin-bottom: 0.4em;
+}
+
+.cover-title em {
+  font-style: italic;
+  color: #C9A84C;
+}
+
+.cover-date {
+  font-family: var(--sans);
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  font-weight: 300;
+  color: rgba(245,240,232,0.6);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.cover-issue {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  color: rgba(245,240,232,0.35);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 3rem;
+}
+
+.exec-count {
+  display: inline-block;
+  background: #C0392B;
+  color: #FAF0F0;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.35em 1em;
+  border-radius: 2px;
+  margin-bottom: 3rem;
+}
+
+.cover-scroll {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  color: rgba(245,240,232,0.3);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* ── Story spreads ──────────────────────────────────────────── */
+.spread {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 6vw, 5rem);
+  position: relative;
+  overflow: hidden;
+}
+
+.spread-inner {
+  max-width: 900px;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.bg-numeral {
+  position: absolute;
+  top: -0.15em;
+  right: -0.05em;
+  font-family: var(--serif);
+  font-size: clamp(12rem, 30vw, 22rem);
+  font-weight: 900;
+  line-height: 1;
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.category-tag {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 0.3em 0.85em;
+  border-radius: 2px;
+}
+
+.source-tag {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  opacity: 0.75;
+}
+
+.rank-line {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.story-title {
+  font-family: var(--serif);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.exec-badge {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.6rem 1rem;
+  margin-bottom: 1.5rem;
+  background: rgba(255,255,255,0.05);
+}
+
+.exec-label {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.exec-why {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 400;
+  line-height: 1.4;
+  opacity: 0.85;
+}
+
+.teaser {
+  font-family: var(--sans);
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  font-weight: 300;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  max-width: 72ch;
+  position: relative;
+  z-index: 2;
+}
+
+.read-link {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  padding-bottom: 0.1em;
+  position: relative;
+  z-index: 2;
+  transition: opacity 0.2s;
+}
+
+.read-link:hover { opacity: 0.7; }
+
+/* ── Footer ─────────────────────────────────────────────────── */
+.footer {
+  background: #0A0E1A;
+  color: rgba(245,240,232,0.4);
+  text-align: center;
+  padding: 3rem 2rem;
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .bg-numeral { font-size: 8rem; }
+  .story-title { font-size: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Cover -->
+<div class="cover">
+  <div class="cover-kicker">Golf Industry Intelligence</div>
+  <h1 class="cover-title">The Morning<br><em>Edition</em></h1>
+  <div class="cover-date">Saturday, April 18, 2026</div>
+  <div class="cover-issue">Issue #0473 &nbsp;·&nbsp; 10 Curated Stories</div>
+  <span class="exec-count">3 exec alerts inside</span>
+  <div class="cover-scroll">Scroll to read ↓</div>
+</div>
+
+
+  <section class="spread" style="background:#F5F0E8; color:#1A1A2E; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(26,26,46,0.08);">01</div>
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#1A1A2E; color:#F5F0E8;">Investment & M&A</span>
+        <span class="source-tag" style="color:#1A1A2E;">Bloomberg.com / NYT / Reuters</span>
+      </div>
+
+      <div class="rank-line" style="color:#1A1A2E;">No. 1</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1A1A2E;">
+        <a href="https://www.bloomberg.com/news/articles/2026-04-16/saudis-now-want-sports-to-make-money-clouding-liv-golf-s-future" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Saudi PIF Pulling Back From LIV Golf as Financial Pressure Mounts</a>
+      </h2>
+
+      
+    <div class="exec-badge" style="border-left: 4px solid #1A1A2E; color: #1A1A2E;">
+      <span class="exec-label">⚑ EXEC ALERT</span>
+      <span class="exec-why">A PIF exit rewrites the competitive landscape for tours, sponsors, broadcasters and course portfolios worldwide.</span>
+    </div>
+
+      <p class="teaser" style="color:#1A1A2E; opacity:0.82;">Multiple tier-one outlets report the Saudi Public Investment Fund is retreating from LIV Golf as the kingdom pivots toward profitability across its sports portfolio. PIF has also offloaded Al-Hilal FC, signalling a broader strategic shift. The implications for a PGA Tour–LIV merger and for the entire professional golf ecosystem are enormous.</p>
+
+      <a class="read-link" href="https://www.bloomberg.com/news/articles/2026-04-16/saudis-now-want-sports-to-make-money-clouding-liv-golf-s-future" target="_blank" rel="noopener"
+         style="color:#1A1A2E; border-bottom: 2px solid #1A1A2E;">
+        Read full story →
+      </a>
+    </div>
+  </section>
+
+  <section class="spread" style="background:#0D1B2A; color:#E8E0D0; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(201,168,76,0.12);">02</div>
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#C9A84C; color:#0D1B2A;">Investment & M&A</span>
+        <span class="source-tag" style="color:#C9A84C;">Reuters</span>
+      </div>
+
+      <div class="rank-line" style="color:#C9A84C;">No. 2</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#E8E0D0;">
+        <a href="https://www.reuters.com/sports/golf/liv-ceo-claims-business-usual-amid-reports-demise--flm-2026-04-17/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">LIV CEO Claims 'Business as Usual' but Confirms Structural Changes</a>
+      </h2>
+
+      
+    <div class="exec-badge" style="border-left: 4px solid #C9A84C; color: #C9A84C;">
+      <span class="exec-label">⚑ EXEC ALERT</span>
+      <span class="exec-why">Structural changes at LIV could trigger contract renegotiations, player movement and sponsorship reallocation.</span>
+    </div>
+
+      <p class="teaser" style="color:#E8E0D0; opacity:0.82;">LIV Golf's CEO pushed back on shutdown rumours, insisting finances are 'managed very tightly' while acknowledging structural changes are incoming. The statement hints at a smaller, leaner LIV operation—or a faster path to a negotiated deal with the PGA Tour. Senior executives with sponsorship or media exposure to LIV should scenario-plan now.</p>
+
+      <a class="read-link" href="https://www.reuters.com/sports/golf/liv-ceo-claims-business-usual-amid-reports-demise--flm-2026-04-17/" target="_blank" rel="noopener"
+         style="color:#C9A84C; border-bottom: 2px solid #C9A84C;">
+        Read full story →
+      </a>
+    </div>
+  </section>
+
+  <section class="spread" style="background:#FAF0F0; color:#1A0A0A; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(192,57,43,0.07);">03</div>
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#C0392B; color:#FAF0F0;">Investment & M&A</span>
+        <span class="source-tag" style="color:#C0392B;">Polymarket</span>
+      </div>
+
+      <div class="rank-line" style="color:#C0392B;">No. 3</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1A0A0A;">
+        <a href="https://polymarket.com/event/liv-golf-mergeracquisition-announced-by-june-30" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Polymarket Opens Prediction Contract on LIV Golf M&A by June 30</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#1A0A0A; opacity:0.82;">A live prediction market is now pricing the likelihood of a formal LIV Golf merger or acquisition announcement before the end of June 2026. The contract offers a real-time market sentiment gauge on deal timing that industry dealmakers and rights-holders can monitor alongside traditional intelligence.</p>
+
+      <a class="read-link" href="https://polymarket.com/event/liv-golf-mergeracquisition-announced-by-june-30" target="_blank" rel="noopener"
+         style="color:#C0392B; border-bottom: 2px solid #C0392B;">
+        Read full story →
+      </a>
+    </div>
+  </section>
+
+  <section class="spread" style="background:#0A1A0A; color:#CCFFCC; font-family: 'Courier New', monospace;">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(0,255,65,0.08);">04</div>
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#00FF41; color:#0A1A0A;">Investment & M&A</span>
+        <span class="source-tag" style="color:#00FF41;">TradingView</span>
+      </div>
+
+      <div class="rank-line" style="color:#00FF41;">No. 4</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#CCFFCC;">
+        <a href="https://www.tradingview.com/news/tradingview:7788831ee1d7e:0-transglobal-management-group-to-acquire-apache-creek-golf-course-assets-from-dalston-for-2-5-million/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Transglobal to Acquire Apache Creek Golf Course Assets for $2.5M</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#CCFFCC; opacity:0.82;">Transglobal Management Group has agreed to acquire Apache Creek Golf Course assets from Dalston for $2.5 million. The deal continues a wave of course-level M&A activity in the U.S. market, where facility valuations remain attractive for operators seeking geographic expansion.</p>
+
+      <a class="read-link" href="https://www.tradingview.com/news/tradingview:7788831ee1d7e:0-transglobal-management-group-to-acquire-apache-creek-golf-course-assets-from-dalston-for-2-5-million/" target="_blank" rel="noopener"
+         style="color:#00FF41; border-bottom: 2px solid #00FF41;">
+        Read full story →
+      </a>
+    </div>
+  </section>
+
+  <section class="spread" style="background:#FEFBF3; color:#2C1810; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(92,61,30,0.07);">05</div>
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#5C3D1E; color:#FEFBF3;">International</span>
+        <span class="source-tag" style="color:#5C3D1E;">Golf NSW</span>
+      </div>
+
+      <div class="rank-line" style="color:#5C3D1E;">No. 5</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#2C1810;">
+        <a href="https://www.golfnsw.org.au/news/2026/bingara-gorge-golf-course-acquired-by-golf-nsw-in-landmark-deal/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Golf NSW Acquires Bingara Gorge Golf Course in Landmark Deal</a>
+      </h2>
+
+      
+    <div class="exec-badge" style="border-left: 4px solid #5C3D1E; color: #5C3D1E;">
+      <span class="exec-label">⚑ EXEC ALERT</span>
+      <span class="exec-why">A governing body buying a course sets precedent that could reshape ownership models in key international markets.</span>
+    </div>
+
+      <p class="teaser" style="color:#2C1810; opacity:0.82;">Golf NSW has completed the acquisition of Bingara Gorge Golf Course, marking a rare case of a state governing body directly purchasing a facility. The move signals a new model for participation-led ownership in Australia and could influence how other national bodies approach course access and development strategy.</p>
+
+      <a class="read-link" href="https://www.golfnsw.org.au/news/2026/bingara-gorge-golf-course-acquired-by-golf-nsw-in-landmark-deal/" target="_blank" rel="noopener"
+         style="color:#5C3D1E; border-bottom: 2px solid #5C3D1E;">
+        Read full story →
+      </a>
+    </div>
+  </section>
+
+  <section class="spread" style="background:#1C1C1C; color:#F0F0F0; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(240,224,64,0.10);">06</div>
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#F0E040; color:#1C1C1C;">Travel & Development</span>
+        <span class="source-tag" style="color:#F0E040;">Golf Business News</span>
+      </div>
+
+      <div class="rank-line" style="color:#F0E040;">No. 6</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#F0F0F0;">
+        <a href="https://golfbusinessnews.com/news/property/foxbridge-given-green-light-for-hotel-and-lodge-development/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Foxbridge Gets Planning Approval for Hotel & Lodge Development</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#F0F0F0; opacity:0.82;">Foxbridge has secured planning permission for an on-site hotel and lodge development, adding hospitality capacity to its golf offering. The approval reflects continued investor confidence in UK golf-resort real estate and the trend toward integrated stay-and-play destinations.</p>
+
+      <a class="read-link" href="https://golfbusinessnews.com/news/property/foxbridge-given-green-light-for-hotel-and-lodge-development/" target="_blank" rel="noopener"
+         style="color:#F0E040; border-bottom: 2px solid #F0E040;">
+        Read full story →
+      </a>
+    </div>
+  </section>
+
+  <section class="spread" style="background:#EEF2EE; color:#1A2E18; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(45,90,39,0.07);">07</div>
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#2D5A27; color:#EEF2EE;">Travel & Development</span>
+        <span class="source-tag" style="color:#2D5A27;">The Golf Business</span>
+      </div>
+
+      <div class="rank-line" style="color:#2D5A27;">No. 7</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1A2E18;">
+        <a href="https://thegolfbusiness.co.uk/2026/04/lahinch-golf-club-reports-record-breaking-financial-year/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Lahinch Golf Club Posts Record Year: €3.65M in Green Fees Alone</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#1A2E18; opacity:0.82;">Ireland's Lahinch Golf Club reported green-fee income of £3.65 million and cash reserves exceeding £10 million, both records. The figures underscore the pricing power and demand resilience of premium links destinations, offering a benchmark for resort and destination-course operators globally.</p>
+
+      <a class="read-link" href="https://thegolfbusiness.co.uk/2026/04/lahinch-golf-club-reports-record-breaking-financial-year/" target="_blank" rel="noopener"
+         style="color:#2D5A27; border-bottom: 2px solid #2D5A27;">
+        Read full story →
+      </a>
+    </div>
+  </section>
+
+  <section class="spread" style="background:#FFFFFF; color:#000000; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(0,0,0,0.05);">08</div>
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#000000; color:#FFFFFF;">Investment & M&A</span>
+        <span class="source-tag" style="color:#000000;">The Golf Wire</span>
+      </div>
+
+      <div class="rank-line" style="color:#000000;">No. 8</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#000000;">
+        <a href="https://thegolfwire.com/concert-golf-partners-new-seabury/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Concert Golf's New Seabury Acquisition Ranked Among Top Deals</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#000000; opacity:0.82;">Golf Inc. Magazine has ranked Concert Golf Partners' purchase of The Club at New Seabury among the most significant transactions in the sector. Concert continues to consolidate premium private clubs, reinforcing its position as one of the most active acquirers in U.S. club golf.</p>
+
+      <a class="read-link" href="https://thegolfwire.com/concert-golf-partners-new-seabury/" target="_blank" rel="noopener"
+         style="color:#000000; border-bottom: 2px solid #000000;">
+        Read full story →
+      </a>
+    </div>
+  </section>
+
+  <section class="spread" style="background:#FDF4EE; color:#1E0E00; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(181,84,26,0.08);">09</div>
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#B5541A; color:#FDF4EE;">People & Industry</span>
+        <span class="source-tag" style="color:#B5541A;">Golf Course Industry</span>
+      </div>
+
+      <div class="rank-line" style="color:#B5541A;">No. 9</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1E0E00;">
+        <a href="https://www.golfcourseindustry.com/news/currahee-club-troon-georgia-fazio/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Troon Selected to Manage 1,215-Acre Currahee Club in Georgia</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#1E0E00; opacity:0.82;">Troon has added Currahee Club—a 1,215-acre Fazio-designed private community in Georgia—to its management portfolio. The appointment extends Troon's reach in the high-end residential-golf segment and signals continued demand for third-party management at premium private clubs.</p>
+
+      <a class="read-link" href="https://www.golfcourseindustry.com/news/currahee-club-troon-georgia-fazio/" target="_blank" rel="noopener"
+         style="color:#B5541A; border-bottom: 2px solid #B5541A;">
+        Read full story →
+      </a>
+    </div>
+  </section>
+
+  <section class="spread" style="background:#1E2329; color:#E2E8F0; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(160,174,192,0.10);">10</div>
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#A0AEC0; color:#1E2329;">Technology</span>
+        <span class="source-tag" style="color:#A0AEC0;">Golf Business News</span>
+      </div>
+
+      <div class="rank-line" style="color:#A0AEC0;">No. 10</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#E2E8F0;">
+        <a href="https://golfbusinessnews.com/news/practice-range-and-teaching/golfpod-installs-second-site-at-basildon-sport-leisure-club/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Golfpod Expands Simulator Network with Second UK Installation</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#E2E8F0; opacity:0.82;">Golfpod has installed its second UK site at Basildon Sport & Leisure Club, advancing its self-service simulator pod concept. The expansion is part of a broader industry trend toward technology-enabled, space-efficient golf facilities that lower barriers to entry and create new revenue streams for leisure operators.</p>
+
+      <a class="read-link" href="https://golfbusinessnews.com/news/practice-range-and-teaching/golfpod-installs-second-site-at-basildon-sport-leisure-club/" target="_blank" rel="noopener"
+         style="color:#A0AEC0; border-bottom: 2px solid #A0AEC0;">
+        Read full story →
+      </a>
+    </div>
+  </section>
+
+<footer class="footer">
+  <p>Golf Morning Edition · 2026-04-18 · Curated by Claude for Shane</p>
+  <p style="margin-top:0.5rem; font-size:0.65rem;">
+    Sources: Golf Business News · The Golf Business · Bunkered · Google Alert
+  </p>
+</footer>
+
+</body>
+</html>
