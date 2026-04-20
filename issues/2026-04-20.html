@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Golf Morning Edition — 2026-04-20</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --sans: 'Inter', system-ui, sans-serif;
+  --serif: 'Fraunces', Georgia, serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: #111;
+  color: #eee;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Cover ──────────────────────────────────────────────────── */
+.cover {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0A0E1A 0%, #1A2A1A 50%, #0D1B0D 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.015'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.cover-kicker {
+  font-family: var(--sans);
+  font-size: clamp(0.65rem, 1.5vw, 0.8rem);
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #7ECB8F;
+  margin-bottom: 1.5rem;
+}
+
+.cover-title {
+  font-family: var(--serif);
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  font-weight: 900;
+  line-height: 0.95;
+  color: #F5F0E8;
+  margin-bottom: 0.4em;
+}
+
+.cover-title em {
+  font-style: italic;
+  color: #C9A84C;
+}
+
+.cover-date {
+  font-family: var(--sans);
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  font-weight: 300;
+  color: rgba(245,240,232,0.6);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.cover-issue {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  color: rgba(245,240,232,0.35);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 3rem;
+}
+
+.exec-count {
+  display: inline-block;
+  background: #C0392B;
+  color: #FAF0F0;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.35em 1em;
+  border-radius: 2px;
+  margin-bottom: 3rem;
+}
+
+.cover-scroll {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  color: rgba(245,240,232,0.3);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* ── Story spreads ──────────────────────────────────────────── */
+.spread {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 6vw, 5rem);
+  position: relative;
+  overflow: hidden;
+}
+
+.spread-inner {
+  max-width: 900px;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.bg-numeral {
+  position: absolute;
+  top: -0.15em;
+  right: -0.05em;
+  font-family: var(--serif);
+  font-size: clamp(12rem, 30vw, 22rem);
+  font-weight: 900;
+  line-height: 1;
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.category-tag {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 0.3em 0.85em;
+  border-radius: 2px;
+}
+
+.source-tag {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  opacity: 0.75;
+}
+
+.rank-line {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.story-title {
+  font-family: var(--serif);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.exec-badge {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.6rem 1rem;
+  margin-bottom: 1.5rem;
+  background: rgba(255,255,255,0.05);
+}
+
+.exec-label {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.exec-why {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 400;
+  line-height: 1.4;
+  opacity: 0.85;
+}
+
+.teaser {
+  font-family: var(--sans);
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  font-weight: 300;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  max-width: 72ch;
+  position: relative;
+  z-index: 2;
+}
+
+.read-link {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  padding-bottom: 0.1em;
+  position: relative;
+  z-index: 2;
+  transition: opacity 0.2s;
+}
+
+.read-link:hover { opacity: 0.7; }
+
+/* ── Footer ─────────────────────────────────────────────────── */
+.footer {
+  background: #0A0E1A;
+  color: rgba(245,240,232,0.4);
+  text-align: center;
+  padding: 3rem 2rem;
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .bg-numeral { font-size: 8rem; }
+  .story-title { font-size: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Cover -->
+<div class="cover">
+  <div class="cover-kicker">Golf Industry Intelligence</div>
+  <h1 class="cover-title">The Morning<br><em>Edition</em></h1>
+  <div class="cover-date">Monday, April 20, 2026</div>
+  <div class="cover-issue">Issue #0475 &nbsp;·&nbsp; 10 Curated Stories</div>
+  <span class="exec-count">3 exec alerts inside</span>
+  <div class="cover-scroll">Scroll to read ↓</div>
+</div>
+
+
+  <section class="spread" style="background:#F5F0E8; color:#1A1A2E; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(26,26,46,0.08);">01</div>
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#1A1A2E; color:#F5F0E8;">Investment & M&A</span>
+        <span class="source-tag" style="color:#1A1A2E;">WSJ</span>
+      </div>
+
+      <div class="rank-line" style="color:#1A1A2E;">No. 1</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1A1A2E;">
+        <a href="https://www.wsj.com/world/middle-east/saudi-fund-behind-liv-golf-has-900-billion-but-is-still-strapped-for-cash-15acaeac" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Saudi PIF Cash-Strapped Despite $900B: LIV Golf's Future in Question</a>
+      </h2>
+
+      
+    <div class="exec-badge" style="border-left: 4px solid #1A1A2E; color: #1A1A2E;">
+      <span class="exec-label">⚑ EXEC ALERT</span>
+      <span class="exec-why">PIF liquidity pressures could accelerate LIV Golf's unravelling and reshape PGA Tour merger negotiations — boards need scenario planning now.</span>
+    </div>
+
+      <p class="teaser" style="color:#1A1A2E; opacity:0.82;">The Wall Street Journal reports that Saudi Arabia's Public Investment Fund, despite $900 billion in assets, faces significant liquidity constraints that are affecting its portfolio — including LIV Golf. The revelations raise fundamental questions about the sustainability of PIF-backed golf ventures and the broader professional golf landscape.</p>
+
+      <a class="read-link" href="https://www.wsj.com/world/middle-east/saudi-fund-behind-liv-golf-has-900-billion-but-is-still-strapped-for-cash-15acaeac" target="_blank" rel="noopener"
+         style="color:#1A1A2E; border-bottom: 2px solid #1A1A2E;">
+        Read full story →
+      </a>
+    </div>
+  </section>
+
+  <section class="spread" style="background:#0D1B2A; color:#E8E0D0; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(201,168,76,0.12);">02</div>
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#C9A84C; color:#0D1B2A;">Investment & M&A</span>
+        <span class="source-tag" style="color:#C9A84C;">Reuters</span>
+      </div>
+
+      <div class="rank-line" style="color:#C9A84C;">No. 2</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#E8E0D0;">
+        <a href="https://www.reuters.com/sports/golf/liv-golf-ceo-confirms-financing-rest-season--flm-2026-04-17/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">LIV Golf CEO Confirms Financing Secured for Rest of 2026 Season</a>
+      </h2>
+
+      
+    <div class="exec-badge" style="border-left: 4px solid #C9A84C; color: #C9A84C;">
+      <span class="exec-label">⚑ EXEC ALERT</span>
+      <span class="exec-why">Short-term financing confirmation signals structural fragility — sponsors, partners, and competing tours should reassess exposure and opportunity.</span>
+    </div>
+
+      <p class="teaser" style="color:#E8E0D0; opacity:0.82;">LIV Golf's CEO has publicly confirmed that financing is in place to complete the current season, a statement that itself underscores the severity of funding concerns. The confirmation comes amid a wave of reporting on PIF's cash constraints and growing uncertainty about LIV's long-term viability.</p>
+
+      <a class="read-link" href="https://www.reuters.com/sports/golf/liv-golf-ceo-confirms-financing-rest-season--flm-2026-04-17/" target="_blank" rel="noopener"
+         style="color:#C9A84C; border-bottom: 2px solid #C9A84C;">
+        Read full story →
+      </a>
+    </div>
+  </section>
+
+  <section class="spread" style="background:#FAF0F0; color:#1A0A0A; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(192,57,43,0.07);">03</div>
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#C0392B; color:#FAF0F0;">Investment & M&A</span>
+        <span class="source-tag" style="color:#C0392B;">Bloomberg</span>
+      </div>
+
+      <div class="rank-line" style="color:#C0392B;">No. 3</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1A0A0A;">
+        <a href="https://www.bloomberg.com/news/newsletters/2026-04-17/liv-golf-might-lose-funding-and-fail-but-saudi-arabia-is-still-winning" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Bloomberg: Saudis Win Even If LIV Golf Burns Through $6B and Fails</a>
+      </h2>
+
+      
+    <div class="exec-badge" style="border-left: 4px solid #C0392B; color: #C0392B;">
+      <span class="exec-label">⚑ EXEC ALERT</span>
+      <span class="exec-why">Reframes the LIV endgame: even in failure, the disruption permanently altered professional golf's economics and governance.</span>
+    </div>
+
+      <p class="teaser" style="color:#1A0A0A; opacity:0.82;">Bloomberg's analysis argues that Saudi Arabia's strategic objectives — sportswashing, tourism branding, and geopolitical leverage — have largely been achieved regardless of LIV Golf's financial outcome. The piece reframes the $6B spend as a marketing and soft-power investment rather than a pure sports-business play.</p>
+
+      <a class="read-link" href="https://www.bloomberg.com/news/newsletters/2026-04-17/liv-golf-might-lose-funding-and-fail-but-saudi-arabia-is-still-winning" target="_blank" rel="noopener"
+         style="color:#C0392B; border-bottom: 2px solid #C0392B;">
+        Read full story →
+      </a>
+    </div>
+  </section>
+
+  <section class="spread" style="background:#0A1A0A; color:#CCFFCC; font-family: 'Courier New', monospace;">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(0,255,65,0.08);">04</div>
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#00FF41; color:#0A1A0A;">Investment & M&A</span>
+        <span class="source-tag" style="color:#00FF41;">NY Post</span>
+      </div>
+
+      <div class="rank-line" style="color:#00FF41;">No. 4</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#CCFFCC;">
+        <a href="https://nypost.com/2026/04/18/sports/how-livs-6b-golf-bet-crashed-and-burned/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">NY Post Deep Dive: How LIV's $6B Golf Bet Crashed and Burned</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#CCFFCC; opacity:0.82;">A detailed post-mortem on LIV Golf's trajectory from disruptive insurgent to potential collapse, reportedly tracing strategic miscalculations in player costs, broadcast rights, and sponsor acquisition. Useful reading for executives evaluating what comes next for player contracts and tour consolidation.</p>
+
+      <a class="read-link" href="https://nypost.com/2026/04/18/sports/how-livs-6b-golf-bet-crashed-and-burned/" target="_blank" rel="noopener"
+         style="color:#00FF41; border-bottom: 2px solid #00FF41;">
+        Read full story →
+      </a>
+    </div>
+  </section>
+
+  <section class="spread" style="background:#FEFBF3; color:#2C1810; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(92,61,30,0.07);">05</div>
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#5C3D1E; color:#FEFBF3;">Travel & Development</span>
+        <span class="source-tag" style="color:#5C3D1E;">AGIF</span>
+      </div>
+
+      <div class="rank-line" style="color:#5C3D1E;">No. 5</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#2C1810;">
+        <a href="https://agif.asia/2026/04/currahee-club-aligns-with-troon/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Currahee Club Partners with Troon in Latest Management Deal</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#2C1810; opacity:0.82;">Currahee Club has joined Troon's management portfolio, continuing the company's aggressive expansion of its private and resort club network. The deal extends Troon's footprint and signals continued institutional appetite for third-party club management platforms.</p>
+
+      <a class="read-link" href="https://agif.asia/2026/04/currahee-club-aligns-with-troon/" target="_blank" rel="noopener"
+         style="color:#5C3D1E; border-bottom: 2px solid #5C3D1E;">
+        Read full story →
+      </a>
+    </div>
+  </section>
+
+  <section class="spread" style="background:#1C1C1C; color:#F0F0F0; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(240,224,64,0.10);">06</div>
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#F0E040; color:#1C1C1C;">Sustainability</span>
+        <span class="source-tag" style="color:#F0E040;">Golf Business News</span>
+      </div>
+
+      <div class="rank-line" style="color:#F0E040;">No. 6</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#F0F0F0;">
+        <a href="https://golfbusinessnews.com/news/interviews/the-gbn-interview-michael-walker-ceo-of-synlawn-uk/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">SynLawn UK CEO Discusses Synthetic Turf Growth in Golf Sector</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#F0F0F0; opacity:0.82;">SynLawn UK CEO Michael Walker outlines the company's expansion strategy and the growing role of synthetic turf in golf facility development. The discussion touches on water conservation, maintenance cost reduction, and the sustainability case for blended natural/synthetic course designs.</p>
+
+      <a class="read-link" href="https://golfbusinessnews.com/news/interviews/the-gbn-interview-michael-walker-ceo-of-synlawn-uk/" target="_blank" rel="noopener"
+         style="color:#F0E040; border-bottom: 2px solid #F0E040;">
+        Read full story →
+      </a>
+    </div>
+  </section>
+
+  <section class="spread" style="background:#EEF2EE; color:#1A2E18; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(45,90,39,0.07);">07</div>
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#2D5A27; color:#EEF2EE;">People & Industry</span>
+        <span class="source-tag" style="color:#2D5A27;">Golf Business News</span>
+      </div>
+
+      <div class="rank-line" style="color:#2D5A27;">No. 7</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1A2E18;">
+        <a href="https://golfbusinessnews.com/news/sponsorship-and-events/new-g4d-match-between-europe-and-usa-to-be-staged-at-2027-ryder-cup/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">G4D Match Between Europe and USA Added to 2027 Ryder Cup Programme</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#1A2E18; opacity:0.82;">A new G4D (Golf for the Disabled) match between Europe and the USA will debut at the 2027 Ryder Cup, expanding the event's programming and commercial platform. The addition creates fresh sponsorship inventory and strengthens the inclusion narrative central to golf's growth strategy.</p>
+
+      <a class="read-link" href="https://golfbusinessnews.com/news/sponsorship-and-events/new-g4d-match-between-europe-and-usa-to-be-staged-at-2027-ryder-cup/" target="_blank" rel="noopener"
+         style="color:#2D5A27; border-bottom: 2px solid #2D5A27;">
+        Read full story →
+      </a>
+    </div>
+  </section>
+
+  <section class="spread" style="background:#FFFFFF; color:#000000; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(0,0,0,0.05);">08</div>
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#000000; color:#FFFFFF;">People & Industry</span>
+        <span class="source-tag" style="color:#000000;">Golf Business News</span>
+      </div>
+
+      <div class="rank-line" style="color:#000000;">No. 8</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#000000;">
+        <a href="https://golfbusinessnews.com/news/management-topics/industry-leaders-celebrated-at-59club-uk-ireland-service-excellence-awards-2026/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">59Club UK & Ireland Honours Service Excellence at 2026 Awards</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#000000; opacity:0.82;">The 59Club UK & Ireland Service Excellence Awards recognised top-performing clubs and management teams, providing a benchmark for customer experience standards in the sector. The awards highlight the growing emphasis on data-driven service metrics as a competitive differentiator for clubs.</p>
+
+      <a class="read-link" href="https://golfbusinessnews.com/news/management-topics/industry-leaders-celebrated-at-59club-uk-ireland-service-excellence-awards-2026/" target="_blank" rel="noopener"
+         style="color:#000000; border-bottom: 2px solid #000000;">
+        Read full story →
+      </a>
+    </div>
+  </section>
+
+  <section class="spread" style="background:#FDF4EE; color:#1E0E00; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(181,84,26,0.08);">09</div>
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#B5541A; color:#FDF4EE;">Travel & Development</span>
+        <span class="source-tag" style="color:#B5541A;">The Golf Business</span>
+      </div>
+
+      <div class="rank-line" style="color:#B5541A;">No. 9</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1E0E00;">
+        <a href="https://thegolfbusiness.co.uk/2026/04/moving-abroad-was-always-something-i-wanted-to-do/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Quinta do Lago Facility Growth Reflects Portugal Golf Boom</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#1E0E00; opacity:0.82;">A profile of Quinta do Lago's continued investment and expansion offers a window into Portugal's booming golf tourism and real-estate market. The Algarve resort has become a case study in how premium golf destinations are scaling operations to capture sustained European demand.</p>
+
+      <a class="read-link" href="https://thegolfbusiness.co.uk/2026/04/moving-abroad-was-always-something-i-wanted-to-do/" target="_blank" rel="noopener"
+         style="color:#B5541A; border-bottom: 2px solid #B5541A;">
+        Read full story →
+      </a>
+    </div>
+  </section>
+
+  <section class="spread" style="background:#1E2329; color:#E2E8F0; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(160,174,192,0.10);">10</div>
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#A0AEC0; color:#1E2329;">People & Industry</span>
+        <span class="source-tag" style="color:#A0AEC0;">Golf Business News</span>
+      </div>
+
+      <div class="rank-line" style="color:#A0AEC0;">No. 10</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#E2E8F0;">
+        <a href="https://golfbusinessnews.com/news/growing-the-game/road-to-the-opens-launches-to-inspire-participation-ahead-of-the-154th-open-and-aig-womens-open/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">R&A 'Road to The Opens' Campaign Targets Participation Surge</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#E2E8F0; opacity:0.82;">The R&A has launched 'Road to The Opens', a national campaign designed to convert casual interest around The 154th Open and AIG Women's Open into sustained participation. For operators, the initiative creates a marketing hook to drive trial memberships and visitor green-fee bookings over the summer window.</p>
+
+      <a class="read-link" href="https://golfbusinessnews.com/news/growing-the-game/road-to-the-opens-launches-to-inspire-participation-ahead-of-the-154th-open-and-aig-womens-open/" target="_blank" rel="noopener"
+         style="color:#A0AEC0; border-bottom: 2px solid #A0AEC0;">
+        Read full story →
+      </a>
+    </div>
+  </section>
+
+<footer class="footer">
+  <p>Golf Morning Edition · 2026-04-20 · Curated by Claude for Shane</p>
+  <p style="margin-top:0.5rem; font-size:0.65rem;">
+    Sources: Golf Business News · The Golf Business · Bunkered · Google Alert
+  </p>
+</footer>
+
+</body>
+</html>
