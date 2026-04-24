@@ -47,35 +47,33 @@ html, body {
   justify-content: center;
 }
 
+/* ── Edge click zones (left/right 10% of viewport) ── */
+#zone-prev, #zone-next {
+  position: fixed;
+  top: 0; bottom: 0;
+  width: 10%;
+  z-index: 200;
+  cursor: pointer;
+}
+#zone-prev { left: 0; }
+#zone-next { right: 0; }
+
 /* ── Each spread ── */
 .spread {
   position: absolute;
   display: grid;
   grid-template-columns: 1fr 1fr;
   box-shadow: 0 20px 60px rgba(0,0,0,0.75);
+  /* Hidden by default; JS drives all transforms */
   opacity: 0;
   pointer-events: none;
-  /* JS sets: width, height, left, top */
   transform-origin: center center;
-  transform: perspective(1800px) rotateY(40deg);
-  transition: transform 0.52s cubic-bezier(0.4,0,0.2,1),
-              opacity   0.4s ease;
   will-change: transform, opacity;
 }
 .spread.active {
   opacity: 1;
   pointer-events: all;
   transform: perspective(1800px) rotateY(0deg);
-}
-.spread.flip-out-left {
-  opacity: 0;
-  transform: perspective(1800px) rotateY(-40deg);
-  transition: transform 0.42s cubic-bezier(0.4,0,0.6,1),
-              opacity   0.32s ease;
-}
-.spread.flip-in-left {
-  transform: perspective(1800px) rotateY(-40deg);
-  opacity: 0;
 }
 
 /* ── Cover spread ── */
@@ -115,62 +113,74 @@ html, body {
 .s-page {
   position: relative;
   overflow: hidden;
-  padding: clamp(1.5rem,4%,3rem);
+  padding: clamp(1.8rem,5%,3.2rem);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   min-height: 0;
 }
 .s-left { border-right: 1px solid rgba(128,128,128,0.15); }
 
+/* Ghost numeral — behind everything */
 .s-num {
-  position:absolute; bottom:-0.1em; right:-0.03em;
-  font-family:var(--serif); font-size:clamp(9rem,22vw,16rem);
+  position:absolute; bottom:-0.08em; right:-0.02em;
+  font-family:var(--serif); font-size:clamp(10rem,24vw,18rem);
   font-weight:900; line-height:1;
   pointer-events:none; user-select:none; z-index:0;
 }
-.s-meta {
-  display:flex; align-items:center; gap:0.6rem;
-  margin-bottom:0.75rem; flex-wrap:wrap; position:relative; z-index:2;
+/* Top strip: category tag + issue number */
+.s-top {
+  display:flex; align-items:center; gap:0.7rem;
+  margin-bottom:1.2rem; flex-wrap:wrap; position:relative; z-index:2;
 }
 .s-tag {
   font-size:0.58rem; font-weight:700; letter-spacing:0.18em;
-  text-transform:uppercase; padding:0.28em 0.75em; border-radius:2px;
-}
-.s-src {
-  font-size:0.65rem; font-weight:500; letter-spacing:0.06em; opacity:0.8;
+  text-transform:uppercase; padding:0.3em 0.8em; border-radius:2px;
 }
 .s-rank {
-  font-size:0.62rem; font-weight:700; letter-spacing:0.25em;
-  text-transform:uppercase; margin-bottom:0.6rem;
-  position:relative; z-index:2; opacity:0.6;
+  font-size:0.62rem; font-weight:600; letter-spacing:0.2em;
+  text-transform:uppercase; opacity:0.5;
+  position:relative; z-index:2;
 }
+/* Main headline */
 .s-title {
   font-family:var(--serif);
-  font-size:clamp(1.3rem,2.8vw,2.2rem);
-  font-weight:900; line-height:1.1;
-  position:relative; z-index:2; margin-bottom:auto;
+  font-size:clamp(1.9rem,3.4vw,3rem);
+  font-weight:900; line-height:1.18;
+  position:relative; z-index:2;
+  margin-bottom:1rem;
+  flex-grow: 1;
+}
+/* Source credit under headline */
+.s-source {
+  font-size:0.7rem; font-weight:500; letter-spacing:0.08em;
+  opacity:0.65; position:relative; z-index:2; margin-bottom:auto;
+  margin-top: 0;
+  padding-top: 0.4rem;
+  border-top: 1px solid currentColor;
+  opacity: 0.4;
 }
 .s-hint {
   font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase;
-  text-align:right; margin-top:auto; padding-top:0.75rem;
-  position:relative; z-index:2; opacity:0.45;
+  text-align:right; padding-top:1rem; margin-top:auto;
+  position:relative; z-index:2; opacity:0.35;
 }
+/* Teaser body */
 .s-teaser {
-  font-size:clamp(0.82rem,1.4vw,0.98rem); line-height:1.7; font-weight:300;
-  margin-bottom:1.25rem; position:relative; z-index:2;
+  font-size:clamp(1rem,1.7vw,1.18rem); line-height:1.78; font-weight:300;
+  margin-bottom:1.5rem; position:relative; z-index:2; flex-grow:1;
 }
-.s-link {
-  font-size:0.78rem; font-weight:600; letter-spacing:0.04em;
-  text-decoration:none; padding-bottom:0.1em;
-  position:relative; z-index:2; transition:opacity 0.2s;
+/* Read full story — as a button */
+.s-btn {
+  display:inline-block;
+  font-size:0.72rem; font-weight:700; letter-spacing:0.12em;
+  text-transform:uppercase; text-decoration:none;
+  padding:0.6em 1.4em; border-radius:2px;
+  position:relative; z-index:2;
+  transition:opacity 0.2s; margin-top:auto;
+  align-self:flex-start;
 }
-.s-link:hover { opacity:0.7; }
-.s-corner {
-  position:absolute; bottom:0.9rem; right:1.1rem;
-  font-family:var(--serif); font-size:1.4rem; font-weight:900;
-  opacity:0.35; z-index:2;
-}
+.s-btn:hover { opacity:0.8; }
 
 /* ── Back cover ── */
 #spread-back {
@@ -202,6 +212,10 @@ html, body {
 </head>
 <body>
 
+<!-- Edge click zones -->
+<div id="zone-prev" title="Previous"></div>
+<div id="zone-next" title="Next"></div>
+
 <div id="shell">
   <div id="stage">
 
@@ -219,16 +233,17 @@ html, body {
   <div class="spread" data-index="1">
     <div class="s-page s-left" style="background:#FAF7F0;color:#1A1A2E;">
       <div class="s-num" style="color:rgba(26,26,46,0.05);">01</div>
-      <div class="s-meta">
+      <div class="s-top">
         <span class="s-tag" style="background:#1A1A2E;color:#FAF7F0;">Investment &amp; M&amp;A</span>
-        <span class="s-src" style="color:#1A1A2E;">Forbes / Reuters</span>
+        <span class="s-rank" style="color:#1A1A2E;">No.&nbsp;1</span>
       </div>
-      <div class="s-rank" style="color:#1A1A2E;">No.&nbsp;1</div>
       <h2 class="s-title" style="color:#1A1A2E;">KSL Capital Partners to Acquire Invited Clubs for $2.6B</h2>
+      <div class="s-source" style="color:#1A1A2E;">Source: Forbes / Reuters</div>
       <div class="s-hint" style="color:#1A1A2E;">Turn &rsaquo;</div>
     </div>
     <div class="s-page s-right" style="background:#FAF7F0;color:#1A1A2E;">
-      <div class="s-meta">
+      <div class="s-num" style="color:rgba(26,26,46,0.05);">01</div>
+      <div class="s-top">
         <span class="s-tag" style="background:#1A1A2E;color:#FAF7F0;">Investment &amp; M&amp;A</span>
       </div>
       <p class="s-teaser" style="color:#1A1A2E;">Private equity firm KSL Capital Partners has agreed to acquire membership club operator Invited Clubs for approximately $2.6 billion — its second time buying the company. The deal underscores the PE thesis that the golf boom has durable economics worth leveraging at scale.</p>
@@ -239,26 +254,26 @@ html, body {
                      color:#C0392B;text-transform:uppercase;">&#9873; Exec Alert</div>
                 <div style="font-size:0.8rem;color:#C0392B;line-height:1.4;margin-top:0.2rem;">Largest golf club platform M&amp;A deal signals PE conviction in golf's long-term growth and could reshape competitive dynamics for premium club operators.</div>
               </div>
-      <a class="s-link" href="https://www.forbes.com/sites/hanktucker/2026/04/22/ksl-invited-clubs-golf-course-acquisition/" target="_blank" rel="noopener"
-         style="color:#1A1A2E;border-bottom:2px solid #1A1A2E;">
+      <a class="s-btn" href="https://www.forbes.com/sites/hanktucker/2026/04/22/ksl-invited-clubs-golf-course-acquisition/" target="_blank" rel="noopener"
+         style="background:#1A1A2E;color:#FAF7F0;">
         Read full story &rarr;
       </a>
-      <div class="s-corner" style="color:#1A1A2E;">1</div>
     </div>
   </div>
   <div class="spread" data-index="2">
     <div class="s-page s-left" style="background:#0D1B2A;color:#F0E8D8;">
       <div class="s-num" style="color:rgba(201,168,76,0.12);">02</div>
-      <div class="s-meta">
+      <div class="s-top">
         <span class="s-tag" style="background:#C9A84C;color:#0D1B2A;">Investment &amp; M&amp;A</span>
-        <span class="s-src" style="color:#C9A84C;">Bloomberg</span>
+        <span class="s-rank" style="color:#C9A84C;">No.&nbsp;2</span>
       </div>
-      <div class="s-rank" style="color:#C9A84C;">No.&nbsp;2</div>
       <h2 class="s-title" style="color:#F0E8D8;">Bloomberg: Saudi Golf Doubts Hint at Broader Investment Rethink</h2>
+      <div class="s-source" style="color:#C9A84C;">Source: Bloomberg</div>
       <div class="s-hint" style="color:#C9A84C;">Turn &rsaquo;</div>
     </div>
     <div class="s-page s-right" style="background:#0D1B2A;color:#F0E8D8;">
-      <div class="s-meta">
+      <div class="s-num" style="color:rgba(201,168,76,0.12);">02</div>
+      <div class="s-top">
         <span class="s-tag" style="background:#C9A84C;color:#0D1B2A;">Investment &amp; M&amp;A</span>
       </div>
       <p class="s-teaser" style="color:#F0E8D8;">Bloomberg reports that growing Saudi doubts around golf investments may signal a broader recalibration of the Kingdom's sports spending strategy. The analysis suggests that the ROI calculus on marquee golf properties and leagues is under active review in Riyadh.</p>
@@ -269,26 +284,26 @@ html, body {
                      color:#C0392B;text-transform:uppercase;">&#9873; Exec Alert</div>
                 <div style="font-size:0.8rem;color:#C0392B;line-height:1.4;margin-top:0.2rem;">Any Saudi pullback or pivot on golf investment directly impacts PGA Tour/LIV unification talks and global golf capital flows.</div>
               </div>
-      <a class="s-link" href="https://www.bloomberg.com/opinion/articles/2026-04-22/saudi-arabia-sports-rethink-hints-at-more-investment-change-to-come" target="_blank" rel="noopener"
-         style="color:#C9A84C;border-bottom:2px solid #C9A84C;">
+      <a class="s-btn" href="https://www.bloomberg.com/opinion/articles/2026-04-22/saudi-arabia-sports-rethink-hints-at-more-investment-change-to-come" target="_blank" rel="noopener"
+         style="background:#C9A84C;color:#0D1B2A;">
         Read full story &rarr;
       </a>
-      <div class="s-corner" style="color:#C9A84C;">2</div>
     </div>
   </div>
   <div class="spread" data-index="3">
     <div class="s-page s-left" style="background:#FEFBF3;color:#2C1810;">
       <div class="s-num" style="color:rgba(92,61,30,0.06);">03</div>
-      <div class="s-meta">
+      <div class="s-top">
         <span class="s-tag" style="background:#5C3D1E;color:#FEFBF3;">Investment &amp; M&amp;A</span>
-        <span class="s-src" style="color:#5C3D1E;">Bloomberg</span>
+        <span class="s-rank" style="color:#5C3D1E;">No.&nbsp;3</span>
       </div>
-      <div class="s-rank" style="color:#5C3D1E;">No.&nbsp;3</div>
       <h2 class="s-title" style="color:#2C1810;">Bloomberg: LIV Golf Exposes Limits of Saudi Sports Spending</h2>
+      <div class="s-source" style="color:#5C3D1E;">Source: Bloomberg</div>
       <div class="s-hint" style="color:#5C3D1E;">Turn &rsaquo;</div>
     </div>
     <div class="s-page s-right" style="background:#FEFBF3;color:#2C1810;">
-      <div class="s-meta">
+      <div class="s-num" style="color:rgba(92,61,30,0.06);">03</div>
+      <div class="s-top">
         <span class="s-tag" style="background:#5C3D1E;color:#FEFBF3;">Investment &amp; M&amp;A</span>
       </div>
       <p class="s-teaser" style="color:#2C1810;">A companion Bloomberg opinion piece argues LIV Golf demonstrates the ceiling of what sovereign-wealth-fueled spending can achieve in professional sports. The analysis weighs brand equity, fan engagement, and financial sustainability against the billions deployed.</p>
@@ -299,179 +314,178 @@ html, body {
                      color:#C0392B;text-transform:uppercase;">&#9873; Exec Alert</div>
                 <div style="font-size:0.8rem;color:#C0392B;line-height:1.4;margin-top:0.2rem;">Shapes the narrative around LIV's viability and directly affects how industry executives should plan for tour consolidation scenarios.</div>
               </div>
-      <a class="s-link" href="https://www.bloomberg.com/opinion/articles/2026-04-23/liv-golf-shows-limits-of-what-saudi-money-can-buy-in-sports?srnd=phx-opinion" target="_blank" rel="noopener"
-         style="color:#5C3D1E;border-bottom:2px solid #5C3D1E;">
+      <a class="s-btn" href="https://www.bloomberg.com/opinion/articles/2026-04-23/liv-golf-shows-limits-of-what-saudi-money-can-buy-in-sports?srnd=phx-opinion" target="_blank" rel="noopener"
+         style="background:#5C3D1E;color:#FEFBF3;">
         Read full story &rarr;
       </a>
-      <div class="s-corner" style="color:#5C3D1E;">3</div>
     </div>
   </div>
   <div class="spread" data-index="4">
     <div class="s-page s-left" style="background:#0A1A0A;color:#CCFFCC;">
       <div class="s-num" style="color:rgba(0,221,65,0.08);">04</div>
-      <div class="s-meta">
+      <div class="s-top">
         <span class="s-tag" style="background:#00DD41;color:#0A1A0A;">Sustainability</span>
-        <span class="s-src" style="color:#00DD41;">Financial Times</span>
+        <span class="s-rank" style="color:#00DD41;">No.&nbsp;4</span>
       </div>
-      <div class="s-rank" style="color:#00DD41;">No.&nbsp;4</div>
       <h2 class="s-title" style="color:#CCFFCC;">FT: Can Eco Ethics Become Par for the Golf Course?</h2>
+      <div class="s-source" style="color:#00DD41;">Source: Financial Times</div>
       <div class="s-hint" style="color:#00DD41;">Turn &rsaquo;</div>
     </div>
     <div class="s-page s-right" style="background:#0A1A0A;color:#CCFFCC;">
-      <div class="s-meta">
+      <div class="s-num" style="color:rgba(0,221,65,0.08);">04</div>
+      <div class="s-top">
         <span class="s-tag" style="background:#00DD41;color:#0A1A0A;">Sustainability</span>
       </div>
       <p class="s-teaser" style="color:#CCFFCC;">The Financial Times examines the growing tension between luxury golf development and environmental stewardship, spotlighting courses like those on Martha's Vineyard pursuing more sustainable models. The piece explores whether eco-forward design can become a competitive differentiator rather than a cost center.</p>
       
-      <a class="s-link" href="https://www.ft.com/content/ba717abd-5825-4618-a68b-6521613a5a99" target="_blank" rel="noopener"
-         style="color:#00DD41;border-bottom:2px solid #00DD41;">
+      <a class="s-btn" href="https://www.ft.com/content/ba717abd-5825-4618-a68b-6521613a5a99" target="_blank" rel="noopener"
+         style="background:#00DD41;color:#0A1A0A;">
         Read full story &rarr;
       </a>
-      <div class="s-corner" style="color:#00DD41;">4</div>
     </div>
   </div>
   <div class="spread" data-index="5">
     <div class="s-page s-left" style="background:#F5F5F5;color:#111111;">
       <div class="s-num" style="color:rgba(192,57,43,0.05);">05</div>
-      <div class="s-meta">
+      <div class="s-top">
         <span class="s-tag" style="background:#C0392B;color:#FFFFFF;">Investment &amp; M&amp;A</span>
-        <span class="s-src" style="color:#C0392B;">Yahoo Finance</span>
+        <span class="s-rank" style="color:#C0392B;">No.&nbsp;5</span>
       </div>
-      <div class="s-rank" style="color:#C0392B;">No.&nbsp;5</div>
       <h2 class="s-title" style="color:#111111;">Purposeful Golf Acquires Woodington Lake Golf Club in Ontario</h2>
+      <div class="s-source" style="color:#C0392B;">Source: Yahoo Finance</div>
       <div class="s-hint" style="color:#C0392B;">Turn &rsaquo;</div>
     </div>
     <div class="s-page s-right" style="background:#F5F5F5;color:#111111;">
-      <div class="s-meta">
+      <div class="s-num" style="color:rgba(192,57,43,0.05);">05</div>
+      <div class="s-top">
         <span class="s-tag" style="background:#C0392B;color:#FFFFFF;">Investment &amp; M&amp;A</span>
       </div>
       <p class="s-teaser" style="color:#111111;">Canadian platform operator Purposeful Golf has added Woodington Lake Golf Club, a course and event destination in Tottenham, Ontario, to its growing portfolio. The acquisition continues the consolidation trend among multi-course operators in the Canadian market.</p>
       
-      <a class="s-link" href="https://finance.yahoo.com/sectors/technology/articles/purposeful-golf-acquires-woodington-lake-170000542.html" target="_blank" rel="noopener"
-         style="color:#C0392B;border-bottom:2px solid #C0392B;">
+      <a class="s-btn" href="https://finance.yahoo.com/sectors/technology/articles/purposeful-golf-acquires-woodington-lake-170000542.html" target="_blank" rel="noopener"
+         style="background:#C0392B;color:#FFFFFF;">
         Read full story &rarr;
       </a>
-      <div class="s-corner" style="color:#C0392B;">5</div>
     </div>
   </div>
   <div class="spread" data-index="6">
     <div class="s-page s-left" style="background:#FAF7F0;color:#1A1A2E;">
       <div class="s-num" style="color:rgba(26,26,46,0.05);">06</div>
-      <div class="s-meta">
+      <div class="s-top">
         <span class="s-tag" style="background:#1A1A2E;color:#FAF7F0;">Travel &amp; Development</span>
-        <span class="s-src" style="color:#1A1A2E;">Golf Business News</span>
+        <span class="s-rank" style="color:#1A1A2E;">No.&nbsp;6</span>
       </div>
-      <div class="s-rank" style="color:#1A1A2E;">No.&nbsp;6</div>
       <h2 class="s-title" style="color:#1A1A2E;">Camiral Resort to Invest €7M in Golf Course Upgrades</h2>
+      <div class="s-source" style="color:#1A1A2E;">Source: Golf Business News</div>
       <div class="s-hint" style="color:#1A1A2E;">Turn &rsaquo;</div>
     </div>
     <div class="s-page s-right" style="background:#FAF7F0;color:#1A1A2E;">
-      <div class="s-meta">
+      <div class="s-num" style="color:rgba(26,26,46,0.05);">06</div>
+      <div class="s-top">
         <span class="s-tag" style="background:#1A1A2E;color:#FAF7F0;">Travel &amp; Development</span>
       </div>
       <p class="s-teaser" style="color:#1A1A2E;">Spain's Camiral resort — home to PGA Catalunya — is committing €7 million to upgrade its golf courses. The investment signals continued confidence in Europe's premium destination golf market and could strengthen the property's position in the Ryder Cup venue pipeline.</p>
       
-      <a class="s-link" href="https://golfbusinessnews.com/news/courses/camiral-to-invest-e7m-in-golf-courses-upgrade/" target="_blank" rel="noopener"
-         style="color:#1A1A2E;border-bottom:2px solid #1A1A2E;">
+      <a class="s-btn" href="https://golfbusinessnews.com/news/courses/camiral-to-invest-e7m-in-golf-courses-upgrade/" target="_blank" rel="noopener"
+         style="background:#1A1A2E;color:#FAF7F0;">
         Read full story &rarr;
       </a>
-      <div class="s-corner" style="color:#1A1A2E;">6</div>
     </div>
   </div>
   <div class="spread" data-index="7">
     <div class="s-page s-left" style="background:#0D1B2A;color:#F0E8D8;">
       <div class="s-num" style="color:rgba(201,168,76,0.12);">07</div>
-      <div class="s-meta">
+      <div class="s-top">
         <span class="s-tag" style="background:#C9A84C;color:#0D1B2A;">Technology</span>
-        <span class="s-src" style="color:#C9A84C;">Golf Business News</span>
+        <span class="s-rank" style="color:#C9A84C;">No.&nbsp;7</span>
       </div>
-      <div class="s-rank" style="color:#C9A84C;">No.&nbsp;7</div>
       <h2 class="s-title" style="color:#F0E8D8;">Royal Dornoch Partners with Flying Caddie for Cinematic Course Intel</h2>
+      <div class="s-source" style="color:#C9A84C;">Source: Golf Business News</div>
       <div class="s-hint" style="color:#C9A84C;">Turn &rsaquo;</div>
     </div>
     <div class="s-page s-right" style="background:#0D1B2A;color:#F0E8D8;">
-      <div class="s-meta">
+      <div class="s-num" style="color:rgba(201,168,76,0.12);">07</div>
+      <div class="s-top">
         <span class="s-tag" style="background:#C9A84C;color:#0D1B2A;">Technology</span>
       </div>
       <p class="s-teaser" style="color:#F0E8D8;">Royal Dornoch has partnered with The Flying Caddie to deliver drone-captured, cinematic course intelligence to visiting golfers. The technology platform gives players hole-by-hole visual strategy guides — a model premium destination courses are increasingly adopting to enhance the visitor experience.</p>
       
-      <a class="s-link" href="https://golfbusinessnews.com/news/innovation-centre/royal-dornoch-golf-club-partners-with-the-flying-caddie-to-deliver-cinematic-course-intelligence-for-visiting-golfers/" target="_blank" rel="noopener"
-         style="color:#C9A84C;border-bottom:2px solid #C9A84C;">
+      <a class="s-btn" href="https://golfbusinessnews.com/news/innovation-centre/royal-dornoch-golf-club-partners-with-the-flying-caddie-to-deliver-cinematic-course-intelligence-for-visiting-golfers/" target="_blank" rel="noopener"
+         style="background:#C9A84C;color:#0D1B2A;">
         Read full story &rarr;
       </a>
-      <div class="s-corner" style="color:#C9A84C;">7</div>
     </div>
   </div>
   <div class="spread" data-index="8">
     <div class="s-page s-left" style="background:#FEFBF3;color:#2C1810;">
       <div class="s-num" style="color:rgba(92,61,30,0.06);">08</div>
-      <div class="s-meta">
+      <div class="s-top">
         <span class="s-tag" style="background:#5C3D1E;color:#FEFBF3;">International</span>
-        <span class="s-src" style="color:#5C3D1E;">Reuters</span>
+        <span class="s-rank" style="color:#5C3D1E;">No.&nbsp;8</span>
       </div>
-      <div class="s-rank" style="color:#5C3D1E;">No.&nbsp;8</div>
       <h2 class="s-title" style="color:#2C1810;">LIV Golf's Smash GC Rebrands as OKGC in U.S. Market Push</h2>
+      <div class="s-source" style="color:#5C3D1E;">Source: Reuters</div>
       <div class="s-hint" style="color:#5C3D1E;">Turn &rsaquo;</div>
     </div>
     <div class="s-page s-right" style="background:#FEFBF3;color:#2C1810;">
-      <div class="s-meta">
+      <div class="s-num" style="color:rgba(92,61,30,0.06);">08</div>
+      <div class="s-top">
         <span class="s-tag" style="background:#5C3D1E;color:#FEFBF3;">International</span>
       </div>
       <p class="s-teaser" style="color:#2C1810;">Smash GC has rebranded as OKGC, becoming the first LIV Golf franchise explicitly aligned with a U.S. regional market. The move signals LIV's evolving strategy to build local fan bases and commercial partnerships tied to American geographies.</p>
       
-      <a class="s-link" href="https://www.reuters.com/sports/golf/liv-golfs-smash-gc-rebrands-okgc-first-us-market-aligned-franchise-2026-04-21/" target="_blank" rel="noopener"
-         style="color:#5C3D1E;border-bottom:2px solid #5C3D1E;">
+      <a class="s-btn" href="https://www.reuters.com/sports/golf/liv-golfs-smash-gc-rebrands-okgc-first-us-market-aligned-franchise-2026-04-21/" target="_blank" rel="noopener"
+         style="background:#5C3D1E;color:#FEFBF3;">
         Read full story &rarr;
       </a>
-      <div class="s-corner" style="color:#5C3D1E;">8</div>
     </div>
   </div>
   <div class="spread" data-index="9">
     <div class="s-page s-left" style="background:#0A1A0A;color:#CCFFCC;">
       <div class="s-num" style="color:rgba(0,221,65,0.08);">09</div>
-      <div class="s-meta">
+      <div class="s-top">
         <span class="s-tag" style="background:#00DD41;color:#0A1A0A;">Technology</span>
-        <span class="s-src" style="color:#00DD41;">Golf Business News</span>
+        <span class="s-rank" style="color:#00DD41;">No.&nbsp;9</span>
       </div>
-      <div class="s-rank" style="color:#00DD41;">No.&nbsp;9</div>
       <h2 class="s-title" style="color:#CCFFCC;">Platform Golf Installed at Sky Sports Studio for Tour Coverage</h2>
+      <div class="s-source" style="color:#00DD41;">Source: Golf Business News</div>
       <div class="s-hint" style="color:#00DD41;">Turn &rsaquo;</div>
     </div>
     <div class="s-page s-right" style="background:#0A1A0A;color:#CCFFCC;">
-      <div class="s-meta">
+      <div class="s-num" style="color:rgba(0,221,65,0.08);">09</div>
+      <div class="s-top">
         <span class="s-tag" style="background:#00DD41;color:#0A1A0A;">Technology</span>
       </div>
       <p class="s-teaser" style="color:#CCFFCC;">Platform Golf has secured a studio installation at Sky Sports to enhance broadcast tour coverage with advanced data visualization and analysis tools. The partnership deepens the integration of golf analytics technology into mainstream media production.</p>
       
-      <a class="s-link" href="https://golfbusinessnews.com/news/media/platform-golf-installation-at-sky-sports-studio-to-enhance-tour-coverage/" target="_blank" rel="noopener"
-         style="color:#00DD41;border-bottom:2px solid #00DD41;">
+      <a class="s-btn" href="https://golfbusinessnews.com/news/media/platform-golf-installation-at-sky-sports-studio-to-enhance-tour-coverage/" target="_blank" rel="noopener"
+         style="background:#00DD41;color:#0A1A0A;">
         Read full story &rarr;
       </a>
-      <div class="s-corner" style="color:#00DD41;">9</div>
     </div>
   </div>
   <div class="spread" data-index="10">
     <div class="s-page s-left" style="background:#F5F5F5;color:#111111;">
       <div class="s-num" style="color:rgba(192,57,43,0.05);">10</div>
-      <div class="s-meta">
+      <div class="s-top">
         <span class="s-tag" style="background:#C0392B;color:#FFFFFF;">Investment &amp; M&amp;A</span>
-        <span class="s-src" style="color:#C0392B;">Seeking Alpha / FT Markets</span>
+        <span class="s-rank" style="color:#C0392B;">No.&nbsp;10</span>
       </div>
-      <div class="s-rank" style="color:#C0392B;">No.&nbsp;10</div>
       <h2 class="s-title" style="color:#111111;">Acushnet to Report Q1 2026 Results on May 6</h2>
+      <div class="s-source" style="color:#C0392B;">Source: Seeking Alpha / FT Markets</div>
       <div class="s-hint" style="color:#C0392B;">Turn &rsaquo;</div>
     </div>
     <div class="s-page s-right" style="background:#F5F5F5;color:#111111;">
-      <div class="s-meta">
+      <div class="s-num" style="color:rgba(192,57,43,0.05);">10</div>
+      <div class="s-top">
         <span class="s-tag" style="background:#C0392B;color:#FFFFFF;">Investment &amp; M&amp;A</span>
       </div>
       <p class="s-teaser" style="color:#111111;">Titleist and FootJoy parent Acushnet Holdings will report Q1 2026 financials on May 6. As the bellwether public company in golf equipment, the results will offer a read on consumer demand trends, margin pressures, and inventory levels across the golf hardware sector.</p>
       
-      <a class="s-link" href="https://seekingalpha.com/pr/20482826-acushnet-holdings-corp-to-announce-first-quarter-2026-financial-results-on-may-6-2026" target="_blank" rel="noopener"
-         style="color:#C0392B;border-bottom:2px solid #C0392B;">
+      <a class="s-btn" href="https://seekingalpha.com/pr/20482826-acushnet-holdings-corp-to-announce-first-quarter-2026-financial-results-on-may-6-2026" target="_blank" rel="noopener"
+         style="background:#C0392B;color:#FFFFFF;">
         Read full story &rarr;
       </a>
-      <div class="s-corner" style="color:#C0392B;">10</div>
     </div>
   </div>
 
@@ -503,85 +517,92 @@ const total   = spreads.length;
 let current   = 0;
 let busy      = false;
 
-// Size AND center every spread in the stage
+// ── Size & centre every spread within the stage ──────────────────────────────
 function sizeBook() {
   const stage = document.getElementById('stage');
   const sw = stage.clientWidth;
   const sh = stage.clientHeight;
-  const aspect = 3 / 4;          // portrait page: width = 3/4 of height
-  // Each story spread = 2 pages. Limit so both pages fit in the viewport.
+  const aspect = 3 / 4;   // portrait page aspect (w:h)
   let pageH = Math.min(sh * 0.95, 820);
-  let pageW = Math.min(pageH / aspect, sw * 0.46);  // one page ≤ 46% of stage
+  let pageW = Math.min(pageH / aspect, sw * 0.46);
   pageH = pageW * aspect;
   spreads.forEach((s, idx) => {
     const isSingle = (idx === 0 || idx === total - 1);
     const thisW = isSingle ? pageW : pageW * 2;
-    const thisH = pageH;
     s.style.width  = thisW + 'px';
-    s.style.height = thisH + 'px';
-    s.style.left   = ((sw - thisW) / 2) + 'px';   // explicit centering
-    s.style.top    = ((sh - thisH) / 2) + 'px';
+    s.style.height = pageH + 'px';
+    s.style.left   = ((sw - thisW) / 2) + 'px';
+    s.style.top    = ((sh - pageH) / 2) + 'px';
   });
 }
 sizeBook();
 window.addEventListener('resize', sizeBook);
 
+// ── Counter label ────────────────────────────────────────────────────────────
 const counter = document.getElementById('counter');
 function label() {
-  if (current === 0)             counter.textContent = 'Cover';
-  else if (current === total-1)  counter.textContent = 'Back cover';
-  else                           counter.textContent = 'Story ' + current + ' / ' + (total-2);
+  if (current === 0)            counter.textContent = 'Cover';
+  else if (current===total-1)   counter.textContent = 'Back cover';
+  else                          counter.textContent = 'Story ' + current + ' / ' + (total-2);
 }
 
+// ── Two-phase page-turn ──────────────────────────────────────────────────────
+// Phase 1: current folds away (360ms)
+// Phase 2: next unfolds in from opposite side (400ms)
 function goTo(next, dir) {
   if (busy || next < 0 || next >= total || next === current) return;
   busy = true;
-
+  const PERSP = 'perspective(1800px)';
   const cur = spreads[current];
   const nxt = spreads[next];
 
-  // --- Set up incoming spread position (no transition yet) ---
-  nxt.style.transition = 'none';
-  nxt.classList.remove('active', 'flip-out-left', 'flip-in-left');
-  if (dir === 'backward') {
-    // Incoming enters from the left side
-    nxt.classList.add('flip-in-left');
-  }
-  // forward: nxt stays at default (rotateY 40deg = "from right")
+  const exitRot  = dir === 'forward' ? '-90deg' : '90deg';
+  const enterRot = dir === 'forward' ?  '90deg' : '-90deg';
 
-  // Force reflow so the starting position applies before transition begins
-  nxt.offsetHeight;
-  nxt.style.transition = '';   // restore CSS transition
-
-  // --- Exit current ---
+  // Phase 1 — fold current away
   cur.classList.remove('active');
-  if (dir === 'forward') {
-    cur.classList.add('flip-out-left');   // folds away to the left
-  }
-  // backward: cur snaps back to default rotateY(40deg) — it exits to the right naturally
+  cur.style.transition = 'transform 360ms cubic-bezier(0.55,0,1,1), opacity 280ms ease';
+  cur.style.transform  = PERSP + ' rotateY(' + exitRot + ')';
+  cur.style.opacity    = '0';
 
-  // --- Activate incoming ---
-  nxt.classList.remove('flip-in-left');
-  nxt.classList.add('active');
-
-  current = next;
-  label();
-
-  // Unlock after longest transition (520ms)
+  // Phase 2 — unfold next in
   setTimeout(() => {
-    cur.classList.remove('flip-out-left');
-    busy = false;
-  }, 560);
+    nxt.style.transition = 'none';
+    nxt.style.transform  = PERSP + ' rotateY(' + enterRot + ')';
+    nxt.style.opacity    = '0';
+    nxt.offsetHeight;   // force reflow
+
+    nxt.style.transition = 'transform 400ms cubic-bezier(0,0,0.45,1), opacity 340ms ease';
+    nxt.style.transform  = PERSP + ' rotateY(0deg)';
+    nxt.style.opacity    = '1';
+    nxt.classList.add('active');
+
+    current = next;
+    label();
+
+    setTimeout(() => {
+      cur.style.transition = 'none';
+      cur.style.transform  = '';
+      cur.style.opacity    = '';
+      setTimeout(() => { cur.style.transition = ''; }, 20);
+      busy = false;
+    }, 420);
+  }, 340);
 }
 
+// ── Controls ─────────────────────────────────────────────────────────────────
 document.getElementById('btn-start').addEventListener('click', () => goTo(0, 'backward'));
 document.getElementById('btn-prev').addEventListener('click',  () => goTo(current - 1, 'backward'));
 document.getElementById('btn-next').addEventListener('click',  () => goTo(current + 1, 'forward'));
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goTo(current+1, 'forward');
-  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   goTo(current-1, 'backward');
+  if (e.key==='ArrowRight'||e.key==='ArrowDown') goTo(current+1,'forward');
+  if (e.key==='ArrowLeft' ||e.key==='ArrowUp')   goTo(current-1,'backward');
 });
+
+// ── Edge-click zones ──────────────────────────────────────────────────────────
+document.getElementById('zone-prev').addEventListener('click', () => goTo(current-1,'backward'));
+document.getElementById('zone-next').addEventListener('click', () => goTo(current+1,'forward'));
 </script>
 </body>
 </html>
