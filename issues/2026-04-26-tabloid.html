@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Golf Morning Edition — Tabloid — 2026-04-26</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --sans:  'Inter', system-ui, sans-serif;
+  --serif: 'Fraunces', Georgia, serif;
+}
+html, body {
+  width: 100%; height: 100%;
+  background: #111;
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Outer shell ── */
+#shell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  height: 100%;
+  padding: 1.25rem 1.25rem 1rem;
+}
+
+/* ── Book stage ── */
+#stage {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Edge click zones (left/right 10% of viewport) ── */
+#zone-prev, #zone-next {
+  position: fixed;
+  top: 0; bottom: 0;
+  width: 10%;
+  z-index: 200;
+  cursor: pointer;
+}
+#zone-prev { left: 0; }
+#zone-next { right: 0; }
+
+/* ── Each spread ── */
+.spread {
+  position: absolute;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.75);
+  /* Hidden by default; JS drives all transforms */
+  opacity: 0;
+  pointer-events: none;
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+.spread.active {
+  opacity: 1;
+  pointer-events: all;
+  transform: perspective(1800px) rotateY(0deg);
+}
+
+/* ── Cover spread ── */
+#spread-cover {
+  background: linear-gradient(135deg,#0A0E1A 0%,#1A2A1A 50%,#0D1B0D 100%);
+  grid-template-columns: 1fr;
+}
+.cover-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+  padding: 3rem 2rem;
+  color: #F5F0E8;
+}
+.cv-kicker {
+  font-size: 0.62rem; font-weight:600; letter-spacing:0.28em;
+  text-transform:uppercase; color:#7ECB8F; margin-bottom:1.2rem;
+}
+.cv-title {
+  font-family:var(--serif); font-size:clamp(2.5rem,6vw,5rem);
+  font-weight:900; line-height:0.95; margin-bottom:0.4em;
+}
+.cv-title em { font-style:italic; color:#C9A84C; }
+.cv-date {
+  font-size:0.82rem; font-weight:300;
+  color:rgba(245,240,232,0.55); letter-spacing:0.08em; margin-top:0.5rem;
+}
+.cv-sub {
+  margin-top:2rem; font-size:0.6rem;
+  color:rgba(245,240,232,0.25); letter-spacing:0.2em; text-transform:uppercase;
+}
+
+/* ── Story pages ── */
+.s-page {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(1.8rem,5%,3.2rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 0;
+}
+.s-left { border-right: 1px solid rgba(128,128,128,0.15); }
+
+/* Ghost numeral — behind everything */
+.s-num {
+  position:absolute; bottom:-0.08em; right:-0.02em;
+  font-family:var(--serif); font-size:clamp(10rem,24vw,18rem);
+  font-weight:900; line-height:1;
+  pointer-events:none; user-select:none; z-index:0;
+}
+/* Top strip: category tag + issue number */
+.s-top {
+  display:flex; align-items:center; gap:0.7rem;
+  margin-bottom:1.2rem; flex-wrap:wrap; position:relative; z-index:2;
+}
+.s-tag {
+  font-size:0.58rem; font-weight:700; letter-spacing:0.18em;
+  text-transform:uppercase; padding:0.3em 0.8em; border-radius:2px;
+}
+.s-rank {
+  font-size:0.62rem; font-weight:600; letter-spacing:0.2em;
+  text-transform:uppercase; opacity:0.5;
+  position:relative; z-index:2;
+}
+/* Main headline */
+.s-title {
+  font-family:var(--serif);
+  font-size:clamp(1.9rem,3.4vw,3rem);
+  font-weight:900; line-height:1.18;
+  position:relative; z-index:2;
+  margin-bottom:1rem;
+  flex-grow: 1;
+}
+/* Source credit under headline */
+.s-source {
+  font-size:0.7rem; font-weight:500; letter-spacing:0.08em;
+  opacity:0.65; position:relative; z-index:2; margin-bottom:auto;
+  margin-top: 0;
+  padding-top: 0.4rem;
+  border-top: 1px solid currentColor;
+  opacity: 0.4;
+}
+/* Flexible gap — pushes exec alert to mid-point, button to bottom */
+.s-gap {
+  flex: 1;
+  min-height: 0.5rem;
+  position: relative; z-index: 2;
+}
+/* Teaser body */
+.s-teaser {
+  font-size:clamp(1rem,1.7vw,1.18rem); line-height:1.78; font-weight:300;
+  margin-bottom:0; position:relative; z-index:2;
+}
+/* Read full story — as a button */
+.s-btn {
+  display:inline-block;
+  font-size:0.72rem; font-weight:700; letter-spacing:0.12em;
+  text-transform:uppercase; text-decoration:none;
+  padding:0.65em 1.5em; border-radius:2px;
+  position:relative; z-index:2;
+  transition:opacity 0.2s; margin-top:1rem;
+  align-self:flex-start;
+}
+.s-btn:hover { opacity:0.8; }
+
+/* ── Back cover ── */
+#spread-back {
+  background: linear-gradient(135deg,#0A0E1A 0%,#1A2A1A 50%,#0D1B0D 100%);
+  grid-template-columns: 1fr;
+}
+
+/* ── Controls ── */
+#controls {
+  display:flex; align-items:center; gap:1.25rem; flex-shrink:0;
+}
+.ctrl {
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.12);
+  color:rgba(255,255,255,0.55);
+  font-family:var(--sans); font-size:0.7rem; font-weight:500;
+  letter-spacing:0.1em; text-transform:uppercase;
+  padding:0.45rem 1.1rem; cursor:pointer; border-radius:2px;
+  transition:all 0.18s;
+}
+.ctrl:hover {
+  background:rgba(255,255,255,0.13); color:rgba(255,255,255,0.9);
+}
+#counter {
+  font-size:0.68rem; color:rgba(255,255,255,0.28);
+  letter-spacing:0.15em; min-width:90px; text-align:center;
+}
+</style>
+</head>
+<body>
+
+<!-- Edge click zones -->
+<div id="zone-prev" title="Previous"></div>
+<div id="zone-next" title="Next"></div>
+
+<div id="shell">
+  <div id="stage">
+
+    <!-- Cover -->
+    <div class="spread active" id="spread-cover">
+      <div class="cover-body">
+        <div class="cv-kicker">Golf Industry Intelligence</div>
+        <div class="cv-title">The Morning<br><em>Edition</em></div>
+        <div class="cv-date">Sunday, April 26, 2026</div>
+      </div>
+    </div>
+
+    
+  <div class="spread" data-index="1">
+    <div class="s-page s-left" style="background:#FAF7F0;color:#1A1A2E;">
+      <div class="s-num" style="color:rgba(26,26,46,0.05);">01</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#1A1A2E;color:#FAF7F0;">Investment &amp; M&amp;A</span>
+        <span class="s-rank" style="color:#1A1A2E;">No.&nbsp;1</span>
+      </div>
+      <h2 class="s-title" style="color:#1A1A2E;">Invited Clubs Headed for $3B Buyout by Private Equity-Backed HGC Holdings</h2>
+      <div class="s-source" style="color:#1A1A2E;">Source: Google Alert / BizJournals</div>
+    </div>
+    <div class="s-page s-right" style="background:#FAF7F0;color:#1A1A2E;">
+      <div class="s-num" style="color:rgba(26,26,46,0.05);">01</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#1A1A2E;color:#FAF7F0;">Investment &amp; M&amp;A</span>
+      </div>
+      <p class="s-teaser" style="color:#1A1A2E;">Invited, the operator of several Atlanta-area country clubs and one of the largest private club companies in the U.S., is reportedly nearing a $3 billion acquisition by HGC Holdings LLC, backed by private equity. This would represent one of the biggest club-industry M&amp;A deals in years and could reshape the competitive landscape for premium private clubs.</p>
+      <div class="s-gap"></div>
+      
+              <div style="border-left:3px solid #C0392B;padding:0.5rem 0.8rem;
+                   margin:1rem 0;background:rgba(192,57,43,0.1);">
+                <div style="font-size:0.6rem;font-weight:800;letter-spacing:0.18em;
+                     color:#C0392B;text-transform:uppercase;">&#9873; Exec Alert</div>
+                <div style="font-size:0.8rem;color:#C0392B;line-height:1.4;margin-top:0.2rem;">A $3B club platform acquisition resets private-club consolidation dynamics and valuations industry-wide.</div>
+              </div>
+      <a class="s-btn" href="https://www.bizjournals.com/atlanta/news/2026/04/24/invited-clubs-potential-acquisition-atlanta-impact.html" target="_blank" rel="noopener"
+         style="background:#1A1A2E;color:#FAF7F0;">
+        Read full story &#8599;
+      </a>
+    </div>
+  </div>
+  <div class="spread" data-index="2">
+    <div class="s-page s-left" style="background:#0D1B2A;color:#F0E8D8;">
+      <div class="s-num" style="color:rgba(201,168,76,0.12);">02</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#C9A84C;color:#0D1B2A;">Other</span>
+        <span class="s-rank" style="color:#C9A84C;">No.&nbsp;2</span>
+      </div>
+      <h2 class="s-title" style="color:#F0E8D8;">PGA Tour Cutbacks Hit Cognizant Classic — Tournament Schedule Under Review</h2>
+      <div class="s-source" style="color:#C9A84C;">Source: Google Alert / Reuters</div>
+    </div>
+    <div class="s-page s-right" style="background:#0D1B2A;color:#F0E8D8;">
+      <div class="s-num" style="color:rgba(201,168,76,0.12);">02</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#C9A84C;color:#0D1B2A;">Other</span>
+      </div>
+      <p class="s-teaser" style="color:#F0E8D8;">The PGA Tour has reportedly cut back on the Cognizant Classic as part of broader schedule and cost restructuring. The move signals continued post-merger realignment of Tour economics and could affect host-venue economics, sponsor ROI, and the future shape of the tournament calendar.</p>
+      <div class="s-gap"></div>
+      
+              <div style="border-left:3px solid #C0392B;padding:0.5rem 0.8rem;
+                   margin:1rem 0;background:rgba(192,57,43,0.1);">
+                <div style="font-size:0.6rem;font-weight:800;letter-spacing:0.18em;
+                     color:#C0392B;text-transform:uppercase;">&#9873; Exec Alert</div>
+                <div style="font-size:0.8rem;color:#C0392B;line-height:1.4;margin-top:0.2rem;">PGA Tour schedule cuts directly impact sponsorship pipelines, media rights value, and host-course economics.</div>
+              </div>
+      <a class="s-btn" href="https://www.reuters.com/sports/golf/report-cognizant-classic-hit-by-pga-cutbacks--flm-2026-04-24/" target="_blank" rel="noopener"
+         style="background:#C9A84C;color:#0D1B2A;">
+        Read full story &#8599;
+      </a>
+    </div>
+  </div>
+  <div class="spread" data-index="3">
+    <div class="s-page s-left" style="background:#FEFBF3;color:#2C1810;">
+      <div class="s-num" style="color:rgba(92,61,30,0.06);">03</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#5C3D1E;color:#FEFBF3;">Travel &amp; Development</span>
+        <span class="s-rank" style="color:#5C3D1E;">No.&nbsp;3</span>
+      </div>
+      <h2 class="s-title" style="color:#2C1810;">FT Asks: Is It Time to Redevelop London's Golf Courses?</h2>
+      <div class="s-source" style="color:#5C3D1E;">Source: Financial Times</div>
+    </div>
+    <div class="s-page s-right" style="background:#FEFBF3;color:#2C1810;">
+      <div class="s-num" style="color:rgba(92,61,30,0.06);">03</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#5C3D1E;color:#FEFBF3;">Travel &amp; Development</span>
+      </div>
+      <p class="s-teaser" style="color:#2C1810;">The Financial Times examines mounting pressure to repurpose London's golf land for housing amid the city's chronic supply shortage. The piece raises fundamental questions about golf-course land valuations, planning policy, and long-term viability of urban and peri-urban courses in high-demand property markets.</p>
+      <div class="s-gap"></div>
+      
+              <div style="border-left:3px solid #C0392B;padding:0.5rem 0.8rem;
+                   margin:1rem 0;background:rgba(192,57,43,0.1);">
+                <div style="font-size:0.6rem;font-weight:800;letter-spacing:0.18em;
+                     color:#C0392B;text-transform:uppercase;">&#9873; Exec Alert</div>
+                <div style="font-size:0.8rem;color:#C0392B;line-height:1.4;margin-top:0.2rem;">Urban golf-land redevelopment pressure could trigger asset re-ratings and force strategic portfolio decisions.</div>
+              </div>
+      <a class="s-btn" href="https://www.ft.com/content/1380e702-89a0-4272-a4e2-16d2c8fad095?syn-25a6b1a6=1" target="_blank" rel="noopener"
+         style="background:#5C3D1E;color:#FEFBF3;">
+        Read full story &#8599;
+      </a>
+    </div>
+  </div>
+  <div class="spread" data-index="4">
+    <div class="s-page s-left" style="background:#0A1A0A;color:#CCFFCC;">
+      <div class="s-num" style="color:rgba(0,221,65,0.08);">04</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#00DD41;color:#0A1A0A;">Travel &amp; Development</span>
+        <span class="s-rank" style="color:#00DD41;">No.&nbsp;4</span>
+      </div>
+      <h2 class="s-title" style="color:#CCFFCC;">Costa del Sol vs Algarve: Golf Destinations Compete for Property Buyers</h2>
+      <div class="s-source" style="color:#00DD41;">Source: Financial Times</div>
+    </div>
+    <div class="s-page s-right" style="background:#0A1A0A;color:#CCFFCC;">
+      <div class="s-num" style="color:rgba(0,221,65,0.08);">04</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#00DD41;color:#0A1A0A;">Travel &amp; Development</span>
+      </div>
+      <p class="s-teaser" style="color:#CCFFCC;">With golden visa schemes ending, Spain's Costa del Sol and Portugal's Algarve are refining their pitch to second-home buyers — many drawn by golf-resort lifestyle. The article explores how regulatory shifts are reshaping demand dynamics at two of Europe's premier golf-resort corridors.</p>
+      <div class="s-gap"></div>
+      
+      <a class="s-btn" href="https://www.ft.com/content/fb3c20da-1425-4d21-abe0-f391ad1a2c04" target="_blank" rel="noopener"
+         style="background:#00DD41;color:#0A1A0A;">
+        Read full story &#8599;
+      </a>
+    </div>
+  </div>
+  <div class="spread" data-index="5">
+    <div class="s-page s-left" style="background:#F5F5F5;color:#111111;">
+      <div class="s-num" style="color:rgba(192,57,43,0.05);">05</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#C0392B;color:#FFFFFF;">Travel &amp; Development</span>
+        <span class="s-rank" style="color:#C0392B;">No.&nbsp;5</span>
+      </div>
+      <h2 class="s-title" style="color:#111111;">Garden City Golf Course Gets World-Class Redesign by Brian Curley</h2>
+      <div class="s-source" style="color:#C0392B;">Source: Idaho Business Review</div>
+    </div>
+    <div class="s-page s-right" style="background:#F5F5F5;color:#111111;">
+      <div class="s-num" style="color:rgba(192,57,43,0.05);">05</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#C0392B;color:#FFFFFF;">Travel &amp; Development</span>
+      </div>
+      <p class="s-teaser" style="color:#111111;">Garden City's River Club golf course is undergoing a major remodel designed by world-renowned architect Brian Curley. The project signals continued investment appetite for course-renovation and repositioning in secondary U.S. markets.</p>
+      <div class="s-gap"></div>
+      
+      <a class="s-btn" href="https://idahobusinessreview.com/2026/04/24/garden-city-river-club-golf-course-remodel-brian-curley/" target="_blank" rel="noopener"
+         style="background:#C0392B;color:#FFFFFF;">
+        Read full story &#8599;
+      </a>
+    </div>
+  </div>
+  <div class="spread" data-index="6">
+    <div class="s-page s-left" style="background:#FAF7F0;color:#1A1A2E;">
+      <div class="s-num" style="color:rgba(26,26,46,0.05);">06</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#1A1A2E;color:#FAF7F0;">People &amp; Industry</span>
+        <span class="s-rank" style="color:#1A1A2E;">No.&nbsp;6</span>
+      </div>
+      <h2 class="s-title" style="color:#1A1A2E;">Jim Furyk Named U.S. Ryder Cup Captain for 2027 at Adare Manor</h2>
+      <div class="s-source" style="color:#1A1A2E;">Source: Reuters</div>
+    </div>
+    <div class="s-page s-right" style="background:#FAF7F0;color:#1A1A2E;">
+      <div class="s-num" style="color:rgba(26,26,46,0.05);">06</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#1A1A2E;color:#FAF7F0;">People &amp; Industry</span>
+      </div>
+      <p class="s-teaser" style="color:#1A1A2E;">Jim Furyk will captain the U.S. Ryder Cup team at Adare Manor in 2027 after Tiger Woods reportedly turned down the role. The appointment kick-starts the commercial ramp-up for what will be a massive revenue event for Irish golf tourism and Ryder Cup sponsors alike.</p>
+      <div class="s-gap"></div>
+      
+      <a class="s-btn" href="https://www.reuters.com/sports/golf/furyk-named-us-captain-2027-ryder-cup-ireland-after-woods-turned-down-role-2026-04-24/" target="_blank" rel="noopener"
+         style="background:#1A1A2E;color:#FAF7F0;">
+        Read full story &#8599;
+      </a>
+    </div>
+  </div>
+  <div class="spread" data-index="7">
+    <div class="s-page s-left" style="background:#0D1B2A;color:#F0E8D8;">
+      <div class="s-num" style="color:rgba(201,168,76,0.12);">07</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#C9A84C;color:#0D1B2A;">Sustainability</span>
+        <span class="s-rank" style="color:#C9A84C;">No.&nbsp;7</span>
+      </div>
+      <h2 class="s-title" style="color:#F0E8D8;">SynLawn UK CEO Michael Walker on Synthetic Turf's Golf Opportunity</h2>
+      <div class="s-source" style="color:#C9A84C;">Source: Golf Business News</div>
+    </div>
+    <div class="s-page s-right" style="background:#0D1B2A;color:#F0E8D8;">
+      <div class="s-num" style="color:rgba(201,168,76,0.12);">07</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#C9A84C;color:#0D1B2A;">Sustainability</span>
+      </div>
+      <p class="s-teaser" style="color:#F0E8D8;">GBN interviews SynLawn UK CEO Michael Walker on the growing role of synthetic turf in golf-facility development and maintenance-cost reduction. The conversation likely touches on sustainability credentials and water-use savings — key themes for course operators facing resource constraints.</p>
+      <div class="s-gap"></div>
+      
+      <a class="s-btn" href="https://golfbusinessnews.com/news/interviews/the-gbn-interview-michael-walker-ceo-of-synlawn-uk/" target="_blank" rel="noopener"
+         style="background:#C9A84C;color:#0D1B2A;">
+        Read full story &#8599;
+      </a>
+    </div>
+  </div>
+  <div class="spread" data-index="8">
+    <div class="s-page s-left" style="background:#FEFBF3;color:#2C1810;">
+      <div class="s-num" style="color:rgba(92,61,30,0.06);">08</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#5C3D1E;color:#FEFBF3;">People &amp; Industry</span>
+        <span class="s-rank" style="color:#5C3D1E;">No.&nbsp;8</span>
+      </div>
+      <h2 class="s-title" style="color:#2C1810;">Par5 Escapes Hires Craig Stephenson as Head of Product</h2>
+      <div class="s-source" style="color:#5C3D1E;">Source: Golf Business News</div>
+    </div>
+    <div class="s-page s-right" style="background:#FEFBF3;color:#2C1810;">
+      <div class="s-num" style="color:rgba(92,61,30,0.06);">08</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#5C3D1E;color:#FEFBF3;">People &amp; Industry</span>
+      </div>
+      <p class="s-teaser" style="color:#2C1810;">Golf travel platform Par5 Escapes has appointed Craig Stephenson as Head of Product, signaling the company's intent to scale its curated travel offerings. The hire reflects broader digital-platform investment in the premium golf-travel segment.</p>
+      <div class="s-gap"></div>
+      
+      <a class="s-btn" href="https://golfbusinessnews.com/news/travel/par5-escapes-appoints-craig-stephenson-as-head-of-product/" target="_blank" rel="noopener"
+         style="background:#5C3D1E;color:#FEFBF3;">
+        Read full story &#8599;
+      </a>
+    </div>
+  </div>
+  <div class="spread" data-index="9">
+    <div class="s-page s-left" style="background:#0A1A0A;color:#CCFFCC;">
+      <div class="s-num" style="color:rgba(0,221,65,0.08);">09</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#00DD41;color:#0A1A0A;">International</span>
+        <span class="s-rank" style="color:#00DD41;">No.&nbsp;9</span>
+      </div>
+      <h2 class="s-title" style="color:#CCFFCC;">Russian Oligarch Tried to Buy Golf Course on Route to UK Nuclear Site</h2>
+      <div class="s-source" style="color:#00DD41;">Source: Financial Times</div>
+    </div>
+    <div class="s-page s-right" style="background:#0A1A0A;color:#CCFFCC;">
+      <div class="s-num" style="color:rgba(0,221,65,0.08);">09</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#00DD41;color:#0A1A0A;">International</span>
+      </div>
+      <p class="s-teaser" style="color:#CCFFCC;">The FT reports that a Russian oilman attempted to acquire a golf course situated on a railway line leading to a British nuclear facility, raising national-security red flags. The story highlights the geopolitical scrutiny now applied to golf-asset ownership and foreign investment in strategic locations.</p>
+      <div class="s-gap"></div>
+      
+      <a class="s-btn" href="https://www.ft.com/content/19a3d7b1-c8a8-47b1-9f60-8901e6502241?syn-25a6b1a6=1" target="_blank" rel="noopener"
+         style="background:#00DD41;color:#0A1A0A;">
+        Read full story &#8599;
+      </a>
+    </div>
+  </div>
+  <div class="spread" data-index="10">
+    <div class="s-page s-left" style="background:#F5F5F5;color:#111111;">
+      <div class="s-num" style="color:rgba(192,57,43,0.05);">10</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#C0392B;color:#FFFFFF;">Technology</span>
+        <span class="s-rank" style="color:#C0392B;">No.&nbsp;10</span>
+      </div>
+      <h2 class="s-title" style="color:#111111;">Mail Order Golf Partners With Hosel for Retail Tech Integration</h2>
+      <div class="s-source" style="color:#C0392B;">Source: Golf Business News</div>
+    </div>
+    <div class="s-page s-right" style="background:#F5F5F5;color:#111111;">
+      <div class="s-num" style="color:rgba(192,57,43,0.05);">10</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#C0392B;color:#FFFFFF;">Technology</span>
+      </div>
+      <p class="s-teaser" style="color:#111111;">UK-based Mail Order Golf has partnered with Hosel, pointing to deeper tech integration in golf retail and e-commerce fulfillment. The partnership reflects ongoing digitization of the golf supply chain and DTC retail channels.</p>
+      <div class="s-gap"></div>
+      
+      <a class="s-btn" href="https://golfbusinessnews.com/news/retail-new-products-news/mail-order-golf-partners-with-hosel/" target="_blank" rel="noopener"
+         style="background:#C0392B;color:#FFFFFF;">
+        Read full story &#8599;
+      </a>
+    </div>
+  </div>
+
+    <!-- Back cover -->
+    <div class="spread" id="spread-back">
+      <div class="cover-body" style="opacity:0.6;">
+        <div class="cv-title" style="font-size:clamp(1.5rem,4vw,2.8rem);">The Morning<br><em>Edition</em></div>
+        <div class="cv-date" style="margin-top:1rem;">2026-04-26</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="controls">
+    <button class="ctrl" id="btn-start">&#8676; Start</button>
+    <button class="ctrl" id="btn-prev">&lsaquo; Prev</button>
+    <div id="counter">Cover</div>
+    <button class="ctrl" id="btn-next">Next &rsaquo;</button>
+  </div>
+</div>
+
+<script>
+const spreads = Array.from(document.querySelectorAll('.spread'));
+const total   = spreads.length;
+let current   = 0;
+let busy      = false;
+
+// ── Size & centre every spread within the stage ──────────────────────────────
+function sizeBook() {
+  const stage = document.getElementById('stage');
+  const sw = stage.clientWidth;
+  const sh = stage.clientHeight;
+  const aspect = 3 / 4;   // portrait page aspect (w:h)
+  let pageH = Math.min(sh * 0.95, 820);
+  let pageW = Math.min(pageH / aspect, sw * 0.46);
+  pageH = pageW * aspect;
+  spreads.forEach((s, idx) => {
+    const isSingle = (idx === 0 || idx === total - 1);
+    const thisW = isSingle ? pageW : pageW * 2;
+    s.style.width  = thisW + 'px';
+    s.style.height = pageH + 'px';
+    s.style.left   = ((sw - thisW) / 2) + 'px';
+    s.style.top    = ((sh - pageH) / 2) + 'px';
+  });
+}
+sizeBook();
+window.addEventListener('resize', sizeBook);
+
+// ── Counter label ────────────────────────────────────────────────────────────
+const counter = document.getElementById('counter');
+function label() {
+  if (current === 0)            counter.textContent = 'Cover';
+  else if (current===total-1)   counter.textContent = 'Back cover';
+  else                          counter.textContent = 'Story ' + current + ' / ' + (total-2);
+}
+
+// ── Two-phase page-turn ──────────────────────────────────────────────────────
+// Phase 1: current folds away (360ms)
+// Phase 2: next unfolds in from opposite side (400ms)
+function goTo(next, dir) {
+  if (busy || next < 0 || next >= total || next === current) return;
+  busy = true;
+  const PERSP = 'perspective(1800px)';
+  const cur = spreads[current];
+  const nxt = spreads[next];
+
+  const exitRot  = dir === 'forward' ? '-90deg' : '90deg';
+  const enterRot = dir === 'forward' ?  '90deg' : '-90deg';
+
+  // Phase 1 — fold current away
+  cur.classList.remove('active');
+  cur.style.transition = 'transform 360ms cubic-bezier(0.55,0,1,1), opacity 280ms ease';
+  cur.style.transform  = PERSP + ' rotateY(' + exitRot + ')';
+  cur.style.opacity    = '0';
+
+  // Phase 2 — unfold next in
+  setTimeout(() => {
+    nxt.style.transition = 'none';
+    nxt.style.transform  = PERSP + ' rotateY(' + enterRot + ')';
+    nxt.style.opacity    = '0';
+    nxt.offsetHeight;   // force reflow
+
+    nxt.style.transition = 'transform 400ms cubic-bezier(0,0,0.45,1), opacity 340ms ease';
+    nxt.style.transform  = PERSP + ' rotateY(0deg)';
+    nxt.style.opacity    = '1';
+    nxt.classList.add('active');
+
+    current = next;
+    label();
+
+    setTimeout(() => {
+      cur.style.transition = 'none';
+      cur.style.transform  = '';
+      cur.style.opacity    = '';
+      setTimeout(() => { cur.style.transition = ''; }, 20);
+      busy = false;
+    }, 420);
+  }, 340);
+}
+
+// ── Controls ─────────────────────────────────────────────────────────────────
+document.getElementById('btn-start').addEventListener('click', () => goTo(0, 'backward'));
+document.getElementById('btn-prev').addEventListener('click',  () => goTo(current - 1, 'backward'));
+document.getElementById('btn-next').addEventListener('click',  () => goTo(current + 1, 'forward'));
+
+document.addEventListener('keydown', e => {
+  if (e.key==='ArrowRight'||e.key==='ArrowDown') goTo(current+1,'forward');
+  if (e.key==='ArrowLeft' ||e.key==='ArrowUp')   goTo(current-1,'backward');
+});
+
+// ── Edge-click zones ──────────────────────────────────────────────────────────
+document.getElementById('zone-prev').addEventListener('click', () => goTo(current-1,'backward'));
+document.getElementById('zone-next').addEventListener('click', () => goTo(current+1,'forward'));
+</script>
+</body>
+</html>
