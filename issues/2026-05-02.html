@@ -237,6 +237,27 @@ body {
 
 .read-link:hover { opacity: 0.7; }
 
+/* ── Additional sources row ─────────────────────────────────── */
+.also-row {
+  margin-top: 1.25rem;
+  padding-top: 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.6rem;
+  position: relative;
+  z-index: 2;
+}
+.also-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  flex-shrink: 0;
+  margin-right: 0.25rem;
+}
+
 /* ── Footer ─────────────────────────────────────────────────── */
 .footer {
   background: #0A0E1A;
@@ -263,7 +284,7 @@ body {
   <h1 class="cover-title">The Morning<br><em>Edition</em></h1>
   <div class="cover-date">Saturday, May 2, 2026</div>
   <div class="cover-issue">Issue #0487 &nbsp;·&nbsp; 10 Curated Stories</div>
-  <span class="exec-count">1 exec alert inside</span>
+  <span class="exec-count">2 exec alerts inside</span>
   <div class="cover-scroll">Scroll to read ↓</div>
 </div>
 
@@ -273,24 +294,29 @@ body {
       <div class="bg-numeral" style="color:rgba(26,26,46,0.08);">01</div>
 
       <div class="meta-row">
-        <span class="category-tag" style="background:#1A1A2E; color:#F5F0E8;">Travel & Development</span>
-        <span class="source-tag" style="color:#1A1A2E;">Golf Business News</span>
+        <span class="category-tag" style="background:#1A1A2E; color:#F5F0E8;">AI & Software</span>
+        <span class="source-tag" style="color:#1A1A2E;">Eversheds Sutherland</span>
       </div>
 
       <div class="rank-line" style="color:#1A1A2E;">No. 1</div>
 
       <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1A1A2E;">
-        <a href="https://golfbusinessnews.com/news/courses/love-golf-design-renovates-links-course-at-bear-lakes/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Love Golf Design Renovates Links Course at Bear Lakes</a>
+        <a href="https://www.eversheds-sutherland.com/en/united-kingdom/insights/supreme-court-overhauls-uk-patent-law-for-ai-emotional-perception-ai-v-comptroller-general-2026" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">UK Supreme Court Overhauls Patent Law for AI in Landmark Ruling</a>
       </h2>
 
       
+    <div class="exec-badge" style="border-left: 4px solid #1A1A2E; color: #1A1A2E;">
+      <span class="exec-label">⚑ EXEC ALERT</span>
+      <span class="exec-why">Reshapes IP strategy for any golf business investing in AI-powered products or platforms.</span>
+    </div>
 
-      <p class="teaser" style="color:#1A1A2E; opacity:0.82;">Love Golf Design has undertaken a renovation of the links course at Bear Lakes, signaling continued investment in course redesign and upgrading. The project reflects a broader industry trend of facilities investing in renovations to stay competitive and attract modern golfers.</p>
+      <p class="teaser" style="color:#1A1A2E; opacity:0.82;">The UK Supreme Court has delivered a landmark ruling in Emotional Perception AI v Comptroller General, overhauling how AI-related inventions can be patented in the UK. This decision has significant implications for golf tech companies seeking IP protection for AI-driven products and services across the industry.</p>
 
-      <a class="read-link" href="https://golfbusinessnews.com/news/courses/love-golf-design-renovates-links-course-at-bear-lakes/" target="_blank" rel="noopener"
+      <a class="read-link" href="https://www.eversheds-sutherland.com/en/united-kingdom/insights/supreme-court-overhauls-uk-patent-law-for-ai-emotional-perception-ai-v-comptroller-general-2026" target="_blank" rel="noopener"
          style="color:#1A1A2E; border-bottom: 2px solid #1A1A2E;">
-        Read full story →
+        Read full story &#8599;
       </a>
+      
     </div>
   </section>
 
@@ -299,24 +325,33 @@ body {
       <div class="bg-numeral" style="color:rgba(201,168,76,0.12);">02</div>
 
       <div class="meta-row">
-        <span class="category-tag" style="background:#C9A84C; color:#0D1B2A;">Travel & Development</span>
-        <span class="source-tag" style="color:#C9A84C;">The Golf Business</span>
+        <span class="category-tag" style="background:#C9A84C; color:#0D1B2A;">AI & Software</span>
+        <span class="source-tag" style="color:#C9A84C;">IAPP</span>
       </div>
 
       <div class="rank-line" style="color:#C9A84C;">No. 2</div>
 
       <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#E8E0D0;">
-        <a href="https://thegolfbusiness.co.uk/2026/04/hoebridge-golf-centre-unveils-200k-refurbished-gym/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Hoebridge Golf Centre Invests £200K in State-of-the-Art Gym Refurb</a>
+        <a href="https://iapp.org/news/a/ai-act-omnibus-what-just-happened-and-what-comes-next" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">EU AI Act Omnibus: What Just Happened and What Comes Next</a>
       </h2>
 
       
+    <div class="exec-badge" style="border-left: 4px solid #C9A84C; color: #C9A84C;">
+      <span class="exec-label">⚑ EXEC ALERT</span>
+      <span class="exec-why">Any golf company using AI in EU markets faces new compliance obligations under this framework.</span>
+    </div>
 
-      <p class="teaser" style="color:#E8E0D0; opacity:0.82;">Hoebridge Golf Centre has completed a £200,000 gym refurbishment featuring advanced fitness equipment, positioning itself as a premium fitness and leisure destination. The move underscores how golf venues are diversifying revenue streams by investing in ancillary wellness amenities.</p>
+      <p class="teaser" style="color:#E8E0D0; opacity:0.82;">IAPP details the latest developments in the EU AI Act Omnibus package, mapping out new compliance timelines and enforcement mechanisms. Golf businesses deploying AI tools across European operations — from booking engines to analytics platforms — should review exposure to these evolving regulations.</p>
 
-      <a class="read-link" href="https://thegolfbusiness.co.uk/2026/04/hoebridge-golf-centre-unveils-200k-refurbished-gym/" target="_blank" rel="noopener"
+      <a class="read-link" href="https://iapp.org/news/a/ai-act-omnibus-what-just-happened-and-what-comes-next" target="_blank" rel="noopener"
          style="color:#C9A84C; border-bottom: 2px solid #C9A84C;">
-        Read full story →
+        Read full story &#8599;
       </a>
+      
+      <div class="also-row" style="border-top:1px solid #C9A84C33;">
+        <span class="also-label" style="color:#C9A84C;">Also reported by:</span>
+        <a href="https://iapp.org/news/a/notes-from-the-iapp-europe-what-happened-on-the-ai-front-in-europe-this-april" target="_blank" rel="noopener" style="color:#C9A84C; text-decoration:none; border-bottom:1px solid #C9A84C66;">IAPP - Notes from IAPP Europe on AI front&nbsp;&#8599;</a>
+      </div>
     </div>
   </section>
 
@@ -325,28 +360,25 @@ body {
       <div class="bg-numeral" style="color:rgba(192,57,43,0.07);">03</div>
 
       <div class="meta-row">
-        <span class="category-tag" style="background:#C0392B; color:#FAF0F0;">Travel & Development</span>
-        <span class="source-tag" style="color:#C0392B;">Irish Independent</span>
+        <span class="category-tag" style="background:#C0392B; color:#FAF0F0;">Investment & M&A</span>
+        <span class="source-tag" style="color:#C0392B;">CNBC</span>
       </div>
 
       <div class="rank-line" style="color:#C0392B;">No. 3</div>
 
       <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1A0A0A;">
-        <a href="https://www.independent.ie/sport/golf/trim-now-top-of-the-range-as-practice-facilities-drive-a-500pc-surge-in-footfall-at-county-meath-golf-club/a721156883.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Trim GC Practice Facilities Drive 500% Surge in Footfall</a>
+        <a href="https://www.cnbc.com/2026/04/30/nvidia-backs-ai-legal-tech-legora.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Nvidia Invests in AI Legal Tech Startup Legora</a>
       </h2>
 
       
-    <div class="exec-badge" style="border-left: 4px solid #C0392B; color: #C0392B;">
-      <span class="exec-label">⚑ EXEC ALERT</span>
-      <span class="exec-why">Quantified ROI on practice-facility investment — a model for clubs evaluating capex priorities.</span>
-    </div>
 
-      <p class="teaser" style="color:#1A0A0A; opacity:0.82;">County Meath's Trim Golf Club has seen a dramatic 500% increase in footfall after upgrading its practice range facilities. The case study offers actionable evidence that capital investment in practice infrastructure can meaningfully transform club engagement and revenue.</p>
+      <p class="teaser" style="color:#1A0A0A; opacity:0.82;">Nvidia has backed AI legal startup Legora, signaling continued big-tech investment in vertical AI applications. While not golf-specific, Nvidia's expanding AI investment thesis underscores the growing value of AI tools across industries — including sports business intelligence and analytics.</p>
 
-      <a class="read-link" href="https://www.independent.ie/sport/golf/trim-now-top-of-the-range-as-practice-facilities-drive-a-500pc-surge-in-footfall-at-county-meath-golf-club/a721156883.html" target="_blank" rel="noopener"
+      <a class="read-link" href="https://www.cnbc.com/2026/04/30/nvidia-backs-ai-legal-tech-legora.html" target="_blank" rel="noopener"
          style="color:#C0392B; border-bottom: 2px solid #C0392B;">
-        Read full story →
+        Read full story &#8599;
       </a>
+      
     </div>
   </section>
 
@@ -355,24 +387,25 @@ body {
       <div class="bg-numeral" style="color:rgba(0,255,65,0.08);">04</div>
 
       <div class="meta-row">
-        <span class="category-tag" style="background:#00FF41; color:#0A1A0A;">Other</span>
-        <span class="source-tag" style="color:#00FF41;">Golf Business News</span>
+        <span class="category-tag" style="background:#00FF41; color:#0A1A0A;">AI & Software</span>
+        <span class="source-tag" style="color:#00FF41;">Lexology</span>
       </div>
 
       <div class="rank-line" style="color:#00FF41;">No. 4</div>
 
       <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#CCFFCC;">
-        <a href="https://golfbusinessnews.com/news/sponsorship-and-events/trugreen-extends-marketing-partnership-with-pga-tour/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">TruGreen Extends Marketing Partnership with PGA Tour</a>
+        <a href="https://www.lexology.com/library/detail.aspx?g=7b570d15-d265-4f5e-975e-a51f9d5f5d63" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Colorado Stays Enforcement of State AI Law</a>
       </h2>
 
       
 
-      <p class="teaser" style="color:#CCFFCC; opacity:0.82;">Lawn-care giant TruGreen has renewed its marketing partnership with the PGA Tour, highlighting ongoing corporate confidence in professional golf's brand value. The deal underscores steady sponsorship spend flowing into Tour-level properties despite a shifting competitive landscape.</p>
+      <p class="teaser" style="color:#CCFFCC; opacity:0.82;">Colorado's Attorney General has signaled it will not enforce the state's AI regulation law in the near term. This gives golf tech vendors and operators deploying AI-driven systems in Colorado breathing room, but the regulatory landscape remains fluid across US states.</p>
 
-      <a class="read-link" href="https://golfbusinessnews.com/news/sponsorship-and-events/trugreen-extends-marketing-partnership-with-pga-tour/" target="_blank" rel="noopener"
+      <a class="read-link" href="https://www.lexology.com/library/detail.aspx?g=7b570d15-d265-4f5e-975e-a51f9d5f5d63" target="_blank" rel="noopener"
          style="color:#00FF41; border-bottom: 2px solid #00FF41;">
-        Read full story →
+        Read full story &#8599;
       </a>
+      
     </div>
   </section>
 
@@ -381,24 +414,25 @@ body {
       <div class="bg-numeral" style="color:rgba(92,61,30,0.07);">05</div>
 
       <div class="meta-row">
-        <span class="category-tag" style="background:#5C3D1E; color:#FEFBF3;">People & Industry</span>
-        <span class="source-tag" style="color:#5C3D1E;">Golf Business News</span>
+        <span class="category-tag" style="background:#5C3D1E; color:#FEFBF3;">Investment & M&A</span>
+        <span class="source-tag" style="color:#5C3D1E;">Harvey</span>
       </div>
 
       <div class="rank-line" style="color:#5C3D1E;">No. 5</div>
 
       <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#2C1810;">
-        <a href="https://golfbusinessnews.com/news/people/olympic-athlete-adele-nicoll-joins-wales-golf-board/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Olympic Athlete Adele Nicoll Joins Wales Golf Board</a>
+        <a href="https://www.harvey.ai/blog/ai-due-diligence-for-m-and-a" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">AI-Powered Due Diligence: A Practical Guide for M&A Professionals</a>
       </h2>
 
       
 
-      <p class="teaser" style="color:#2C1810; opacity:0.82;">Olympic shot-putter Adele Nicoll has been appointed to the Wales Golf board, bringing a cross-sport perspective to national golf governance. The appointment signals a push for boardroom diversity and fresh thinking in UK golf's governing bodies.</p>
+      <p class="teaser" style="color:#2C1810; opacity:0.82;">Harvey AI outlines how AI is transforming M&A due diligence, compressing timelines and surfacing risks faster. For golf industry dealmakers evaluating course portfolios, management company acquisitions, or tech platform investments, AI-assisted diligence is rapidly becoming table stakes.</p>
 
-      <a class="read-link" href="https://golfbusinessnews.com/news/people/olympic-athlete-adele-nicoll-joins-wales-golf-board/" target="_blank" rel="noopener"
+      <a class="read-link" href="https://www.harvey.ai/blog/ai-due-diligence-for-m-and-a" target="_blank" rel="noopener"
          style="color:#5C3D1E; border-bottom: 2px solid #5C3D1E;">
-        Read full story →
+        Read full story &#8599;
       </a>
+      
     </div>
   </section>
 
@@ -408,23 +442,24 @@ body {
 
       <div class="meta-row">
         <span class="category-tag" style="background:#F0E040; color:#1C1C1C;">Travel & Development</span>
-        <span class="source-tag" style="color:#F0E040;">The Golf Business</span>
+        <span class="source-tag" style="color:#F0E040;">Golf Business News</span>
       </div>
 
       <div class="rank-line" style="color:#F0E040;">No. 6</div>
 
       <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#F0F0F0;">
-        <a href="https://thegolfbusiness.co.uk/2026/04/royal-lytham-st-annes-to-host-2028-open-championship/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Royal Lytham & St Annes Named 2028 Open Championship Host</a>
+        <a href="https://golfbusinessnews.com/news/sponsorship-and-events/royal-lytham-st-annes-to-host-open-championship-in-2028/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Royal Lytham & St Annes Named 2028 Open Championship Host</a>
       </h2>
 
       
 
-      <p class="teaser" style="color:#F0F0F0; opacity:0.82;">Royal Lytham & St Annes will host The 156th Open from July 30–August 6, 2028 — its 12th time hosting the championship. The Lancashire venue selection triggers multi-year infrastructure, hospitality, and media-rights planning cycles across the region.</p>
+      <p class="teaser" style="color:#F0F0F0; opacity:0.82;">Royal Lytham & St Annes will host The Open Championship in 2028, driving significant hospitality, infrastructure, and tourism investment into the Lancashire region. The announcement gives course operators and sponsors a multi-year planning window for one of golf's premier events.</p>
 
-      <a class="read-link" href="https://thegolfbusiness.co.uk/2026/04/royal-lytham-st-annes-to-host-2028-open-championship/" target="_blank" rel="noopener"
+      <a class="read-link" href="https://golfbusinessnews.com/news/sponsorship-and-events/royal-lytham-st-annes-to-host-open-championship-in-2028/" target="_blank" rel="noopener"
          style="color:#F0E040; border-bottom: 2px solid #F0E040;">
-        Read full story →
+        Read full story &#8599;
       </a>
+      
     </div>
   </section>
 
@@ -440,17 +475,18 @@ body {
       <div class="rank-line" style="color:#2D5A27;">No. 7</div>
 
       <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1A2E18;">
-        <a href="https://thegolfbusiness.co.uk/2026/04/heres-three-golf-industry-developments-that-weve-seen-in-the-last-month/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Three Golf Industry Developments You Need to Know This Month</a>
+        <a href="https://thegolfbusiness.co.uk/2026/04/why-golf-clubs-are-turning-to-nespresso-for-their-coffee-solution/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">UK Golf Clubs Partnering with Nespresso to Elevate Member Experience</a>
       </h2>
 
       
 
-      <p class="teaser" style="color:#1A2E18; opacity:0.82;">The Golf Business rounds up three notable industry developments from the past month, offering a concise snapshot of market moves and trends. A useful briefing for executives tracking the broader operational and strategic pulse of UK golf.</p>
+      <p class="teaser" style="color:#1A2E18; opacity:0.82;">UK golf clubs are increasingly adopting Nespresso Professional systems to deliver consistent, premium coffee across clubhouse and course operations. The trend highlights how clubs are investing in F&B quality as a retention and revenue driver amid rising member expectations.</p>
 
-      <a class="read-link" href="https://thegolfbusiness.co.uk/2026/04/heres-three-golf-industry-developments-that-weve-seen-in-the-last-month/" target="_blank" rel="noopener"
+      <a class="read-link" href="https://thegolfbusiness.co.uk/2026/04/why-golf-clubs-are-turning-to-nespresso-for-their-coffee-solution/" target="_blank" rel="noopener"
          style="color:#2D5A27; border-bottom: 2px solid #2D5A27;">
-        Read full story →
+        Read full story &#8599;
       </a>
+      
     </div>
   </section>
 
@@ -466,17 +502,18 @@ body {
       <div class="rank-line" style="color:#000000;">No. 8</div>
 
       <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#000000;">
-        <a href="https://golfbusinessnews.com/news/interviews/the-gbn-interview-joel-westwell-director-of-golf-the-grove/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Inside The Grove: GBN Interview with Director of Golf Joel Westwell</a>
+        <a href="https://golfbusinessnews.com/news/growing-the-game/uk-golf-federation-announces-support-for-unleash-your-drive/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">UK Golf Federation Backs 'Unleash Your Drive' Participation Initiative</a>
       </h2>
 
       
 
-      <p class="teaser" style="color:#000000; opacity:0.82;">Joel Westwell, Director of Golf at The Grove — one of England's premier resort venues — shares operational insights and strategic priorities. The interview offers a peer-level look at how a top-tier property is managing member experience and commercial performance.</p>
+      <p class="teaser" style="color:#000000; opacity:0.82;">The UK Golf Federation has announced formal support for Unleash Your Drive, a growing-the-game initiative aimed at broadening participation. The partnership signals continued institutional commitment to audience development across the UK golf ecosystem.</p>
 
-      <a class="read-link" href="https://golfbusinessnews.com/news/interviews/the-gbn-interview-joel-westwell-director-of-golf-the-grove/" target="_blank" rel="noopener"
+      <a class="read-link" href="https://golfbusinessnews.com/news/growing-the-game/uk-golf-federation-announces-support-for-unleash-your-drive/" target="_blank" rel="noopener"
          style="color:#000000; border-bottom: 2px solid #000000;">
-        Read full story →
+        Read full story &#8599;
       </a>
+      
     </div>
   </section>
 
@@ -485,24 +522,25 @@ body {
       <div class="bg-numeral" style="color:rgba(181,84,26,0.08);">09</div>
 
       <div class="meta-row">
-        <span class="category-tag" style="background:#B5541A; color:#FDF4EE;">Other</span>
-        <span class="source-tag" style="color:#B5541A;">Golf Business News</span>
+        <span class="category-tag" style="background:#B5541A; color:#FDF4EE;">AI & Software</span>
+        <span class="source-tag" style="color:#B5541A;">Forbes</span>
       </div>
 
       <div class="rank-line" style="color:#B5541A;">No. 9</div>
 
       <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1E0E00;">
-        <a href="https://golfbusinessnews.com/news/retail-new-products-news/kubota-adds-hughes-agri-oswestry-to-dealer-network/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Kubota Expands UK Dealer Network with Hughes Agri Oswestry</a>
+        <a href="https://www.forbes.com/sites/lanceeliot/2026/04/30/lawmakers-and-ai-makers-tussle-over-crafting-new-laws-covering-intentionality-and-recklessness-on-ai-existential-risks/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Forbes: Lawmakers and AI Makers Clash Over Existential Risk Legislation</a>
       </h2>
 
       
 
-      <p class="teaser" style="color:#1E0E00; opacity:0.82;">Kubota has added Hughes Agri in Oswestry to its UK dealer network, improving equipment access for course maintenance teams in the West Midlands and Welsh border regions. The expansion reflects sustained demand for turf-care machinery across UK facilities.</p>
+      <p class="teaser" style="color:#1E0E00; opacity:0.82;">US lawmakers and AI developers are locked in debate over proposed legislation addressing intentionality and recklessness in AI systems. While focused on existential risk, the regulatory direction will shape compliance requirements for any business deploying AI at scale — including golf tech platforms.</p>
 
-      <a class="read-link" href="https://golfbusinessnews.com/news/retail-new-products-news/kubota-adds-hughes-agri-oswestry-to-dealer-network/" target="_blank" rel="noopener"
+      <a class="read-link" href="https://www.forbes.com/sites/lanceeliot/2026/04/30/lawmakers-and-ai-makers-tussle-over-crafting-new-laws-covering-intentionality-and-recklessness-on-ai-existential-risks/" target="_blank" rel="noopener"
          style="color:#B5541A; border-bottom: 2px solid #B5541A;">
-        Read full story →
+        Read full story &#8599;
       </a>
+      
     </div>
   </section>
 
@@ -518,17 +556,18 @@ body {
       <div class="rank-line" style="color:#A0AEC0;">No. 10</div>
 
       <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#E2E8F0;">
-        <a href="https://golfbusinessnews.com/news/training-and-education/scottish-golf-launches-join-the-drive-female-coaching-network/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Scottish Golf Launches Female Coaching Network 'Join the Drive'</a>
+        <a href="https://golfbusinessnews.com/news/sponsorship-and-events/kipp-popert-world-invitational-set-to-welcome-global-g4d-stars-to-the-london-golf-club/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Kipp Popert World Invitational Brings Global G4D Stars to London GC</a>
       </h2>
 
       
 
-      <p class="teaser" style="color:#E2E8F0; opacity:0.82;">Scottish Golf has rolled out 'Join the Drive,' a new coaching network aimed at building a pipeline of female coaches across the country. The initiative aligns with industry-wide participation growth strategies targeting underrepresented demographics.</p>
+      <p class="teaser" style="color:#E2E8F0; opacity:0.82;">The Kipp Popert World Invitational will host elite G4D (Golf for the Disabled) competitors at The London Golf Club, raising the profile of adaptive golf on the international stage. The event underscores growing commercial and institutional interest in inclusive golf programming.</p>
 
-      <a class="read-link" href="https://golfbusinessnews.com/news/training-and-education/scottish-golf-launches-join-the-drive-female-coaching-network/" target="_blank" rel="noopener"
+      <a class="read-link" href="https://golfbusinessnews.com/news/sponsorship-and-events/kipp-popert-world-invitational-set-to-welcome-global-g4d-stars-to-the-london-golf-club/" target="_blank" rel="noopener"
          style="color:#A0AEC0; border-bottom: 2px solid #A0AEC0;">
-        Read full story →
+        Read full story &#8599;
       </a>
+      
     </div>
   </section>
 
