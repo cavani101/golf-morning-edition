@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Golf Morning Edition — 2026-05-14</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --sans: 'Inter', system-ui, sans-serif;
+  --serif: 'Fraunces', Georgia, serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: #111;
+  color: #eee;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Cover ──────────────────────────────────────────────────── */
+.cover {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0A0E1A 0%, #1A2A1A 50%, #0D1B0D 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.015'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.cover-kicker {
+  font-family: var(--sans);
+  font-size: clamp(0.65rem, 1.5vw, 0.8rem);
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #7ECB8F;
+  margin-bottom: 1.5rem;
+}
+
+.cover-title {
+  font-family: var(--serif);
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  font-weight: 900;
+  line-height: 0.95;
+  color: #F5F0E8;
+  margin-bottom: 0.4em;
+}
+
+.cover-title em {
+  font-style: italic;
+  color: #C9A84C;
+}
+
+.cover-date {
+  font-family: var(--sans);
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  font-weight: 300;
+  color: rgba(245,240,232,0.6);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.cover-issue {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  color: rgba(245,240,232,0.35);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 3rem;
+}
+
+.exec-count {
+  display: inline-block;
+  background: #C0392B;
+  color: #FAF0F0;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.35em 1em;
+  border-radius: 2px;
+  margin-bottom: 3rem;
+}
+
+.cover-scroll {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  color: rgba(245,240,232,0.3);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* ── Story spreads ──────────────────────────────────────────── */
+.spread {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 6vw, 5rem);
+  position: relative;
+  overflow: hidden;
+}
+
+.spread-inner {
+  max-width: 900px;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.bg-numeral {
+  position: absolute;
+  top: -0.15em;
+  right: -0.05em;
+  font-family: var(--serif);
+  font-size: clamp(12rem, 30vw, 22rem);
+  font-weight: 900;
+  line-height: 1;
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.category-tag {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 0.3em 0.85em;
+  border-radius: 2px;
+}
+
+.source-tag {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  opacity: 0.75;
+}
+
+.rank-line {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.story-title {
+  font-family: var(--serif);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.exec-badge {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.6rem 1rem;
+  margin-bottom: 1.5rem;
+  background: rgba(255,255,255,0.05);
+}
+
+.exec-label {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.exec-why {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 400;
+  line-height: 1.4;
+  opacity: 0.85;
+}
+
+.teaser {
+  font-family: var(--sans);
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  font-weight: 300;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  max-width: 72ch;
+  position: relative;
+  z-index: 2;
+}
+
+.read-link {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  padding-bottom: 0.1em;
+  position: relative;
+  z-index: 2;
+  transition: opacity 0.2s;
+}
+
+.read-link:hover { opacity: 0.7; }
+
+/* ── And Finally banner ─────────────────────────────────────── */
+.and-finally-banner {
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  opacity: 0.7;
+  position: relative;
+  z-index: 2;
+}
+
+/* ── Additional sources row ─────────────────────────────────── */
+.also-row {
+  margin-top: 1.25rem;
+  padding-top: 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.6rem;
+  position: relative;
+  z-index: 2;
+}
+.also-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  flex-shrink: 0;
+  margin-right: 0.25rem;
+}
+
+/* ── Footer ─────────────────────────────────────────────────── */
+.footer {
+  background: #0A0E1A;
+  color: rgba(245,240,232,0.4);
+  text-align: center;
+  padding: 3rem 2rem;
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .bg-numeral { font-size: 8rem; }
+  .story-title { font-size: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Cover -->
+<div class="cover">
+  <div class="cover-kicker">Golf Industry Intelligence</div>
+  <h1 class="cover-title">The Morning<br><em>Edition</em></h1>
+  <div class="cover-date">Thursday, May 14, 2026</div>
+  <div class="cover-issue">Issue #0499 &nbsp;·&nbsp; 10 Curated Stories</div>
+  <span class="exec-count">3 exec alerts inside</span>
+  <div class="cover-scroll">Scroll to read ↓</div>
+</div>
+
+
+  <section class="spread" style="background:#F5F0E8; color:#1A1A2E; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(26,26,46,0.08);">01</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#1A1A2E; color:#F5F0E8;">Investment & M&A</span>
+        <span class="source-tag" style="color:#1A1A2E;">Reuters</span>
+      </div>
+
+      <div class="rank-line" style="color:#1A1A2E;">No. 1</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1A1A2E;">
+        <a href="https://www.reuters.com/sports/golf/rory-mcilroy-says-liv-players-blindsided-by-pif-pulling-funding--flm-2026-05-12/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">McIlroy: LIV Players 'Blindsided' by PIF Pulling Funding</a>
+      </h2>
+
+      
+    <div class="exec-badge" style="border-left: 4px solid #1A1A2E; color: #1A1A2E;">
+      <span class="exec-label">⚑ EXEC ALERT</span>
+      <span class="exec-why">PIF funding withdrawal reshapes the competitive and commercial landscape for all professional golf stakeholders.</span>
+    </div>
+
+      <p class="teaser" style="color:#1A1A2E; opacity:0.82;">Rory McIlroy has commented on the fallout from PIF's withdrawal of LIV Golf funding, saying players on the breakaway circuit were 'blindsided' by the move. The comments offer fresh insight into the financial unravelling of the Saudi-backed league and its implications for professional golf's restructuring.</p>
+
+      <a class="read-link" href="https://www.reuters.com/sports/golf/rory-mcilroy-says-liv-players-blindsided-by-pif-pulling-funding--flm-2026-05-12/" target="_blank" rel="noopener"
+         style="color:#1A1A2E; border-bottom: 2px solid #1A1A2E;">
+        Read full story &#8599;
+      </a>
+      
+      <div class="also-row" style="border-top:1px solid #1A1A2E33;">
+        <span class="also-label" style="color:#1A1A2E;">Also reported by:</span>
+        <a href="https://www.bostonglobe.com/2026/05/12/sports/pga-tour-liv-golf-closure/" target="_blank" rel="noopener" style="color:#1A1A2E; text-decoration:none; border-bottom:1px solid #1A1A2E66;">The Boston Globe&nbsp;&#8599;</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="spread" style="background:#0D1B2A; color:#E8E0D0; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(201,168,76,0.12);">02</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#C9A84C; color:#0D1B2A;">Investment & M&A</span>
+        <span class="source-tag" style="color:#C9A84C;">CHOSUNBIZ</span>
+      </div>
+
+      <div class="rank-line" style="color:#C9A84C;">No. 2</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#E8E0D0;">
+        <a href="https://biz.chosun.com/en/en-finance/2026/05/13/WGI3WYIENFG2DIFM5FXDBX7NPI/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Poongsan Pursues Purchase of POSCO's Jack Nicklaus Golf Club Korea</a>
+      </h2>
+
+      
+    <div class="exec-badge" style="border-left: 4px solid #C9A84C; color: #C9A84C;">
+      <span class="exec-label">⚑ EXEC ALERT</span>
+      <span class="exec-why">High-value international golf asset sale signals ongoing corporate M&A interest in premium Asian golf properties.</span>
+    </div>
+
+      <p class="teaser" style="color:#E8E0D0; opacity:0.82;">Korean industrial conglomerate Poongsan is in pursuit of POSCO's Jack Nicklaus Golf Club, signalling continued appetite for premium golf assets in the Asian market. The deal underscores the trend of major corporates repositioning golf clubs as strategic hospitality and real estate holdings.</p>
+
+      <a class="read-link" href="https://biz.chosun.com/en/en-finance/2026/05/13/WGI3WYIENFG2DIFM5FXDBX7NPI/" target="_blank" rel="noopener"
+         style="color:#C9A84C; border-bottom: 2px solid #C9A84C;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#FAF0F0; color:#1A0A0A; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(192,57,43,0.07);">03</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#C0392B; color:#FAF0F0;">Investment & M&A</span>
+        <span class="source-tag" style="color:#C0392B;">The Local News</span>
+      </div>
+
+      <div class="rank-line" style="color:#C0392B;">No. 3</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1A0A0A;">
+        <a href="https://thelocalnews.news/2026/05/11/ipswich-country-club-owner-reportedly-acquired-in-2-6-billion-sale/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Ipswich Country Club Owner Acquired in $2.6 Billion Transaction</a>
+      </h2>
+
+      
+    <div class="exec-badge" style="border-left: 4px solid #C0392B; color: #C0392B;">
+      <span class="exec-label">⚑ EXEC ALERT</span>
+      <span class="exec-why">Multi-billion-dollar club platform acquisition reflects accelerating consolidation in private club ownership.</span>
+    </div>
+
+      <p class="teaser" style="color:#1A0A0A; opacity:0.82;">The parent company of Ipswich Country Club has reportedly been acquired in a deal valued at $2.6 billion. The transaction highlights the scale of consolidation activity in the private club and leisure real estate sector.</p>
+
+      <a class="read-link" href="https://thelocalnews.news/2026/05/11/ipswich-country-club-owner-reportedly-acquired-in-2-6-billion-sale/" target="_blank" rel="noopener"
+         style="color:#C0392B; border-bottom: 2px solid #C0392B;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#0A1A0A; color:#CCFFCC; font-family: 'Courier New', monospace;">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(0,255,65,0.08);">04</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#00FF41; color:#0A1A0A;">Investment & M&A</span>
+        <span class="source-tag" style="color:#00FF41;">Seeking Alpha</span>
+      </div>
+
+      <div class="rank-line" style="color:#00FF41;">No. 4</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#CCFFCC;">
+        <a href="https://seekingalpha.com/article/4903148-callaway-golfs-upside-isnt-over-after-management-hits-an-eagle" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Callaway Golf's Upside Not Over — Analyst Sees More Room to Run</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#CCFFCC; opacity:0.82;">A new Seeking Alpha analysis argues Callaway Golf (CALY) still has significant upside following strong management execution. The bullish case centres on operational improvements and portfolio optimisation across the equipment and entertainment divisions.</p>
+
+      <a class="read-link" href="https://seekingalpha.com/article/4903148-callaway-golfs-upside-isnt-over-after-management-hits-an-eagle" target="_blank" rel="noopener"
+         style="color:#00FF41; border-bottom: 2px solid #00FF41;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#FEFBF3; color:#2C1810; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(92,61,30,0.07);">05</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#5C3D1E; color:#FEFBF3;">Investment & M&A</span>
+        <span class="source-tag" style="color:#5C3D1E;">Blank Rome</span>
+      </div>
+
+      <div class="rank-line" style="color:#5C3D1E;">No. 5</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#2C1810;">
+        <a href="https://www.blankrome.com/news-and-events/blank-rome-represents-nivel-parts-manufacturing-co-llc-in-its-acquisition-of-xtreme-golf-cart-mats/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Nivel Parts Acquires Xtreme Golf Cart Mats — Supply Chain Play</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#2C1810; opacity:0.82;">Nivel Parts & Manufacturing has completed its acquisition of Xtreme Golf Cart Mats, expanding its aftermarket golf cart accessories portfolio. The deal, advised by Blank Rome, reflects ongoing consolidation in the golf cart parts and accessories supply chain.</p>
+
+      <a class="read-link" href="https://www.blankrome.com/news-and-events/blank-rome-represents-nivel-parts-manufacturing-co-llc-in-its-acquisition-of-xtreme-golf-cart-mats/" target="_blank" rel="noopener"
+         style="color:#5C3D1E; border-bottom: 2px solid #5C3D1E;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#1C1C1C; color:#F0F0F0; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(240,224,64,0.10);">06</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#F0E040; color:#1C1C1C;">Sustainability</span>
+        <span class="source-tag" style="color:#F0E040;">Golf Business News</span>
+      </div>
+
+      <div class="rank-line" style="color:#F0E040;">No. 6</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#F0F0F0;">
+        <a href="https://golfbusinessnews.com/news/corporate/kubota-update-media-on-expansions-and-electrification-of-popular-mower-ranges/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Kubota Expands Range and Accelerates Electrification of Mower Fleet</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#F0F0F0; opacity:0.82;">Kubota has briefed media on expansions to its mower line-up and progress on electrification across its most popular ranges. The push into electric turf equipment is significant for courses under pressure to meet sustainability targets and reduce emissions.</p>
+
+      <a class="read-link" href="https://golfbusinessnews.com/news/corporate/kubota-update-media-on-expansions-and-electrification-of-popular-mower-ranges/" target="_blank" rel="noopener"
+         style="color:#F0E040; border-bottom: 2px solid #F0E040;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#EEF2EE; color:#1A2E18; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(45,90,39,0.07);">07</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#2D5A27; color:#EEF2EE;">Travel & Development</span>
+        <span class="source-tag" style="color:#2D5A27;">Golf Business News</span>
+      </div>
+
+      <div class="rank-line" style="color:#2D5A27;">No. 7</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1A2E18;">
+        <a href="https://golfbusinessnews.com/news/property/st-helens-golf-course-put-up-for-sale/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">St Helens Golf Course Put Up for Sale</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#1A2E18; opacity:0.82;">St Helens Golf Course has been listed for sale, adding to the flow of UK golf property hitting the market. The listing will interest operators and developers eyeing course acquisitions or conversion opportunities.</p>
+
+      <a class="read-link" href="https://golfbusinessnews.com/news/property/st-helens-golf-course-put-up-for-sale/" target="_blank" rel="noopener"
+         style="color:#2D5A27; border-bottom: 2px solid #2D5A27;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#FFFFFF; color:#000000; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(0,0,0,0.05);">08</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#000000; color:#FFFFFF;">Equipment</span>
+        <span class="source-tag" style="color:#000000;">Golf Business News</span>
+      </div>
+
+      <div class="rank-line" style="color:#000000;">No. 8</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#000000;">
+        <a href="https://golfbusinessnews.com/news/new-products/titleist-launches-gts-range-of-drivers-and-fairway-woods/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Titleist Launches GTS Driver and Fairway Wood Range</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#000000; opacity:0.82;">Titleist has unveiled its new GTS range of drivers and fairway woods, its latest technology platform targeting the performance segment. Major product cycles from Titleist set the tone for retail sell-through and pro shop purchasing decisions across the season.</p>
+
+      <a class="read-link" href="https://golfbusinessnews.com/news/new-products/titleist-launches-gts-range-of-drivers-and-fairway-woods/" target="_blank" rel="noopener"
+         style="color:#000000; border-bottom: 2px solid #000000;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#FDF4EE; color:#1E0E00; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(181,84,26,0.08);">09</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#B5541A; color:#FDF4EE;">Travel & Development</span>
+        <span class="source-tag" style="color:#B5541A;">Las Vegas Review-Journal</span>
+      </div>
+
+      <div class="rank-line" style="color:#B5541A;">No. 9</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1E0E00;">
+        <a href="https://www.reviewjournal.com/business/vegas-business/building-las-vegas/former-badlands-owner-buying-las-vegas-land-again-after-big-settlement-with-city-3822699/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Former Badlands Owner Returns to Las Vegas Land Market After Settlement</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#1E0E00; opacity:0.82;">The former owner of the closed Badlands golf course in Las Vegas is buying land again following a major legal settlement with the city. The yearslong dispute over redevelopment of the shuttered course became a landmark case in golf-to-residential conversion battles.</p>
+
+      <a class="read-link" href="https://www.reviewjournal.com/business/vegas-business/building-las-vegas/former-badlands-owner-buying-las-vegas-land-again-after-big-settlement-with-city-3822699/" target="_blank" rel="noopener"
+         style="color:#B5541A; border-bottom: 2px solid #B5541A;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#1E2329; color:#E2E8F0; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(160,174,192,0.10);">10</div>
+
+      
+      <div class="and-finally-banner" style="color:#A0AEC0;">
+        &#10022;&nbsp; And Finally&hellip;
+      </div>
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#A0AEC0; color:#1E2329;">Other</span>
+        <span class="source-tag" style="color:#A0AEC0;">Bloomberg</span>
+      </div>
+
+      <div class="rank-line" style="color:#A0AEC0;">No. 10</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#E2E8F0;">
+        <a href="https://www.bloomberg.com/news/articles/2026-05-13/us-open-golf-tournament-isn-t-hamptons-rental-draw-homeowners-expected" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">US Open Fails to Deliver the Hamptons Rental Bonanza Homeowners Expected</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#E2E8F0; opacity:0.82;">Hamptons homeowners banking on a US Open windfall from premium short-term rentals are being disappointed, with demand falling well short of expectations. It's a cautionary tale for real estate markets that price in major golf events as guaranteed economic catalysts.</p>
+
+      <a class="read-link" href="https://www.bloomberg.com/news/articles/2026-05-13/us-open-golf-tournament-isn-t-hamptons-rental-draw-homeowners-expected" target="_blank" rel="noopener"
+         style="color:#A0AEC0; border-bottom: 2px solid #A0AEC0;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+<footer class="footer">
+  <p>Golf Morning Edition · 2026-05-14 · Curated by Claude for Shane</p>
+  <p style="margin-top:0.5rem; font-size:0.65rem;">
+    Sources: Golf Business News · The Golf Business · Bunkered · Google Alert
+  </p>
+</footer>
+
+</body>
+</html>
