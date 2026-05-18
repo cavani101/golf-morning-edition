@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Golf Morning Edition — Tabloid — 2026-05-18</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --sans:  'Inter', system-ui, sans-serif;
+  --serif: 'Fraunces', Georgia, serif;
+}
+html, body {
+  width: 100%; height: 100%;
+  background: #111;
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Outer shell ── */
+#shell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  height: 100%;
+  padding: 1.25rem 1.25rem 1rem;
+}
+
+/* ── Book stage ── */
+#stage {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Edge click zones (left/right 10% of viewport) ── */
+#zone-prev, #zone-next {
+  position: fixed;
+  top: 0; bottom: 0;
+  width: 10%;
+  z-index: 200;
+  cursor: pointer;
+}
+#zone-prev { left: 0; }
+#zone-next { right: 0; }
+
+/* ── Each spread ── */
+.spread {
+  position: absolute;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.75);
+  /* Hidden by default; JS drives all transforms */
+  opacity: 0;
+  pointer-events: none;
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+.spread.active {
+  opacity: 1;
+  pointer-events: all;
+  transform: perspective(1800px) rotateY(0deg);
+}
+
+/* ── Cover spread ── */
+#spread-cover {
+  background: linear-gradient(135deg,#0A0E1A 0%,#1A2A1A 50%,#0D1B0D 100%);
+  grid-template-columns: 1fr;
+}
+.cover-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+  padding: 3rem 2rem;
+  color: #F5F0E8;
+}
+.cv-kicker {
+  font-size: 0.62rem; font-weight:600; letter-spacing:0.28em;
+  text-transform:uppercase; color:#7ECB8F; margin-bottom:1.2rem;
+}
+.cv-title {
+  font-family:var(--serif); font-size:clamp(2.5rem,6vw,5rem);
+  font-weight:900; line-height:0.95; margin-bottom:0.4em;
+}
+.cv-title em { font-style:italic; color:#C9A84C; }
+.cv-date {
+  font-size:0.82rem; font-weight:300;
+  color:rgba(245,240,232,0.55); letter-spacing:0.08em; margin-top:0.5rem;
+}
+.cv-sub {
+  margin-top:2rem; font-size:0.6rem;
+  color:rgba(245,240,232,0.25); letter-spacing:0.2em; text-transform:uppercase;
+}
+
+/* ── Story pages ── */
+.s-page {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(1.8rem,5%,3.2rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 0;
+}
+.s-left { border-right: 1px solid rgba(128,128,128,0.15); }
+
+/* Ghost numeral — behind everything */
+.s-num {
+  position:absolute; bottom:-0.08em; right:-0.02em;
+  font-family:var(--serif); font-size:clamp(10rem,24vw,18rem);
+  font-weight:900; line-height:1;
+  pointer-events:none; user-select:none; z-index:0;
+}
+/* Top strip: category tag + issue number */
+.s-top {
+  display:flex; align-items:center; gap:0.7rem;
+  margin-bottom:1.2rem; flex-wrap:wrap; position:relative; z-index:2;
+}
+.s-tag {
+  font-size:0.58rem; font-weight:700; letter-spacing:0.18em;
+  text-transform:uppercase; padding:0.3em 0.8em; border-radius:2px;
+}
+.s-rank {
+  font-size:0.62rem; font-weight:600; letter-spacing:0.2em;
+  text-transform:uppercase; opacity:0.5;
+  position:relative; z-index:2;
+}
+/* Main headline */
+.s-title {
+  font-family:var(--serif);
+  font-size:clamp(1.9rem,3.4vw,3rem);
+  font-weight:900; line-height:1.18;
+  position:relative; z-index:2;
+  margin-bottom:1rem;
+  flex-grow: 1;
+}
+/* Source credit under headline */
+.s-source {
+  font-size:0.7rem; font-weight:500; letter-spacing:0.08em;
+  opacity:0.65; position:relative; z-index:2; margin-bottom:auto;
+  margin-top: 0;
+  padding-top: 0.4rem;
+  border-top: 1px solid currentColor;
+  opacity: 0.4;
+}
+/* Flexible gap — pushes exec alert to mid-point, button to bottom */
+.s-gap {
+  flex: 1;
+  min-height: 0.5rem;
+  position: relative; z-index: 2;
+}
+/* Teaser body */
+.s-teaser {
+  font-size:clamp(1rem,1.7vw,1.18rem); line-height:1.78; font-weight:300;
+  margin-bottom:0; position:relative; z-index:2;
+}
+/* Read full story — as a button */
+.s-btn {
+  display:inline-block;
+  font-size:0.72rem; font-weight:700; letter-spacing:0.12em;
+  text-transform:uppercase; text-decoration:none;
+  padding:0.65em 1.5em; border-radius:2px;
+  position:relative; z-index:2;
+  transition:opacity 0.2s; margin-top:1rem;
+  align-self:flex-start;
+}
+.s-btn:hover { opacity:0.8; }
+
+/* ── Additional sources ── */
+.s-also {
+  margin-top:1rem; padding-top:0.65rem;
+  display:flex; flex-wrap:wrap; align-items:baseline;
+  gap:0.3rem 0.75rem; position:relative; z-index:2;
+}
+.s-also-label {
+  font-size:0.58rem; font-weight:700; letter-spacing:0.16em;
+  text-transform:uppercase; opacity:0.6; flex-shrink:0;
+}
+.s-also-link {
+  font-size:0.68rem; font-weight:500; text-decoration:none;
+  letter-spacing:0.02em; transition:opacity 0.18s;
+}
+.s-also-link:hover { opacity:0.65; }
+
+/* ── Back cover ── */
+#spread-back {
+  background: linear-gradient(135deg,#0A0E1A 0%,#1A2A1A 50%,#0D1B0D 100%);
+  grid-template-columns: 1fr;
+}
+
+/* ── Controls ── */
+#controls {
+  display:flex; align-items:center; gap:1.25rem; flex-shrink:0;
+}
+.ctrl {
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.12);
+  color:rgba(255,255,255,0.55);
+  font-family:var(--sans); font-size:0.7rem; font-weight:500;
+  letter-spacing:0.1em; text-transform:uppercase;
+  padding:0.45rem 1.1rem; cursor:pointer; border-radius:2px;
+  transition:all 0.18s;
+}
+.ctrl:hover {
+  background:rgba(255,255,255,0.13); color:rgba(255,255,255,0.9);
+}
+#counter {
+  font-size:0.68rem; color:rgba(255,255,255,0.28);
+  letter-spacing:0.15em; min-width:90px; text-align:center;
+}
+</style>
+</head>
+<body>
+
+<!-- Edge click zones -->
+<div id="zone-prev" title="Previous"></div>
+<div id="zone-next" title="Next"></div>
+
+<div id="shell">
+  <div id="stage">
+
+    <!-- Cover -->
+    <div class="spread active" id="spread-cover">
+      <div class="cover-body">
+        <div class="cv-kicker">Golf Industry Intelligence</div>
+        <div class="cv-title">The Morning<br><em>Edition</em></div>
+        <div class="cv-date">Monday, May 18, 2026</div>
+      </div>
+    </div>
+
+    
+  <div class="spread" data-index="1">
+    <div class="s-page s-left" style="background:#FAF7F0;color:#1A1A2E;">
+      <div class="s-num" style="color:rgba(26,26,46,0.05);">01</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#1A1A2E;color:#FAF7F0;">Investment &amp; M&amp;A</span>
+        <span class="s-rank" style="color:#1A1A2E;">No.&nbsp;1</span>
+      </div>
+      <h2 class="s-title" style="color:#1A1A2E;">PGA Championship Joins $20M Purse Club as Major Prize Money Surges</h2>
+      <div class="s-source" style="color:#1A1A2E;">Source: Reuters</div>
+    </div>
+    <div class="s-page s-right" style="background:#FAF7F0;color:#1A1A2E;">
+      <div class="s-num" style="color:rgba(26,26,46,0.05);">01</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#1A1A2E;color:#FAF7F0;">Investment &amp; M&amp;A</span>
+      </div>
+      <p class="s-teaser" style="color:#1A1A2E;">The PGA Championship has raised its total purse to $20 million, joining the other three majors in the landmark prize-money tier. Last year's winner Scottie Scheffler took home $3.42 million — the escalating economics of major championships signal continued commercial momentum across professional golf.</p>
+      <div class="s-gap"></div>
+      
+              <div style="border-left:3px solid #C0392B;padding:0.5rem 0.8rem;
+                   margin:1rem 0;background:rgba(192,57,43,0.1);">
+                <div style="font-size:0.6rem;font-weight:800;letter-spacing:0.18em;
+                     color:#C0392B;text-transform:uppercase;">&#9873; Exec Alert</div>
+                <div style="font-size:0.8rem;color:#C0392B;line-height:1.4;margin-top:0.2rem;">Major purse inflation reshapes sponsorship valuations, broadcast rights negotiations, and competitive-tour economics.</div>
+              </div>
+      <a class="s-btn" href="https://www.reuters.com/sports/golf/pga-championship-joins-other-majors-20m-club--flm-2026-05-16/" target="_blank" rel="noopener"
+         style="background:#1A1A2E;color:#FAF7F0;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </div>
+  <div class="spread" data-index="2">
+    <div class="s-page s-left" style="background:#0D1B2A;color:#F0E8D8;">
+      <div class="s-num" style="color:rgba(201,168,76,0.12);">02</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#C9A84C;color:#0D1B2A;">Investment &amp; M&amp;A</span>
+        <span class="s-rank" style="color:#C9A84C;">No.&nbsp;2</span>
+      </div>
+      <h2 class="s-title" style="color:#F0E8D8;">Nicholas Investment Partners Takes $15.8M Stake in Callaway Golf</h2>
+      <div class="s-source" style="color:#C9A84C;">Source: IndexBox</div>
+    </div>
+    <div class="s-page s-right" style="background:#0D1B2A;color:#F0E8D8;">
+      <div class="s-num" style="color:rgba(201,168,76,0.12);">02</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#C9A84C;color:#0D1B2A;">Investment &amp; M&amp;A</span>
+      </div>
+      <p class="s-teaser" style="color:#F0E8D8;">Nicholas Investment Partners has disclosed a new $15.8 million position in Callaway Golf (Topgolf Callaway Brands). The institutional stake signals renewed investor confidence in the equipment and entertainment giant as it continues integrating its Topgolf business.</p>
+      <div class="s-gap"></div>
+      
+              <div style="border-left:3px solid #C0392B;padding:0.5rem 0.8rem;
+                   margin:1rem 0;background:rgba(192,57,43,0.1);">
+                <div style="font-size:0.6rem;font-weight:800;letter-spacing:0.18em;
+                     color:#C0392B;text-transform:uppercase;">&#9873; Exec Alert</div>
+                <div style="font-size:0.8rem;color:#C0392B;line-height:1.4;margin-top:0.2rem;">Significant new institutional investment in golf's largest equipment/entertainment conglomerate signals market sentiment shift.</div>
+              </div>
+      <a class="s-btn" href="https://www.indexbox.io/blog/nicholas-investment-partners-discloses-new-158-million-stake-in-callaway-golf/" target="_blank" rel="noopener"
+         style="background:#C9A84C;color:#0D1B2A;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </div>
+  <div class="spread" data-index="3">
+    <div class="s-page s-left" style="background:#FEFBF3;color:#2C1810;">
+      <div class="s-num" style="color:rgba(92,61,30,0.06);">03</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#5C3D1E;color:#FEFBF3;">Investment &amp; M&amp;A</span>
+        <span class="s-rank" style="color:#5C3D1E;">No.&nbsp;3</span>
+      </div>
+      <h2 class="s-title" style="color:#2C1810;">GolfEntertainment Group Reports Q1 2026 Financial Results</h2>
+      <div class="s-source" style="color:#5C3D1E;">Source: Financial Times / Business Wire</div>
+    </div>
+    <div class="s-page s-right" style="background:#FEFBF3;color:#2C1810;">
+      <div class="s-num" style="color:rgba(92,61,30,0.06);">03</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#5C3D1E;color:#FEFBF3;">Investment &amp; M&amp;A</span>
+      </div>
+      <p class="s-teaser" style="color:#2C1810;">GolfEntertainment Group Inc. has filed its first-quarter 2026 results, providing a fresh read on the golf entertainment and technology sector's financial health. The filing will be closely watched for revenue trends and profitability indicators in the competitive golf-leisure space.</p>
+      <div class="s-gap"></div>
+      
+              <div style="border-left:3px solid #C0392B;padding:0.5rem 0.8rem;
+                   margin:1rem 0;background:rgba(192,57,43,0.1);">
+                <div style="font-size:0.6rem;font-weight:800;letter-spacing:0.18em;
+                     color:#C0392B;text-transform:uppercase;">&#9873; Exec Alert</div>
+                <div style="font-size:0.8rem;color:#C0392B;line-height:1.4;margin-top:0.2rem;">Quarterly earnings from a public golf-entertainment company are a key benchmark for sector valuation and investor appetite.</div>
+              </div>
+      <a class="s-btn" href="https://markets.ft.com/data/announce/detail?dockey=600-202605151409BIZWIRE_USPRX____20260515_BW937610-1" target="_blank" rel="noopener"
+         style="background:#5C3D1E;color:#FEFBF3;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </div>
+  <div class="spread" data-index="4">
+    <div class="s-page s-left" style="background:#0A1A0A;color:#CCFFCC;">
+      <div class="s-num" style="color:rgba(0,221,65,0.08);">04</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#00DD41;color:#0A1A0A;">People &amp; Industry</span>
+        <span class="s-rank" style="color:#00DD41;">No.&nbsp;4</span>
+      </div>
+      <h2 class="s-title" style="color:#CCFFCC;">Dustin Johnson on LIV Golf's Future: 'Your Guess Is as Good as Mine'</h2>
+      <div class="s-source" style="color:#00DD41;">Source: Reuters</div>
+    </div>
+    <div class="s-page s-right" style="background:#0A1A0A;color:#CCFFCC;">
+      <div class="s-num" style="color:rgba(0,221,65,0.08);">04</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#00DD41;color:#0A1A0A;">People &amp; Industry</span>
+      </div>
+      <p class="s-teaser" style="color:#CCFFCC;">Two-time major champion and 4Aces GC captain Dustin Johnson offered a candid assessment of LIV Golf's uncertain trajectory, even as the circuit announced a multi-year contract extension with him. The comments highlight continued ambiguity around LIV's long-term business model and tour-unification timeline.</p>
+      <div class="s-gap"></div>
+      
+              <div style="border-left:3px solid #C0392B;padding:0.5rem 0.8rem;
+                   margin:1rem 0;background:rgba(192,57,43,0.1);">
+                <div style="font-size:0.6rem;font-weight:800;letter-spacing:0.18em;
+                     color:#C0392B;text-transform:uppercase;">&#9873; Exec Alert</div>
+                <div style="font-size:0.8rem;color:#C0392B;line-height:1.4;margin-top:0.2rem;">Senior LIV player publicly voicing uncertainty underscores unresolved governance and commercial questions affecting the entire industry.</div>
+              </div>
+      <a class="s-btn" href="https://www.reuters.com/sports/golf/dustin-johnson-livs-future-your-guess-is-good-mine--flm-2026-05-15/" target="_blank" rel="noopener"
+         style="background:#00DD41;color:#0A1A0A;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </div>
+  <div class="spread" data-index="5">
+    <div class="s-page s-left" style="background:#F5F5F5;color:#111111;">
+      <div class="s-num" style="color:rgba(192,57,43,0.05);">05</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#C0392B;color:#FFFFFF;">People &amp; Industry</span>
+        <span class="s-rank" style="color:#C0392B;">No.&nbsp;5</span>
+      </div>
+      <h2 class="s-title" style="color:#111111;">Rahm Surges at PGA, But LIV Business Questions Follow Him</h2>
+      <div class="s-source" style="color:#C0392B;">Source: Reuters</div>
+    </div>
+    <div class="s-page s-right" style="background:#F5F5F5;color:#111111;">
+      <div class="s-num" style="color:rgba(192,57,43,0.05);">05</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#C0392B;color:#FFFFFF;">People &amp; Industry</span>
+      </div>
+      <p class="s-teaser" style="color:#111111;">Jon Rahm deflected questions about the business implications a third major title would carry for LIV Golf, insisting his focus is purely competitive. The storyline underscores how every LIV player's major performance is now viewed through a commercial and political lens affecting sponsorship value and tour negotiations.</p>
+      <div class="s-gap"></div>
+      
+      <a class="s-btn" href="https://www.reuters.com/sports/golf/rahm-puts-liv-spotlight-aside-after-surging-into-pga-contention-2026-05-16/" target="_blank" rel="noopener"
+         style="background:#C0392B;color:#FFFFFF;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </div>
+  <div class="spread" data-index="6">
+    <div class="s-page s-left" style="background:#FAF7F0;color:#1A1A2E;">
+      <div class="s-num" style="color:rgba(26,26,46,0.05);">06</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#1A1A2E;color:#FAF7F0;">Other</span>
+        <span class="s-rank" style="color:#1A1A2E;">No.&nbsp;6</span>
+      </div>
+      <h2 class="s-title" style="color:#1A1A2E;">Pace-of-Play Crisis Hits PGA Championship; Scheffler Calls Pins 'Absurd'</h2>
+      <div class="s-source" style="color:#1A1A2E;">Source: Reuters</div>
+    </div>
+    <div class="s-page s-right" style="background:#FAF7F0;color:#1A1A2E;">
+      <div class="s-num" style="color:rgba(26,26,46,0.05);">06</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#1A1A2E;color:#FAF7F0;">Other</span>
+      </div>
+      <p class="s-teaser" style="color:#1A1A2E;">Pace of play at Aronimink drew sharp criticism from top players including Scottie Scheffler, who labeled pin placements 'absurd.' The issue, caught on broadcast, renews pressure on the PGA of America and governing bodies to address pace-of-play protocols that affect fan engagement and broadcast value.</p>
+      <div class="s-gap"></div>
+      
+      <a class="s-btn" href="https://www.reuters.com/sports/golf/pace-play-crawling-pga-scottie-scheffler-points-absurd-pins-2026-05-15/" target="_blank" rel="noopener"
+         style="background:#1A1A2E;color:#FAF7F0;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </div>
+  <div class="spread" data-index="7">
+    <div class="s-page s-left" style="background:#0D1B2A;color:#F0E8D8;">
+      <div class="s-num" style="color:rgba(201,168,76,0.12);">07</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#C9A84C;color:#0D1B2A;">Investment &amp; M&amp;A</span>
+        <span class="s-rank" style="color:#C9A84C;">No.&nbsp;7</span>
+      </div>
+      <h2 class="s-title" style="color:#F0E8D8;">Callaway Golf (GOLF.A) Stock &amp; Financial Strength Under the Spotlight</h2>
+      <div class="s-source" style="color:#C9A84C;">Source: Reuters</div>
+    </div>
+    <div class="s-page s-right" style="background:#0D1B2A;color:#F0E8D8;">
+      <div class="s-num" style="color:rgba(201,168,76,0.12);">07</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#C9A84C;color:#0D1B2A;">Investment &amp; M&amp;A</span>
+      </div>
+      <p class="s-teaser" style="color:#F0E8D8;">Reuters is spotlighting Topgolf Callaway Brands' key financial-strength metrics, providing an up-to-date snapshot of the company's balance sheet health. The data point arrives alongside the Nicholas Investment Partners stake disclosure, offering a fuller picture of institutional sentiment.</p>
+      <div class="s-gap"></div>
+      
+      <a class="s-btn" href="https://www.reuters.com/markets/companies/GOLF.A/key-metrics/financial-strength/" target="_blank" rel="noopener"
+         style="background:#C9A84C;color:#0D1B2A;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </div>
+  <div class="spread" data-index="8">
+    <div class="s-page s-left" style="background:#FEFBF3;color:#2C1810;">
+      <div class="s-num" style="color:rgba(92,61,30,0.06);">08</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#5C3D1E;color:#FEFBF3;">Travel &amp; Development</span>
+        <span class="s-rank" style="color:#5C3D1E;">No.&nbsp;8</span>
+      </div>
+      <h2 class="s-title" style="color:#2C1810;">Crowborough Beacon Invests in Course Conditioning and Off-Course Facilities</h2>
+      <div class="s-source" style="color:#5C3D1E;">Source: Golf Business News</div>
+    </div>
+    <div class="s-page s-right" style="background:#FEFBF3;color:#2C1810;">
+      <div class="s-num" style="color:rgba(92,61,30,0.06);">08</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#5C3D1E;color:#FEFBF3;">Travel &amp; Development</span>
+      </div>
+      <p class="s-teaser" style="color:#2C1810;">Crowborough Beacon Golf Club is channeling capital into both course conditioning upgrades and expanded off-course amenities. The investment reflects a broader UK club trend of diversifying revenue streams beyond green fees through enhanced hospitality and member facilities.</p>
+      <div class="s-gap"></div>
+      
+      <a class="s-btn" href="https://golfbusinessnews.com/news/greenkeeping/crowborough-beacon-continues-to-invest-in-course-conditioning-and-off-course-facilities/" target="_blank" rel="noopener"
+         style="background:#5C3D1E;color:#FEFBF3;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </div>
+  <div class="spread" data-index="9">
+    <div class="s-page s-left" style="background:#0A1A0A;color:#CCFFCC;">
+      <div class="s-num" style="color:rgba(0,221,65,0.08);">09</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#00DD41;color:#0A1A0A;">People &amp; Industry</span>
+        <span class="s-rank" style="color:#00DD41;">No.&nbsp;9</span>
+      </div>
+      <h2 class="s-title" style="color:#CCFFCC;">G4D Open Tees Off at Celtic Manor, Showcasing Adaptive Golf</h2>
+      <div class="s-source" style="color:#00DD41;">Source: Golf Business News</div>
+    </div>
+    <div class="s-page s-right" style="background:#0A1A0A;color:#CCFFCC;">
+      <div class="s-num" style="color:rgba(0,221,65,0.08);">09</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#00DD41;color:#0A1A0A;">People &amp; Industry</span>
+      </div>
+      <p class="s-teaser" style="color:#CCFFCC;">The G4D (Golf for the Disabled) Open is underway at Celtic Manor, one of Europe's premier resort venues. The event continues to grow as a flagship for inclusive golf and carries sponsorship and governance implications for the sport's accessibility agenda.</p>
+      <div class="s-gap"></div>
+      
+      <a class="s-btn" href="https://golfbusinessnews.com/news/sponsorship-and-events/g4d-open-gets-underway-at-celtic-manor/" target="_blank" rel="noopener"
+         style="background:#00DD41;color:#0A1A0A;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </div>
+  <div class="spread" data-index="10">
+    <div class="s-page s-left" style="background:#F5F5F5;color:#111111;">
+      <div class="s-num" style="color:rgba(192,57,43,0.05);">10</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#C0392B;color:#FFFFFF;">People &amp; Industry</span>
+        <span class="s-rank" style="color:#C0392B;">No.&nbsp;10</span>
+      </div>
+      <h2 class="s-title" style="color:#111111;">PGA Class of '26 Graduates Honoured by The PGA</h2>
+      <div class="s-source" style="color:#C0392B;">Source: Golf Business News</div>
+    </div>
+    <div class="s-page s-right" style="background:#F5F5F5;color:#111111;">
+      <div class="s-num" style="color:rgba(192,57,43,0.05);">10</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#C0392B;color:#FFFFFF;">People &amp; Industry</span>
+      </div>
+      <p class="s-teaser" style="color:#111111;">The PGA has celebrated its latest cohort of qualified professionals in the Class of 2026 ceremony. With talent pipelines critical to staffing an expanding global golf industry, the graduation milestone highlights ongoing investment in professional development and education standards.</p>
+      <div class="s-gap"></div>
+      
+      <a class="s-btn" href="https://golfbusinessnews.com/news/training-and-education/the-pga-honours-class-of-26-graduates/" target="_blank" rel="noopener"
+         style="background:#C0392B;color:#FFFFFF;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </div>
+
+    <!-- Back cover -->
+    <div class="spread" id="spread-back">
+      <div class="cover-body" style="opacity:0.6;">
+        <div class="cv-title" style="font-size:clamp(1.5rem,4vw,2.8rem);">The Morning<br><em>Edition</em></div>
+        <div class="cv-date" style="margin-top:1rem;">2026-05-18</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="controls">
+    <button class="ctrl" id="btn-start">&#8676; Start</button>
+    <button class="ctrl" id="btn-prev">&lsaquo; Prev</button>
+    <div id="counter">Cover</div>
+    <button class="ctrl" id="btn-next">Next &rsaquo;</button>
+  </div>
+</div>
+
+<script>
+const spreads = Array.from(document.querySelectorAll('.spread'));
+const total   = spreads.length;
+let current   = 0;
+let busy      = false;
+
+// ── Size & centre every spread within the stage ──────────────────────────────
+function sizeBook() {
+  const stage = document.getElementById('stage');
+  const sw = stage.clientWidth;
+  const sh = stage.clientHeight;
+  const aspect = 3 / 4;   // portrait page aspect (w:h)
+  let pageH = Math.min(sh * 0.95, 820);
+  let pageW = Math.min(pageH / aspect, sw * 0.46);
+  pageH = pageW * aspect;
+  spreads.forEach((s, idx) => {
+    const isSingle = (idx === 0 || idx === total - 1);
+    const thisW = isSingle ? pageW : pageW * 2;
+    s.style.width  = thisW + 'px';
+    s.style.height = pageH + 'px';
+    s.style.left   = ((sw - thisW) / 2) + 'px';
+    s.style.top    = ((sh - pageH) / 2) + 'px';
+  });
+}
+sizeBook();
+window.addEventListener('resize', sizeBook);
+
+// ── Counter label ────────────────────────────────────────────────────────────
+const counter = document.getElementById('counter');
+function label() {
+  if (current === 0)            counter.textContent = 'Cover';
+  else if (current===total-1)   counter.textContent = 'Back cover';
+  else                          counter.textContent = 'Story ' + current + ' / ' + (total-2);
+}
+
+// ── Two-phase page-turn ──────────────────────────────────────────────────────
+// Phase 1: current folds away (360ms)
+// Phase 2: next unfolds in from opposite side (400ms)
+function goTo(next, dir) {
+  if (busy || next < 0 || next >= total || next === current) return;
+  busy = true;
+  const PERSP = 'perspective(1800px)';
+  const cur = spreads[current];
+  const nxt = spreads[next];
+
+  const exitRot  = dir === 'forward' ? '-90deg' : '90deg';
+  const enterRot = dir === 'forward' ?  '90deg' : '-90deg';
+
+  // Phase 1 — fold current away
+  cur.classList.remove('active');
+  cur.style.transition = 'transform 360ms cubic-bezier(0.55,0,1,1), opacity 280ms ease';
+  cur.style.transform  = PERSP + ' rotateY(' + exitRot + ')';
+  cur.style.opacity    = '0';
+
+  // Phase 2 — unfold next in
+  setTimeout(() => {
+    nxt.style.transition = 'none';
+    nxt.style.transform  = PERSP + ' rotateY(' + enterRot + ')';
+    nxt.style.opacity    = '0';
+    nxt.offsetHeight;   // force reflow
+
+    nxt.style.transition = 'transform 400ms cubic-bezier(0,0,0.45,1), opacity 340ms ease';
+    nxt.style.transform  = PERSP + ' rotateY(0deg)';
+    nxt.style.opacity    = '1';
+    nxt.classList.add('active');
+
+    current = next;
+    label();
+
+    setTimeout(() => {
+      cur.style.transition = 'none';
+      cur.style.transform  = '';
+      cur.style.opacity    = '';
+      setTimeout(() => { cur.style.transition = ''; }, 20);
+      busy = false;
+    }, 420);
+  }, 340);
+}
+
+// ── Controls ─────────────────────────────────────────────────────────────────
+document.getElementById('btn-start').addEventListener('click', () => goTo(0, 'backward'));
+document.getElementById('btn-prev').addEventListener('click',  () => goTo(current - 1, 'backward'));
+document.getElementById('btn-next').addEventListener('click',  () => goTo(current + 1, 'forward'));
+
+document.addEventListener('keydown', e => {
+  if (e.key==='ArrowRight'||e.key==='ArrowDown') goTo(current+1,'forward');
+  if (e.key==='ArrowLeft' ||e.key==='ArrowUp')   goTo(current-1,'backward');
+});
+
+// ── Edge-click zones ──────────────────────────────────────────────────────────
+document.getElementById('zone-prev').addEventListener('click', () => goTo(current-1,'backward'));
+document.getElementById('zone-next').addEventListener('click', () => goTo(current+1,'forward'));
+</script>
+</body>
+</html>
