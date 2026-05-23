@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Golf Morning Edition — Tabloid — 2026-05-23</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --sans:  'Inter', system-ui, sans-serif;
+  --serif: 'Fraunces', Georgia, serif;
+}
+html, body {
+  width: 100%; height: 100%;
+  background: #111;
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Outer shell ── */
+#shell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  height: 100%;
+  padding: 1.25rem 1.25rem 1rem;
+}
+
+/* ── Book stage ── */
+#stage {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Edge click zones (left/right 10% of viewport) ── */
+#zone-prev, #zone-next {
+  position: fixed;
+  top: 0; bottom: 0;
+  width: 10%;
+  z-index: 200;
+  cursor: pointer;
+}
+#zone-prev { left: 0; }
+#zone-next { right: 0; }
+
+/* ── Each spread ── */
+.spread {
+  position: absolute;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.75);
+  /* Hidden by default; JS drives all transforms */
+  opacity: 0;
+  pointer-events: none;
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+.spread.active {
+  opacity: 1;
+  pointer-events: all;
+  transform: perspective(1800px) rotateY(0deg);
+}
+
+/* ── Cover spread ── */
+#spread-cover {
+  background: linear-gradient(135deg,#0A0E1A 0%,#1A2A1A 50%,#0D1B0D 100%);
+  grid-template-columns: 1fr;
+}
+.cover-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+  padding: 3rem 2rem;
+  color: #F5F0E8;
+}
+.cv-kicker {
+  font-size: 0.62rem; font-weight:600; letter-spacing:0.28em;
+  text-transform:uppercase; color:#7ECB8F; margin-bottom:1.2rem;
+}
+.cv-title {
+  font-family:var(--serif); font-size:clamp(2.5rem,6vw,5rem);
+  font-weight:900; line-height:0.95; margin-bottom:0.4em;
+}
+.cv-title em { font-style:italic; color:#C9A84C; }
+.cv-date {
+  font-size:0.82rem; font-weight:300;
+  color:rgba(245,240,232,0.55); letter-spacing:0.08em; margin-top:0.5rem;
+}
+.cv-sub {
+  margin-top:2rem; font-size:0.6rem;
+  color:rgba(245,240,232,0.25); letter-spacing:0.2em; text-transform:uppercase;
+}
+
+/* ── Story pages ── */
+.s-page {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(1.8rem,5%,3.2rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 0;
+}
+.s-left { border-right: 1px solid rgba(128,128,128,0.15); }
+
+/* Ghost numeral — behind everything */
+.s-num {
+  position:absolute; bottom:-0.08em; right:-0.02em;
+  font-family:var(--serif); font-size:clamp(10rem,24vw,18rem);
+  font-weight:900; line-height:1;
+  pointer-events:none; user-select:none; z-index:0;
+}
+/* Top strip: category tag + issue number */
+.s-top {
+  display:flex; align-items:center; gap:0.7rem;
+  margin-bottom:1.2rem; flex-wrap:wrap; position:relative; z-index:2;
+}
+.s-tag {
+  font-size:0.58rem; font-weight:700; letter-spacing:0.18em;
+  text-transform:uppercase; padding:0.3em 0.8em; border-radius:2px;
+}
+.s-rank {
+  font-size:0.62rem; font-weight:600; letter-spacing:0.2em;
+  text-transform:uppercase; opacity:0.5;
+  position:relative; z-index:2;
+}
+/* Main headline */
+.s-title {
+  font-family:var(--serif);
+  font-size:clamp(1.9rem,3.4vw,3rem);
+  font-weight:900; line-height:1.18;
+  position:relative; z-index:2;
+  margin-bottom:1rem;
+  flex-grow: 1;
+}
+/* Source credit under headline */
+.s-source {
+  font-size:0.7rem; font-weight:500; letter-spacing:0.08em;
+  opacity:0.65; position:relative; z-index:2; margin-bottom:auto;
+  margin-top: 0;
+  padding-top: 0.4rem;
+  border-top: 1px solid currentColor;
+  opacity: 0.4;
+}
+/* Flexible gap — pushes exec alert to mid-point, button to bottom */
+.s-gap {
+  flex: 1;
+  min-height: 0.5rem;
+  position: relative; z-index: 2;
+}
+/* Teaser body */
+.s-teaser {
+  font-size:clamp(1rem,1.7vw,1.18rem); line-height:1.78; font-weight:300;
+  margin-bottom:0; position:relative; z-index:2;
+}
+/* Read full story — as a button */
+.s-btn {
+  display:inline-block;
+  font-size:0.72rem; font-weight:700; letter-spacing:0.12em;
+  text-transform:uppercase; text-decoration:none;
+  padding:0.65em 1.5em; border-radius:2px;
+  position:relative; z-index:2;
+  transition:opacity 0.2s; margin-top:1rem;
+  align-self:flex-start;
+}
+.s-btn:hover { opacity:0.8; }
+
+/* ── Additional sources ── */
+.s-also {
+  margin-top:1rem; padding-top:0.65rem;
+  display:flex; flex-wrap:wrap; align-items:baseline;
+  gap:0.3rem 0.75rem; position:relative; z-index:2;
+}
+.s-also-label {
+  font-size:0.58rem; font-weight:700; letter-spacing:0.16em;
+  text-transform:uppercase; opacity:0.6; flex-shrink:0;
+}
+.s-also-link {
+  font-size:0.68rem; font-weight:500; text-decoration:none;
+  letter-spacing:0.02em; transition:opacity 0.18s;
+}
+.s-also-link:hover { opacity:0.65; }
+
+/* ── Back cover ── */
+#spread-back {
+  background: linear-gradient(135deg,#0A0E1A 0%,#1A2A1A 50%,#0D1B0D 100%);
+  grid-template-columns: 1fr;
+}
+
+/* ── Controls ── */
+#controls {
+  display:flex; align-items:center; gap:1.25rem; flex-shrink:0;
+}
+.ctrl {
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.12);
+  color:rgba(255,255,255,0.55);
+  font-family:var(--sans); font-size:0.7rem; font-weight:500;
+  letter-spacing:0.1em; text-transform:uppercase;
+  padding:0.45rem 1.1rem; cursor:pointer; border-radius:2px;
+  transition:all 0.18s;
+}
+.ctrl:hover {
+  background:rgba(255,255,255,0.13); color:rgba(255,255,255,0.9);
+}
+#counter {
+  font-size:0.68rem; color:rgba(255,255,255,0.28);
+  letter-spacing:0.15em; min-width:90px; text-align:center;
+}
+</style>
+</head>
+<body>
+
+<!-- Edge click zones -->
+<div id="zone-prev" title="Previous"></div>
+<div id="zone-next" title="Next"></div>
+
+<div id="shell">
+  <div id="stage">
+
+    <!-- Cover -->
+    <div class="spread active" id="spread-cover">
+      <div class="cover-body">
+        <div class="cv-kicker">Golf Industry Intelligence</div>
+        <div class="cv-title">The Morning<br><em>Edition</em></div>
+        <div class="cv-date">Saturday, May 23, 2026</div>
+      </div>
+    </div>
+
+    
+  <div class="spread" data-index="1">
+    <div class="s-page s-left" style="background:#FAF7F0;color:#1A1A2E;">
+      <div class="s-num" style="color:rgba(26,26,46,0.05);">01</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#1A1A2E;color:#FAF7F0;">Investment &amp; M&amp;A</span>
+        <span class="s-rank" style="color:#1A1A2E;">No.&nbsp;1</span>
+      </div>
+      <h2 class="s-title" style="color:#1A1A2E;">LIV Golf Seeks $350M in Funding After Losing Saudi PIF Backing</h2>
+      <div class="s-source" style="color:#1A1A2E;">Source: Reuters</div>
+    </div>
+    <div class="s-page s-right" style="background:#FAF7F0;color:#1A1A2E;">
+      <div class="s-num" style="color:rgba(26,26,46,0.05);">01</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#1A1A2E;color:#FAF7F0;">Investment &amp; M&amp;A</span>
+      </div>
+      <p class="s-teaser" style="color:#1A1A2E;">LIV Golf is actively seeking $350 million in new funding after losing Saudi Arabia's Public Investment Fund backing, with bankruptcy now a real possibility. The league is pitching a reduced 10-event international schedule to potential investors as it fights for survival.</p>
+      <div class="s-gap"></div>
+      
+              <div style="border-left:3px solid #C0392B;padding:0.5rem 0.8rem;
+                   margin:1rem 0;background:rgba(192,57,43,0.1);">
+                <div style="font-size:0.6rem;font-weight:800;letter-spacing:0.18em;
+                     color:#C0392B;text-transform:uppercase;">&#9873; Exec Alert</div>
+                <div style="font-size:0.8rem;color:#C0392B;line-height:1.4;margin-top:0.2rem;">A potential LIV collapse or restructuring would fundamentally reshape the professional golf landscape, sponsorship markets, and player economics.</div>
+              </div>
+      <a class="s-btn" href="https://www.reuters.com/sports/golf/liv-golf-seeking-350-million-funding-after-losing-saudi-pif-backing-say-sources-2026-05-21/" target="_blank" rel="noopener"
+         style="background:#1A1A2E;color:#FAF7F0;">
+        Read full story &#8599;
+      </a>
+      
+              <div class="s-also" style="border-top:1px solid #1A1A2E33;">
+                <span class="s-also-label" style="color:#1A1A2E;">Also reported by:</span>
+                <a class="s-also-link" href="https://www.ft.com/content/4d914050-e61b-4bc5-adb3-9d6e6f4a6cfb?syn-25a6b1a6=1" target="_blank" rel="noopener" style="color:#1A1A2E;">&#8599; Financial Times</a><a class="s-also-link" href="https://www.bloomberg.com/news/newsletters/2026-05-22/ahead-of-world-cup-lionel-messi-named-billionaire-by-bloomberg" target="_blank" rel="noopener" style="color:#1A1A2E;">&#8599; Bloomberg</a>
+              </div>
+    </div>
+  </div>
+  <div class="spread" data-index="2">
+    <div class="s-page s-left" style="background:#0D1B2A;color:#F0E8D8;">
+      <div class="s-num" style="color:rgba(201,168,76,0.12);">02</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#C9A84C;color:#0D1B2A;">Investment &amp; M&amp;A</span>
+        <span class="s-rank" style="color:#C9A84C;">No.&nbsp;2</span>
+      </div>
+      <h2 class="s-title" style="color:#F0E8D8;">Duca Del Cosma Acquired by PE Firm Howsam Capital</h2>
+      <div class="s-source" style="color:#C9A84C;">Source: Golf Business News</div>
+    </div>
+    <div class="s-page s-right" style="background:#0D1B2A;color:#F0E8D8;">
+      <div class="s-num" style="color:rgba(201,168,76,0.12);">02</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#C9A84C;color:#0D1B2A;">Investment &amp; M&amp;A</span>
+      </div>
+      <p class="s-teaser" style="color:#F0E8D8;">Italian luxury golf footwear brand Duca Del Cosma has been acquired by Howsam Capital in a significant deal for the golf fashion sector. The acquisition signals continued private equity appetite for premium golf lifestyle brands.</p>
+      <div class="s-gap"></div>
+      
+              <div style="border-left:3px solid #C0392B;padding:0.5rem 0.8rem;
+                   margin:1rem 0;background:rgba(192,57,43,0.1);">
+                <div style="font-size:0.6rem;font-weight:800;letter-spacing:0.18em;
+                     color:#C0392B;text-transform:uppercase;">&#9873; Exec Alert</div>
+                <div style="font-size:0.8rem;color:#C0392B;line-height:1.4;margin-top:0.2rem;">PE acquisition of a niche golf brand signals ongoing investor confidence in premium golf lifestyle segments.</div>
+              </div>
+      <a class="s-btn" href="https://golfbusinessnews.com/news/corporate/duca-del-cosma-acquired-by-howsam-capital/" target="_blank" rel="noopener"
+         style="background:#C9A84C;color:#0D1B2A;">
+        Read full story &#8599;
+      </a>
+      
+              <div class="s-also" style="border-top:1px solid #C9A84C33;">
+                <span class="s-also-label" style="color:#C9A84C;">Also reported by:</span>
+                <a class="s-also-link" href="https://thegolfwire.com/duca-del-cosma-howsam-capital/" target="_blank" rel="noopener" style="color:#C9A84C;">&#8599; TheGolfWire</a><a class="s-also-link" href="https://www.golfmagic.com/equipment/news/luxury-italian-golf-fashion-brand-acquired-major-industry-deal" target="_blank" rel="noopener" style="color:#C9A84C;">&#8599; Golfmagic</a>
+              </div>
+    </div>
+  </div>
+  <div class="spread" data-index="3">
+    <div class="s-page s-left" style="background:#FEFBF3;color:#2C1810;">
+      <div class="s-num" style="color:rgba(92,61,30,0.06);">03</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#5C3D1E;color:#FEFBF3;">Investment &amp; M&amp;A</span>
+        <span class="s-rank" style="color:#5C3D1E;">No.&nbsp;3</span>
+      </div>
+      <h2 class="s-title" style="color:#2C1810;">EB-5 Fund Acquires Wohali Golf Resort Out of Bankruptcy</h2>
+      <div class="s-source" style="color:#5C3D1E;">Source: KPCW</div>
+    </div>
+    <div class="s-page s-right" style="background:#FEFBF3;color:#2C1810;">
+      <div class="s-num" style="color:rgba(92,61,30,0.06);">03</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#5C3D1E;color:#FEFBF3;">Investment &amp; M&amp;A</span>
+      </div>
+      <p class="s-teaser" style="color:#2C1810;">A foreign investment fund has acquired the Wohali golf resort near Coalville, Utah, via credit bid in bankruptcy proceedings. The Eagle Course is expected to reopen in summer 2026, signalling a restart for the troubled luxury development.</p>
+      <div class="s-gap"></div>
+      
+      <a class="s-btn" href="https://www.kpcw.org/summit-county/2026-05-21/investment-fund-acquires-coalville-golf-resort-wohali-in-bankruptcy" target="_blank" rel="noopener"
+         style="background:#5C3D1E;color:#FEFBF3;">
+        Read full story &#8599;
+      </a>
+      
+              <div class="s-also" style="border-top:1px solid #5C3D1E33;">
+                <span class="s-also-label" style="color:#5C3D1E;">Also reported by:</span>
+                <a class="s-also-link" href="https://www.azcentral.com/press-release/story/73411/eb5an-wohali-utah-fund-xv-lp-completes-acquisition-of-wohali/" target="_blank" rel="noopener" style="color:#5C3D1E;">&#8599; AZCentral</a>
+              </div>
+    </div>
+  </div>
+  <div class="spread" data-index="4">
+    <div class="s-page s-left" style="background:#0A1A0A;color:#CCFFCC;">
+      <div class="s-num" style="color:rgba(0,221,65,0.08);">04</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#00DD41;color:#0A1A0A;">Technology</span>
+        <span class="s-rank" style="color:#00DD41;">No.&nbsp;4</span>
+      </div>
+      <h2 class="s-title" style="color:#CCFFCC;">Club Benchmarking and Forest Road Finance Partner on Golf Club Finance</h2>
+      <div class="s-source" style="color:#00DD41;">Source: Golf Business News</div>
+    </div>
+    <div class="s-page s-right" style="background:#0A1A0A;color:#CCFFCC;">
+      <div class="s-num" style="color:rgba(0,221,65,0.08);">04</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#00DD41;color:#0A1A0A;">Technology</span>
+      </div>
+      <p class="s-teaser" style="color:#CCFFCC;">Club Benchmarking has teamed up with Forest Road Finance to deliver tailored financial solutions for golf clubs, combining data analytics with specialist lending. The partnership aims to help clubs make more informed capital investment decisions using benchmarking data.</p>
+      <div class="s-gap"></div>
+      
+      <a class="s-btn" href="https://golfbusinessnews.com/news/management-topics/club-benchmarking-and-forest-road-finance-team-up-to-deliver-tailored-financial-solutions-to-golf-clubs/" target="_blank" rel="noopener"
+         style="background:#00DD41;color:#0A1A0A;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </div>
+  <div class="spread" data-index="5">
+    <div class="s-page s-left" style="background:#F5F5F5;color:#111111;">
+      <div class="s-num" style="color:rgba(192,57,43,0.05);">05</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#C0392B;color:#FFFFFF;">Investment &amp; M&amp;A</span>
+        <span class="s-rank" style="color:#C0392B;">No.&nbsp;5</span>
+      </div>
+      <h2 class="s-title" style="color:#111111;">Vivâmée Hospitality Completes $25M Acquisition of Two Maryland Courses</h2>
+      <div class="s-source" style="color:#C0392B;">Source: TheBusinessJournals</div>
+    </div>
+    <div class="s-page s-right" style="background:#F5F5F5;color:#111111;">
+      <div class="s-num" style="color:rgba(192,57,43,0.05);">05</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#C0392B;color:#FFFFFF;">Investment &amp; M&amp;A</span>
+      </div>
+      <p class="s-teaser" style="color:#111111;">Jersey Shore resort operator Vivâmée Hospitality has closed a $25 million deal to acquire two Maryland golf courses, expanding its hospitality and golf portfolio. The move reflects continued deal activity in the US golf real estate market.</p>
+      <div class="s-gap"></div>
+      
+      <a class="s-btn" href="https://www.bizjournals.com/philadelphia/news/2026/05/21/vivamee-golf-courses-maryland-renault-winery.html" target="_blank" rel="noopener"
+         style="background:#C0392B;color:#FFFFFF;">
+        Read full story &#8599;
+      </a>
+      
+              <div class="s-also" style="border-top:1px solid #C0392B33;">
+                <span class="s-also-label" style="color:#C0392B;">Also reported by:</span>
+                <a class="s-also-link" href="https://www.connectcre.com/stories/vivamee-hospitality-completes-25m-acquisition-of-two-maryland-golf-courses/" target="_blank" rel="noopener" style="color:#C0392B;">&#8599; ConnectCRE</a>
+              </div>
+    </div>
+  </div>
+  <div class="spread" data-index="6">
+    <div class="s-page s-left" style="background:#FAF7F0;color:#1A1A2E;">
+      <div class="s-num" style="color:rgba(26,26,46,0.05);">06</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#1A1A2E;color:#FAF7F0;">Sustainability</span>
+        <span class="s-rank" style="color:#1A1A2E;">No.&nbsp;6</span>
+      </div>
+      <h2 class="s-title" style="color:#1A1A2E;">Is Natural Capital Golf's Next Reliable Revenue Stream?</h2>
+      <div class="s-source" style="color:#1A1A2E;">Source: Golf Business News</div>
+    </div>
+    <div class="s-page s-right" style="background:#FAF7F0;color:#1A1A2E;">
+      <div class="s-num" style="color:rgba(26,26,46,0.05);">06</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#1A1A2E;color:#FAF7F0;">Sustainability</span>
+      </div>
+      <p class="s-teaser" style="color:#1A1A2E;">An opinion piece explores how golf courses could monetise their natural capital — biodiversity credits, carbon sequestration, and ecosystem services — as a new, diversified income stream. The concept could reshape how courses value and manage their land assets.</p>
+      <div class="s-gap"></div>
+      
+              <div style="border-left:3px solid #C0392B;padding:0.5rem 0.8rem;
+                   margin:1rem 0;background:rgba(192,57,43,0.1);">
+                <div style="font-size:0.6rem;font-weight:800;letter-spacing:0.18em;
+                     color:#C0392B;text-transform:uppercase;">&#9873; Exec Alert</div>
+                <div style="font-size:0.8rem;color:#C0392B;line-height:1.4;margin-top:0.2rem;">Natural capital monetisation could unlock significant new revenue for course operators and reshape land-value calculations.</div>
+              </div>
+      <a class="s-btn" href="https://golfbusinessnews.com/news/opinion/is-natural-capital-golfs-next-reliable-revenue-stream/" target="_blank" rel="noopener"
+         style="background:#1A1A2E;color:#FAF7F0;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </div>
+  <div class="spread" data-index="7">
+    <div class="s-page s-left" style="background:#0D1B2A;color:#F0E8D8;">
+      <div class="s-num" style="color:rgba(201,168,76,0.12);">07</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#C9A84C;color:#0D1B2A;">People &amp; Industry</span>
+        <span class="s-rank" style="color:#C9A84C;">No.&nbsp;7</span>
+      </div>
+      <h2 class="s-title" style="color:#F0E8D8;">Toro Renews as DP World Tour's Turfcare and Irrigation Partner</h2>
+      <div class="s-source" style="color:#C9A84C;">Source: Golf Business News</div>
+    </div>
+    <div class="s-page s-right" style="background:#0D1B2A;color:#F0E8D8;">
+      <div class="s-num" style="color:rgba(201,168,76,0.12);">07</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#C9A84C;color:#0D1B2A;">People &amp; Industry</span>
+      </div>
+      <p class="s-teaser" style="color:#F0E8D8;">Toro has renewed its partnership as the official turfcare and irrigation supplier for the DP World Tour. The deal cements Toro's position as the dominant course-maintenance brand in professional European golf.</p>
+      <div class="s-gap"></div>
+      
+      <a class="s-btn" href="https://golfbusinessnews.com/news/new-products/course-care-and-maintenance/toro-renews-partnership-as-dp-world-tours-turfcare-and-irrigation-supplier/" target="_blank" rel="noopener"
+         style="background:#C9A84C;color:#0D1B2A;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </div>
+  <div class="spread" data-index="8">
+    <div class="s-page s-left" style="background:#FEFBF3;color:#2C1810;">
+      <div class="s-num" style="color:rgba(92,61,30,0.06);">08</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#5C3D1E;color:#FEFBF3;">International</span>
+        <span class="s-rank" style="color:#5C3D1E;">No.&nbsp;8</span>
+      </div>
+      <h2 class="s-title" style="color:#2C1810;">54 Golf Forms Strategic Partnership With Korean Marketing Agency</h2>
+      <div class="s-source" style="color:#5C3D1E;">Source: Golf Business News</div>
+    </div>
+    <div class="s-page s-right" style="background:#FEFBF3;color:#2C1810;">
+      <div class="s-num" style="color:rgba(92,61,30,0.06);">08</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#5C3D1E;color:#FEFBF3;">International</span>
+      </div>
+      <p class="s-teaser" style="color:#2C1810;">54 has formed a strategic partnership with a leading South Korean marketing and brand agency, signalling a push into one of the world's most lucrative golf markets. Korea's premium golf consumer base makes it a high-priority growth target.</p>
+      <div class="s-gap"></div>
+      
+      <a class="s-btn" href="https://golfbusinessnews.com/news/corporate/54-form-strategic-partnership-with-leading-korean-marketing-and-brand-agency/" target="_blank" rel="noopener"
+         style="background:#5C3D1E;color:#FEFBF3;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </div>
+  <div class="spread" data-index="9">
+    <div class="s-page s-left" style="background:#0A1A0A;color:#CCFFCC;">
+      <div class="s-num" style="color:rgba(0,221,65,0.08);">09</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#00DD41;color:#0A1A0A;">Travel &amp; Development</span>
+        <span class="s-rank" style="color:#00DD41;">No.&nbsp;9</span>
+      </div>
+      <h2 class="s-title" style="color:#CCFFCC;">Prince's Golf Club Launches New 18-Hole Championship Course</h2>
+      <div class="s-source" style="color:#00DD41;">Source: The Golf Business</div>
+    </div>
+    <div class="s-page s-right" style="background:#0A1A0A;color:#CCFFCC;">
+      <div class="s-num" style="color:rgba(0,221,65,0.08);">09</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#00DD41;color:#0A1A0A;">Travel &amp; Development</span>
+      </div>
+      <p class="s-teaser" style="color:#CCFFCC;">Historic Prince's Golf Club in Kent has unveiled a new 18-hole championship layout, a significant course development on England's links coast. The project positions Prince's for higher-profile tournament hosting and destination golf tourism.</p>
+      <div class="s-gap"></div>
+      
+      <a class="s-btn" href="https://thegolfbusiness.co.uk/2026/05/princes-launches-new-18-hole-championship-course/" target="_blank" rel="noopener"
+         style="background:#00DD41;color:#0A1A0A;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </div>
+  <div class="spread" data-index="10">
+    <div class="s-page s-left" style="background:#F5F5F5;color:#111111;">
+      <div class="s-num" style="color:rgba(192,57,43,0.05);">10</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#C0392B;color:#FFFFFF;">People &amp; Industry</span>
+        <span class="s-rank" style="color:#C0392B;">No.&nbsp;10</span>
+      </div>
+      <h2 class="s-title" style="color:#111111;">Jon Rahm Agrees Conditional Releases for Rare Scottish Open Appearance</h2>
+      <div class="s-source" style="color:#C0392B;">Source: Reuters</div>
+    </div>
+    <div class="s-page s-right" style="background:#F5F5F5;color:#111111;">
+      <div class="s-num" style="color:rgba(192,57,43,0.05);">10</div>
+      <div class="s-top">
+        <span class="s-tag" style="background:#C0392B;color:#FFFFFF;">People &amp; Industry</span>
+      </div>
+      <p class="s-teaser" style="color:#111111;">Jon Rahm has committed to a rare Scottish Open appearance after the DP World Tour and the Spaniard agreed conditional releases to play in conflicting LIV events. The arrangement may signal a template for cross-tour player participation as the LIV funding crisis unfolds.</p>
+      <div class="s-gap"></div>
+      
+      <a class="s-btn" href="https://www.reuters.com/sports/golf/jon-rahm-commits-rare-scottish-open-appearance--flm-2026-05-21/" target="_blank" rel="noopener"
+         style="background:#C0392B;color:#FFFFFF;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </div>
+
+    <!-- Back cover -->
+    <div class="spread" id="spread-back">
+      <div class="cover-body" style="opacity:0.6;">
+        <div class="cv-title" style="font-size:clamp(1.5rem,4vw,2.8rem);">The Morning<br><em>Edition</em></div>
+        <div class="cv-date" style="margin-top:1rem;">2026-05-23</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="controls">
+    <button class="ctrl" id="btn-start">&#8676; Start</button>
+    <button class="ctrl" id="btn-prev">&lsaquo; Prev</button>
+    <div id="counter">Cover</div>
+    <button class="ctrl" id="btn-next">Next &rsaquo;</button>
+  </div>
+</div>
+
+<script>
+const spreads = Array.from(document.querySelectorAll('.spread'));
+const total   = spreads.length;
+let current   = 0;
+let busy      = false;
+
+// ── Size & centre every spread within the stage ──────────────────────────────
+function sizeBook() {
+  const stage = document.getElementById('stage');
+  const sw = stage.clientWidth;
+  const sh = stage.clientHeight;
+  const aspect = 3 / 4;   // portrait page aspect (w:h)
+  let pageH = Math.min(sh * 0.95, 820);
+  let pageW = Math.min(pageH / aspect, sw * 0.46);
+  pageH = pageW * aspect;
+  spreads.forEach((s, idx) => {
+    const isSingle = (idx === 0 || idx === total - 1);
+    const thisW = isSingle ? pageW : pageW * 2;
+    s.style.width  = thisW + 'px';
+    s.style.height = pageH + 'px';
+    s.style.left   = ((sw - thisW) / 2) + 'px';
+    s.style.top    = ((sh - pageH) / 2) + 'px';
+  });
+}
+sizeBook();
+window.addEventListener('resize', sizeBook);
+
+// ── Counter label ────────────────────────────────────────────────────────────
+const counter = document.getElementById('counter');
+function label() {
+  if (current === 0)            counter.textContent = 'Cover';
+  else if (current===total-1)   counter.textContent = 'Back cover';
+  else                          counter.textContent = 'Story ' + current + ' / ' + (total-2);
+}
+
+// ── Two-phase page-turn ──────────────────────────────────────────────────────
+// Phase 1: current folds away (360ms)
+// Phase 2: next unfolds in from opposite side (400ms)
+function goTo(next, dir) {
+  if (busy || next < 0 || next >= total || next === current) return;
+  busy = true;
+  const PERSP = 'perspective(1800px)';
+  const cur = spreads[current];
+  const nxt = spreads[next];
+
+  const exitRot  = dir === 'forward' ? '-90deg' : '90deg';
+  const enterRot = dir === 'forward' ?  '90deg' : '-90deg';
+
+  // Phase 1 — fold current away
+  cur.classList.remove('active');
+  cur.style.transition = 'transform 360ms cubic-bezier(0.55,0,1,1), opacity 280ms ease';
+  cur.style.transform  = PERSP + ' rotateY(' + exitRot + ')';
+  cur.style.opacity    = '0';
+
+  // Phase 2 — unfold next in
+  setTimeout(() => {
+    nxt.style.transition = 'none';
+    nxt.style.transform  = PERSP + ' rotateY(' + enterRot + ')';
+    nxt.style.opacity    = '0';
+    nxt.offsetHeight;   // force reflow
+
+    nxt.style.transition = 'transform 400ms cubic-bezier(0,0,0.45,1), opacity 340ms ease';
+    nxt.style.transform  = PERSP + ' rotateY(0deg)';
+    nxt.style.opacity    = '1';
+    nxt.classList.add('active');
+
+    current = next;
+    label();
+
+    setTimeout(() => {
+      cur.style.transition = 'none';
+      cur.style.transform  = '';
+      cur.style.opacity    = '';
+      setTimeout(() => { cur.style.transition = ''; }, 20);
+      busy = false;
+    }, 420);
+  }, 340);
+}
+
+// ── Controls ─────────────────────────────────────────────────────────────────
+document.getElementById('btn-start').addEventListener('click', () => goTo(0, 'backward'));
+document.getElementById('btn-prev').addEventListener('click',  () => goTo(current - 1, 'backward'));
+document.getElementById('btn-next').addEventListener('click',  () => goTo(current + 1, 'forward'));
+
+document.addEventListener('keydown', e => {
+  if (e.key==='ArrowRight'||e.key==='ArrowDown') goTo(current+1,'forward');
+  if (e.key==='ArrowLeft' ||e.key==='ArrowUp')   goTo(current-1,'backward');
+});
+
+// ── Edge-click zones ──────────────────────────────────────────────────────────
+document.getElementById('zone-prev').addEventListener('click', () => goTo(current-1,'backward'));
+document.getElementById('zone-next').addEventListener('click', () => goTo(current+1,'forward'));
+</script>
+</body>
+</html>
