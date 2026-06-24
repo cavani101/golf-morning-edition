@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Golf Morning Edition — 2026-06-24</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --sans: 'Inter', system-ui, sans-serif;
+  --serif: 'Fraunces', Georgia, serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: #111;
+  color: #eee;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Cover ──────────────────────────────────────────────────── */
+.cover {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0A0E1A 0%, #1A2A1A 50%, #0D1B0D 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.015'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.cover-kicker {
+  font-family: var(--sans);
+  font-size: clamp(0.65rem, 1.5vw, 0.8rem);
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #7ECB8F;
+  margin-bottom: 1.5rem;
+}
+
+.cover-title {
+  font-family: var(--serif);
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  font-weight: 900;
+  line-height: 0.95;
+  color: #F5F0E8;
+  margin-bottom: 0.4em;
+}
+
+.cover-title em {
+  font-style: italic;
+  color: #C9A84C;
+}
+
+.cover-date {
+  font-family: var(--sans);
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  font-weight: 300;
+  color: rgba(245,240,232,0.6);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.cover-issue {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  color: rgba(245,240,232,0.35);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 3rem;
+}
+
+.exec-count {
+  display: inline-block;
+  background: #C0392B;
+  color: #FAF0F0;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.35em 1em;
+  border-radius: 2px;
+  margin-bottom: 3rem;
+}
+
+.cover-scroll {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  color: rgba(245,240,232,0.3);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* ── Story spreads ──────────────────────────────────────────── */
+.spread {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 6vw, 5rem);
+  position: relative;
+  overflow: hidden;
+}
+
+.spread-inner {
+  max-width: 900px;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.bg-numeral {
+  position: absolute;
+  top: -0.15em;
+  right: -0.05em;
+  font-family: var(--serif);
+  font-size: clamp(12rem, 30vw, 22rem);
+  font-weight: 900;
+  line-height: 1;
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.category-tag {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 0.3em 0.85em;
+  border-radius: 2px;
+}
+
+.source-tag {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  opacity: 0.75;
+}
+
+.rank-line {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.story-title {
+  font-family: var(--serif);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.exec-badge {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.6rem 1rem;
+  margin-bottom: 1.5rem;
+  background: rgba(255,255,255,0.05);
+}
+
+.exec-label {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.exec-why {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 400;
+  line-height: 1.4;
+  opacity: 0.85;
+}
+
+.teaser {
+  font-family: var(--sans);
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  font-weight: 300;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  max-width: 72ch;
+  position: relative;
+  z-index: 2;
+}
+
+.read-link {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  padding-bottom: 0.1em;
+  position: relative;
+  z-index: 2;
+  transition: opacity 0.2s;
+}
+
+.read-link:hover { opacity: 0.7; }
+
+/* ── And Finally banner ─────────────────────────────────────── */
+.and-finally-banner {
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  opacity: 0.7;
+  position: relative;
+  z-index: 2;
+}
+
+/* ── Additional sources row ─────────────────────────────────── */
+.also-row {
+  margin-top: 1.25rem;
+  padding-top: 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.6rem;
+  position: relative;
+  z-index: 2;
+}
+.also-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  flex-shrink: 0;
+  margin-right: 0.25rem;
+}
+
+/* ── Footer ─────────────────────────────────────────────────── */
+.footer {
+  background: #0A0E1A;
+  color: rgba(245,240,232,0.4);
+  text-align: center;
+  padding: 3rem 2rem;
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .bg-numeral { font-size: 8rem; }
+  .story-title { font-size: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Cover -->
+<div class="cover">
+  <div class="cover-kicker">Golf Industry Intelligence</div>
+  <h1 class="cover-title">The Morning<br><em>Edition</em></h1>
+  <div class="cover-date">Wednesday, June 24, 2026</div>
+  <div class="cover-issue">Issue #0540 &nbsp;·&nbsp; 10 Curated Stories</div>
+  <span class="exec-count">4 exec alerts inside</span>
+  <div class="cover-scroll">Scroll to read ↓</div>
+</div>
+
+
+  <section class="spread" style="background:#F5F0E8; color:#1A1A2E; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(26,26,46,0.08);">01</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#1A1A2E; color:#F5F0E8;">People & Industry</span>
+        <span class="source-tag" style="color:#1A1A2E;">Golf Business News</span>
+      </div>
+
+      <div class="rank-line" style="color:#1A1A2E;">No. 1</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1A1A2E;">
+        <a href="https://golfbusinessnews.com/news/people/brian-rolapp-appointed-pga-tour-commissioner/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Brian Rolapp Appointed PGA Tour Commissioner</a>
+      </h2>
+
+      
+    <div class="exec-badge" style="border-left: 4px solid #1A1A2E; color: #1A1A2E;">
+      <span class="exec-label">⚑ EXEC ALERT</span>
+      <span class="exec-why">New PGA Tour leadership will reshape commercial strategy, media rights, and the Tour's relationship with rival circuits.</span>
+    </div>
+
+      <p class="teaser" style="color:#1A1A2E; opacity:0.82;">Brian Rolapp has been named the new PGA Tour Commissioner, taking the helm of professional golf's most influential governing body. The appointment signals a new strategic direction for the Tour as it navigates ongoing commercial negotiations and the evolving competitive landscape.</p>
+
+      <a class="read-link" href="https://golfbusinessnews.com/news/people/brian-rolapp-appointed-pga-tour-commissioner/" target="_blank" rel="noopener"
+         style="color:#1A1A2E; border-bottom: 2px solid #1A1A2E;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#0D1B2A; color:#E8E0D0; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(201,168,76,0.12);">02</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#C9A84C; color:#0D1B2A;">Investment & M&A</span>
+        <span class="source-tag" style="color:#C9A84C;">Bloomberg</span>
+      </div>
+
+      <div class="rank-line" style="color:#C9A84C;">No. 2</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#E8E0D0;">
+        <a href="https://www.bloomberg.com/news/audio/2026-06-22/the-deal-scott-o-neil-of-liv-golf-podcast" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Scott O'Neil Talks LIV Golf's $460M Annual Prize Strategy on Bloomberg</a>
+      </h2>
+
+      
+    <div class="exec-badge" style="border-left: 4px solid #C9A84C; color: #C9A84C;">
+      <span class="exec-label">⚑ EXEC ALERT</span>
+      <span class="exec-why">LIV's spending trajectory and commercial roadmap directly impact competitive positioning across the professional golf ecosystem.</span>
+    </div>
+
+      <p class="teaser" style="color:#E8E0D0; opacity:0.82;">LIV Golf CEO Scott O'Neil sat down with Bloomberg's 'The Deal' podcast to discuss the league's massive spending — averaging $460 million annually in prize purses — and its wider commercial ambitions. The interview offers rare insight into LIV's financial strategy and growth plans.</p>
+
+      <a class="read-link" href="https://www.bloomberg.com/news/audio/2026-06-22/the-deal-scott-o-neil-of-liv-golf-podcast" target="_blank" rel="noopener"
+         style="color:#C9A84C; border-bottom: 2px solid #C9A84C;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#FAF0F0; color:#1A0A0A; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(192,57,43,0.07);">03</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#C0392B; color:#FAF0F0;">Investment & M&A</span>
+        <span class="source-tag" style="color:#C0392B;">South Charlotte Weekly</span>
+      </div>
+
+      <div class="rank-line" style="color:#C0392B;">No. 3</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1A0A0A;">
+        <a href="https://www.thecharlotteweekly.com/southcltweekly/heritage-golf-group-acquires-the-palisades-country-club/article_8777d820-e0db-48f7-a923-433a9764666c.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Heritage Golf Group Acquires The Palisades Country Club</a>
+      </h2>
+
+      
+    <div class="exec-badge" style="border-left: 4px solid #C0392B; color: #C0392B;">
+      <span class="exec-label">⚑ EXEC ALERT</span>
+      <span class="exec-why">Private club M&A activity continues to accelerate; signals ongoing consolidation trends worth monitoring for portfolio strategy.</span>
+    </div>
+
+      <p class="teaser" style="color:#1A0A0A; opacity:0.82;">Heritage Golf Group has completed its acquisition of The Palisades Country Club in the Charlotte, NC area. The deal extends Heritage's growing portfolio of private club assets and reflects continued consolidation in the U.S. private club market.</p>
+
+      <a class="read-link" href="https://www.thecharlotteweekly.com/southcltweekly/heritage-golf-group-acquires-the-palisades-country-club/article_8777d820-e0db-48f7-a923-433a9764666c.html" target="_blank" rel="noopener"
+         style="color:#C0392B; border-bottom: 2px solid #C0392B;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#0A1A0A; color:#CCFFCC; font-family: 'Courier New', monospace;">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(0,255,65,0.08);">04</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#00FF41; color:#0A1A0A;">People & Industry</span>
+        <span class="source-tag" style="color:#00FF41;">The Golf Business</span>
+      </div>
+
+      <div class="rank-line" style="color:#00FF41;">No. 4</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#CCFFCC;">
+        <a href="https://thegolfbusiness.co.uk/2026/06/the-pga-names-nicholas-oakley-as-its-new-ceo/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">PGA Names Nicholas Oakley as New CEO</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#CCFFCC; opacity:0.82;">The PGA has appointed Nicholas Oakley as its new Chief Executive Officer. The leadership change at the professional body comes at a pivotal time for the organization as it looks to expand its influence in coaching, education, and professional development.</p>
+
+      <a class="read-link" href="https://thegolfbusiness.co.uk/2026/06/the-pga-names-nicholas-oakley-as-its-new-ceo/" target="_blank" rel="noopener"
+         style="color:#00FF41; border-bottom: 2px solid #00FF41;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#FEFBF3; color:#2C1810; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(92,61,30,0.07);">05</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#5C3D1E; color:#FEFBF3;">People & Industry</span>
+        <span class="source-tag" style="color:#5C3D1E;">Golf Business News</span>
+      </div>
+
+      <div class="rank-line" style="color:#5C3D1E;">No. 5</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#2C1810;">
+        <a href="https://golfbusinessnews.com/news/management-topics/sporting-insights-report-rounds-played-down-by-14-in-q1/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">UK Golf Rounds Down 14% in Q1 but Participation Holds Firm</a>
+      </h2>
+
+      
+    <div class="exec-badge" style="border-left: 4px solid #5C3D1E; color: #5C3D1E;">
+      <span class="exec-label">⚑ EXEC ALERT</span>
+      <span class="exec-why">Rounds-played data is a leading indicator for revenue across the value chain — operators, OEMs, and suppliers should calibrate forecasts.</span>
+    </div>
+
+      <p class="teaser" style="color:#2C1810; opacity:0.82;">Sporting Insights reports a 14% decline in rounds played across the UK in Q1, though broader participation levels remain robust. The data suggests weather and seasonal factors may be masking underlying demand strength heading into the summer months.</p>
+
+      <a class="read-link" href="https://golfbusinessnews.com/news/management-topics/sporting-insights-report-rounds-played-down-by-14-in-q1/" target="_blank" rel="noopener"
+         style="color:#5C3D1E; border-bottom: 2px solid #5C3D1E;">
+        Read full story &#8599;
+      </a>
+      
+      <div class="also-row" style="border-top:1px solid #5C3D1E33;">
+        <span class="also-label" style="color:#5C3D1E;">Also reported by:</span>
+        <a href="https://thegolfbusiness.co.uk/2026/06/golf-rounds-down-for-q1-but-participation-levels-still-strong/" target="_blank" rel="noopener" style="color:#5C3D1E; text-decoration:none; border-bottom:1px solid #5C3D1E66;">The Golf Business&nbsp;&#8599;</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="spread" style="background:#1C1C1C; color:#F0F0F0; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(240,224,64,0.10);">06</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#F0E040; color:#1C1C1C;">People & Industry</span>
+        <span class="source-tag" style="color:#F0E040;">Reuters</span>
+      </div>
+
+      <div class="rank-line" style="color:#F0E040;">No. 6</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#F0F0F0;">
+        <a href="https://www.reuters.com/sports/golf/kpmg-womens-pga-championship-gets-record-13m-purse--flm-2026-06-23/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">KPMG Women's PGA Championship Purse Jumps to Record $13M</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#F0F0F0; opacity:0.82;">The KPMG Women's PGA Championship at Hazeltine National will feature a record $13 million purse, marking a significant step in women's professional golf investment. The increase reflects growing sponsor commitment and broadcast interest in the women's game.</p>
+
+      <a class="read-link" href="https://www.reuters.com/sports/golf/kpmg-womens-pga-championship-gets-record-13m-purse--flm-2026-06-23/" target="_blank" rel="noopener"
+         style="color:#F0E040; border-bottom: 2px solid #F0E040;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#EEF2EE; color:#1A2E18; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(45,90,39,0.07);">07</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#2D5A27; color:#EEF2EE;">Travel & Development</span>
+        <span class="source-tag" style="color:#2D5A27;">Bridging & Commercial</span>
+      </div>
+
+      <div class="rank-line" style="color:#2D5A27;">No. 7</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1A2E18;">
+        <a href="https://bridgingandcommercial.co.uk/lhv-bank-provides-701m-refinance-facility-for-oxfordshire-hotel-and-golf-resort" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">LHV Bank Provides £7M Refinance for Oxfordshire Golf Resort</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#1A2E18; opacity:0.82;">LHV Bank has completed a £7.01 million refinancing facility for an Oxfordshire hotel and golf resort. The deal highlights continued lender appetite for golf hospitality assets in the UK market despite broader economic headwinds.</p>
+
+      <a class="read-link" href="https://bridgingandcommercial.co.uk/lhv-bank-provides-701m-refinance-facility-for-oxfordshire-hotel-and-golf-resort" target="_blank" rel="noopener"
+         style="color:#2D5A27; border-bottom: 2px solid #2D5A27;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#FFFFFF; color:#000000; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(0,0,0,0.05);">08</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#000000; color:#FFFFFF;">Travel & Development</span>
+        <span class="source-tag" style="color:#000000;">Golf Business News</span>
+      </div>
+
+      <div class="rank-line" style="color:#000000;">No. 8</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#000000;">
+        <a href="https://golfbusinessnews.com/news/travel/swanning-around-the-uks-newest-golf-and-family-entertainment-concept/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Swan Centre: Inside the UK's Newest Golf & Family Entertainment Concept</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#000000; opacity:0.82;">A new golf and family entertainment concept has launched in the UK, blending golf experiences with broader leisure offerings. The venue reflects the growing convergence of golf with the wider entertainment and hospitality sectors.</p>
+
+      <a class="read-link" href="https://golfbusinessnews.com/news/travel/swanning-around-the-uks-newest-golf-and-family-entertainment-concept/" target="_blank" rel="noopener"
+         style="color:#000000; border-bottom: 2px solid #000000;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#FDF4EE; color:#1E0E00; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(181,84,26,0.08);">09</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#B5541A; color:#FDF4EE;">Equipment</span>
+        <span class="source-tag" style="color:#B5541A;">Golf Business News</span>
+      </div>
+
+      <div class="rank-line" style="color:#B5541A;">No. 9</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1E0E00;">
+        <a href="https://golfbusinessnews.com/news/new-products/bridgestone-introduces-tyre-inspired-alignment-technology-to-e6-golf-ball/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Bridgestone Brings Tyre-Inspired Alignment Tech to New E6 Golf Ball</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#1E0E00; opacity:0.82;">Bridgestone has introduced alignment technology derived from its tyre division to its latest E6 golf ball. The cross-industry tech transfer is a notable example of parent-company IP being leveraged to differentiate in the competitive golf ball segment.</p>
+
+      <a class="read-link" href="https://golfbusinessnews.com/news/new-products/bridgestone-introduces-tyre-inspired-alignment-technology-to-e6-golf-ball/" target="_blank" rel="noopener"
+         style="color:#B5541A; border-bottom: 2px solid #B5541A;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#1E2329; color:#E2E8F0; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(160,174,192,0.10);">10</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#A0AEC0; color:#1E2329;">Equipment</span>
+        <span class="source-tag" style="color:#A0AEC0;">Golf Business News</span>
+      </div>
+
+      <div class="rank-line" style="color:#A0AEC0;">No. 10</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#E2E8F0;">
+        <a href="https://golfbusinessnews.com/news/new-products/upswing-golf-launches-galaxy-girls-golf-sets/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Upswing Golf Launches Galaxy Girls Golf Sets for Junior Players</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#E2E8F0; opacity:0.82;">Upswing Golf has released its Galaxy Girls golf sets aimed at young female players, tapping into the growing junior and women's participation segment. The launch adds another entrant to an increasingly crowded junior equipment market.</p>
+
+      <a class="read-link" href="https://golfbusinessnews.com/news/new-products/upswing-golf-launches-galaxy-girls-golf-sets/" target="_blank" rel="noopener"
+         style="color:#A0AEC0; border-bottom: 2px solid #A0AEC0;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+<footer class="footer">
+  <p>Golf Morning Edition · 2026-06-24 · Curated by Claude for Shane</p>
+  <p style="margin-top:0.5rem; font-size:0.65rem;">
+    Sources: Golf Business News · The Golf Business · Bunkered · Google Alert
+  </p>
+</footer>
+
+</body>
+</html>
