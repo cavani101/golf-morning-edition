@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Golf Morning Edition — 2026-10-22</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --sans: 'Inter', system-ui, sans-serif;
+  --serif: 'Fraunces', Georgia, serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: #111;
+  color: #eee;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Cover ──────────────────────────────────────────────────── */
+.cover {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0A0E1A 0%, #1A2A1A 50%, #0D1B0D 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.015'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.cover-kicker {
+  font-family: var(--sans);
+  font-size: clamp(0.65rem, 1.5vw, 0.8rem);
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #7ECB8F;
+  margin-bottom: 1.5rem;
+}
+
+.cover-title {
+  font-family: var(--serif);
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  font-weight: 900;
+  line-height: 0.95;
+  color: #F5F0E8;
+  margin-bottom: 0.4em;
+}
+
+.cover-title em {
+  font-style: italic;
+  color: #C9A84C;
+}
+
+.cover-date {
+  font-family: var(--sans);
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  font-weight: 300;
+  color: rgba(245,240,232,0.6);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.cover-issue {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  color: rgba(245,240,232,0.35);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 3rem;
+}
+
+.exec-count {
+  display: inline-block;
+  background: #C0392B;
+  color: #FAF0F0;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.35em 1em;
+  border-radius: 2px;
+  margin-bottom: 3rem;
+}
+
+.cover-scroll {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  color: rgba(245,240,232,0.3);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* ── Story spreads ──────────────────────────────────────────── */
+.spread {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 6vw, 5rem);
+  position: relative;
+  overflow: hidden;
+}
+
+.spread-inner {
+  max-width: 900px;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.bg-numeral {
+  position: absolute;
+  top: -0.15em;
+  right: -0.05em;
+  font-family: var(--serif);
+  font-size: clamp(12rem, 30vw, 22rem);
+  font-weight: 900;
+  line-height: 1;
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.category-tag {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 0.3em 0.85em;
+  border-radius: 2px;
+}
+
+.source-tag {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  opacity: 0.75;
+}
+
+.rank-line {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.story-title {
+  font-family: var(--serif);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.exec-badge {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.6rem 1rem;
+  margin-bottom: 1.5rem;
+  background: rgba(255,255,255,0.05);
+}
+
+.exec-label {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.exec-why {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 400;
+  line-height: 1.4;
+  opacity: 0.85;
+}
+
+.teaser {
+  font-family: var(--sans);
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  font-weight: 300;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  max-width: 72ch;
+  position: relative;
+  z-index: 2;
+}
+
+.read-link {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  padding-bottom: 0.1em;
+  position: relative;
+  z-index: 2;
+  transition: opacity 0.2s;
+}
+
+.read-link:hover { opacity: 0.7; }
+
+/* ── And Finally banner ─────────────────────────────────────── */
+.and-finally-banner {
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  opacity: 0.7;
+  position: relative;
+  z-index: 2;
+}
+
+/* ── Additional sources row ─────────────────────────────────── */
+.also-row {
+  margin-top: 1.25rem;
+  padding-top: 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.6rem;
+  position: relative;
+  z-index: 2;
+}
+.also-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  flex-shrink: 0;
+  margin-right: 0.25rem;
+}
+
+/* ── Footer ─────────────────────────────────────────────────── */
+.footer {
+  background: #0A0E1A;
+  color: rgba(245,240,232,0.4);
+  text-align: center;
+  padding: 3rem 2rem;
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .bg-numeral { font-size: 8rem; }
+  .story-title { font-size: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Cover -->
+<div class="cover">
+  <div class="cover-kicker">Golf Industry Intelligence</div>
+  <h1 class="cover-title">The Morning<br><em>Edition</em></h1>
+  <div class="cover-date">Thursday, October 22, 2026</div>
+  <div class="cover-issue">Issue #0660 &nbsp;·&nbsp; 10 Curated Stories</div>
+  <span class="exec-count">2 exec alerts inside</span>
+  <div class="cover-scroll">Scroll to read ↓</div>
+</div>
+
+
+  <section class="spread" style="background:#F5F0E8; color:#1A1A2E; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(26,26,46,0.08);">01</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#1A1A2E; color:#F5F0E8;">Investment & M&A</span>
+        <span class="source-tag" style="color:#1A1A2E;">Street Insider</span>
+      </div>
+
+      <div class="rank-line" style="color:#1A1A2E;">No. 1</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1A1A2E;">
+        <a href="https://www.streetinsider.com/Investor+Brand+Network/TruGolf+Holdings+Inc.+%28NASDAQ%3A+TRUG%29+Completes+Polymath+Acquisition%2C+Offering+Expansion+into+Institutional+Tokenization/27210065.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">TruGolf Completes Polymath Acquisition, Expands Into Institutional Tokenization</a>
+      </h2>
+
+      
+    <div class="exec-badge" style="border-left: 4px solid #1A1A2E; color: #1A1A2E;">
+      <span class="exec-label">⚑ EXEC ALERT</span>
+      <span class="exec-why">A public golf-tech company pivoting into tokenization signals a novel convergence of golf simulation and fintech worth monitoring for strategic implications.</span>
+    </div>
+
+      <p class="teaser" style="color:#1A1A2E; opacity:0.82;">TruGolf Holdings (NASDAQ: TRUG) has completed its acquisition of Polymath, merging its golf simulation business with regulated institutional tokenization capabilities. The deal positions TruGolf to differentiate in the golf tech space by integrating blockchain-based asset tokenization into its platform.</p>
+
+      <a class="read-link" href="https://www.streetinsider.com/Investor+Brand+Network/TruGolf+Holdings+Inc.+%28NASDAQ%3A+TRUG%29+Completes+Polymath+Acquisition%2C+Offering+Expansion+into+Institutional+Tokenization/27210065.html" target="_blank" rel="noopener"
+         style="color:#1A1A2E; border-bottom: 2px solid #1A1A2E;">
+        Read full story &#8599;
+      </a>
+      
+      <div class="also-row" style="border-top:1px solid #1A1A2E33;">
+        <span class="also-label" style="color:#1A1A2E;">Also reported by:</span>
+        <a href="https://www.citybuzz.co/2026/10/20/trugolf-completes-polymath-acquisition-merging-golf-simulation-with-institutional-tokenization/" target="_blank" rel="noopener" style="color:#1A1A2E; text-decoration:none; border-bottom:1px solid #1A1A2E66;">CityBuzz&nbsp;&#8599;</a> &nbsp;·&nbsp; <a href="https://www.citybuzz.co/2026/10/20/trugolfs-polymath-acquisition-pushes-regulated-asset-tokenization-into-mainstream-golf/" target="_blank" rel="noopener" style="color:#1A1A2E; text-decoration:none; border-bottom:1px solid #1A1A2E66;">CityBuzz&nbsp;&#8599;</a> &nbsp;·&nbsp; <a href="https://markets.businessinsider.com/news/stocks/how-regulated-tokenization-is-moving-from-wall-street-to-main-street-assets-1036643505" target="_blank" rel="noopener" style="color:#1A1A2E; text-decoration:none; border-bottom:1px solid #1A1A2E66;">Business Insider Markets&nbsp;&#8599;</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="spread" style="background:#0D1B2A; color:#E8E0D0; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(201,168,76,0.12);">02</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#C9A84C; color:#0D1B2A;">People & Industry</span>
+        <span class="source-tag" style="color:#C9A84C;">Golf Digest</span>
+      </div>
+
+      <div class="rank-line" style="color:#C9A84C;">No. 2</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#E8E0D0;">
+        <a href="https://www.golfdigest.com/story/callaway-tabs-marketing-visionary-harry-arnett-for-return-as-chi" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Callaway Brings Back Harry Arnett as Chief Brand Officer</a>
+      </h2>
+
+      
+    <div class="exec-badge" style="border-left: 4px solid #C9A84C; color: #C9A84C;">
+      <span class="exec-label">⚑ EXEC ALERT</span>
+      <span class="exec-why">A flagship equipment brand's C-suite reshuffle signals strategic recalibration amid challenging retail conditions.</span>
+    </div>
+
+      <p class="teaser" style="color:#E8E0D0; opacity:0.82;">Callaway has re-appointed Harry Arnett as chief brand officer, bringing back the marketing executive credited with shaping the brand's identity. The move comes as Topgolf Callaway Brands navigates softening monthly equipment sales and portfolio restructuring following the Jack Wolfskin divestiture.</p>
+
+      <a class="read-link" href="https://www.golfdigest.com/story/callaway-tabs-marketing-visionary-harry-arnett-for-return-as-chi" target="_blank" rel="noopener"
+         style="color:#C9A84C; border-bottom: 2px solid #C9A84C;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#FAF0F0; color:#1A0A0A; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(192,57,43,0.07);">03</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#C0392B; color:#FAF0F0;">AI & Software</span>
+        <span class="source-tag" style="color:#C0392B;">Golf Business News</span>
+      </div>
+
+      <div class="rank-line" style="color:#C0392B;">No. 3</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1A0A0A;">
+        <a href="https://golfbusinessnews.com/news/management-topics/golf-genius-reports-strong-product-and-client-growth-across-international-markets/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Golf Genius Reports Strong International Growth Across Products and Clients</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#1A0A0A; opacity:0.82;">Golf Genius, the tournament management and club operations software platform, is reporting robust product and client growth across international markets. The expansion underscores increasing global demand for SaaS solutions in golf administration and operations.</p>
+
+      <a class="read-link" href="https://golfbusinessnews.com/news/management-topics/golf-genius-reports-strong-product-and-client-growth-across-international-markets/" target="_blank" rel="noopener"
+         style="color:#C0392B; border-bottom: 2px solid #C0392B;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#0A1A0A; color:#CCFFCC; font-family: 'Courier New', monospace;">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(0,255,65,0.08);">04</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#00FF41; color:#0A1A0A;">Travel & Development</span>
+        <span class="source-tag" style="color:#00FF41;">Golf Business News</span>
+      </div>
+
+      <div class="rank-line" style="color:#00FF41;">No. 4</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#CCFFCC;">
+        <a href="https://golfbusinessnews.com/news/practice-range-and-teaching/ruff-golf-signs-master-franchise-agreement-for-scotland-ten-venues-planned/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Ruff Golf Signs Master Franchise Deal for Scotland — Ten Venues Planned</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#CCFFCC; opacity:0.82;">Ruff Golf has secured a master franchise agreement to roll out ten entertainment golf venues across Scotland. The deal signals continued appetite for experiential golf concepts in the UK market, expanding the franchise model into new territory.</p>
+
+      <a class="read-link" href="https://golfbusinessnews.com/news/practice-range-and-teaching/ruff-golf-signs-master-franchise-agreement-for-scotland-ten-venues-planned/" target="_blank" rel="noopener"
+         style="color:#00FF41; border-bottom: 2px solid #00FF41;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#FEFBF3; color:#2C1810; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(92,61,30,0.07);">05</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#5C3D1E; color:#FEFBF3;">Technology</span>
+        <span class="source-tag" style="color:#5C3D1E;">The Golf Business</span>
+      </div>
+
+      <div class="rank-line" style="color:#5C3D1E;">No. 5</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#2C1810;">
+        <a href="https://thegolfbusiness.co.uk/2026/10/salgados-golf-club-launches-europes-first-on-course-drone-delivery-service/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Salgados Golf Club Launches Europe's First On-Course Drone Delivery</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#2C1810; opacity:0.82;">Portugal's Salgados Golf Club has become the first course in Europe to deploy drone delivery on-course, offering F&B and supplies directly to players during rounds. The initiative could become a blueprint for hospitality innovation at resort-style operations.</p>
+
+      <a class="read-link" href="https://thegolfbusiness.co.uk/2026/10/salgados-golf-club-launches-europes-first-on-course-drone-delivery-service/" target="_blank" rel="noopener"
+         style="color:#5C3D1E; border-bottom: 2px solid #5C3D1E;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#1C1C1C; color:#F0F0F0; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(240,224,64,0.10);">06</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#F0E040; color:#1C1C1C;">People & Industry</span>
+        <span class="source-tag" style="color:#F0E040;">Bloomberg</span>
+      </div>
+
+      <div class="rank-line" style="color:#F0E040;">No. 6</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#F0F0F0;">
+        <a href="https://www.bloomberg.com/news/audio/2026-10-20/rory-mcilroy-on-trump-golf-s-future-and-his-secret-goal" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Rory McIlroy Discusses the Future of Golf in Bloomberg Interview</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#F0F0F0; opacity:0.82;">Rory McIlroy sat down with Bloomberg to discuss his views on golf's future, touching on the sport's evolving commercial landscape and governance. The wide-ranging interview also covers his undisclosed personal goals and the intersection of golf and politics.</p>
+
+      <a class="read-link" href="https://www.bloomberg.com/news/audio/2026-10-20/rory-mcilroy-on-trump-golf-s-future-and-his-secret-goal" target="_blank" rel="noopener"
+         style="color:#F0E040; border-bottom: 2px solid #F0E040;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#EEF2EE; color:#1A2E18; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(45,90,39,0.07);">07</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#2D5A27; color:#EEF2EE;">Technology</span>
+        <span class="source-tag" style="color:#2D5A27;">The Golf Business</span>
+      </div>
+
+      <div class="rank-line" style="color:#2D5A27;">No. 7</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1A2E18;">
+        <a href="https://thegolfbusiness.co.uk/2026/10/foremost-golf-expands-pos-support-team-with-three-new-appointments/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Foremost Golf Expands POS Support Team as User Base Nears 400</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#1A2E18; opacity:0.82;">Foremost Golf has hired three new staff to bolster its point-of-sale support operation as POS user numbers approach 400 clubs. The expansion reflects growing adoption of Foremost's retail technology platform across UK pro shops.</p>
+
+      <a class="read-link" href="https://thegolfbusiness.co.uk/2026/10/foremost-golf-expands-pos-support-team-with-three-new-appointments/" target="_blank" rel="noopener"
+         style="color:#2D5A27; border-bottom: 2px solid #2D5A27;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#FFFFFF; color:#000000; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(0,0,0,0.05);">08</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#000000; color:#FFFFFF;">Technology</span>
+        <span class="source-tag" style="color:#000000;">Morningstar</span>
+      </div>
+
+      <div class="rank-line" style="color:#000000;">No. 8</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#000000;">
+        <a href="https://www.morningstar.com/news/globe-newswire/9848812/game-your-game-announces-gamegolf-affiliate-program" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Game Your Game Launches GameGolf Affiliate Program</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#000000; opacity:0.82;">Game Your Game has announced an affiliate program for its GameGolf platform, spanning talent representation, athlete branding and sports partnerships. The move aims to broaden distribution and brand reach through a network-driven commercial model.</p>
+
+      <a class="read-link" href="https://www.morningstar.com/news/globe-newswire/9848812/game-your-game-announces-gamegolf-affiliate-program" target="_blank" rel="noopener"
+         style="color:#000000; border-bottom: 2px solid #000000;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#FDF4EE; color:#1E0E00; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(181,84,26,0.08);">09</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#B5541A; color:#FDF4EE;">People & Industry</span>
+        <span class="source-tag" style="color:#B5541A;">Golf Business News</span>
+      </div>
+
+      <div class="rank-line" style="color:#B5541A;">No. 9</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1E0E00;">
+        <a href="https://golfbusinessnews.com/news/people/gbi-golf-forum-launches-careers-in-golf-platform-to-inspire-next-generation-of-talent/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">GBI Golf Forum Launches 'Careers in Golf' Platform to Attract New Talent</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#1E0E00; opacity:0.82;">The GBI Golf Forum has launched a dedicated digital careers platform aimed at attracting the next generation of industry professionals. The initiative addresses persistent workforce challenges across golf operations, greenkeeping and club management.</p>
+
+      <a class="read-link" href="https://golfbusinessnews.com/news/people/gbi-golf-forum-launches-careers-in-golf-platform-to-inspire-next-generation-of-talent/" target="_blank" rel="noopener"
+         style="color:#B5541A; border-bottom: 2px solid #B5541A;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#1E2329; color:#E2E8F0; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(160,174,192,0.10);">10</div>
+
+      
+      <div class="and-finally-banner" style="color:#A0AEC0;">
+        &#10022;&nbsp; And Finally&hellip;
+      </div>
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#A0AEC0; color:#1E2329;">Technology</span>
+        <span class="source-tag" style="color:#A0AEC0;">Golf Australia</span>
+      </div>
+
+      <div class="rank-line" style="color:#A0AEC0;">No. 10</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#E2E8F0;">
+        <a href="https://www.golfaustralia.com.au/feature/golf-daze-takes-the-game-on-the-road-with-mobile-simulator-629806" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Golf Daze Puts Simulators on Wheels With Mobile Caravan Concept</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#E2E8F0; opacity:0.82;">Australian entrepreneurs have launched Golf Daze, a mobile golf simulator housed in a purpose-built caravan that can be towed to events, pubs and corporate functions. The venture from Hunter Valley founders offers a novel twist on the indoor-golf boom — taking it literally anywhere.</p>
+
+      <a class="read-link" href="https://www.golfaustralia.com.au/feature/golf-daze-takes-the-game-on-the-road-with-mobile-simulator-629806" target="_blank" rel="noopener"
+         style="color:#A0AEC0; border-bottom: 2px solid #A0AEC0;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+<footer class="footer">
+  <p>Golf Morning Edition · 2026-10-22 · Curated by Claude for Shane</p>
+  <p style="margin-top:0.5rem; font-size:0.65rem;">
+    Sources: Golf Business News · The Golf Business · Bunkered · Google Alert
+  </p>
+</footer>
+
+</body>
+</html>
