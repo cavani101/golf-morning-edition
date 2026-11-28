@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Golf Morning Edition — 2026-11-28</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --sans: 'Inter', system-ui, sans-serif;
+  --serif: 'Fraunces', Georgia, serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: #111;
+  color: #eee;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Cover ──────────────────────────────────────────────────── */
+.cover {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0A0E1A 0%, #1A2A1A 50%, #0D1B0D 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.015'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.cover-kicker {
+  font-family: var(--sans);
+  font-size: clamp(0.65rem, 1.5vw, 0.8rem);
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #7ECB8F;
+  margin-bottom: 1.5rem;
+}
+
+.cover-title {
+  font-family: var(--serif);
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  font-weight: 900;
+  line-height: 0.95;
+  color: #F5F0E8;
+  margin-bottom: 0.4em;
+}
+
+.cover-title em {
+  font-style: italic;
+  color: #C9A84C;
+}
+
+.cover-date {
+  font-family: var(--sans);
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  font-weight: 300;
+  color: rgba(245,240,232,0.6);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.cover-issue {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  color: rgba(245,240,232,0.35);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 3rem;
+}
+
+.exec-count {
+  display: inline-block;
+  background: #C0392B;
+  color: #FAF0F0;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.35em 1em;
+  border-radius: 2px;
+  margin-bottom: 3rem;
+}
+
+.cover-scroll {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  color: rgba(245,240,232,0.3);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* ── Story spreads ──────────────────────────────────────────── */
+.spread {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 6vw, 5rem);
+  position: relative;
+  overflow: hidden;
+}
+
+.spread-inner {
+  max-width: 900px;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.bg-numeral {
+  position: absolute;
+  top: -0.15em;
+  right: -0.05em;
+  font-family: var(--serif);
+  font-size: clamp(12rem, 30vw, 22rem);
+  font-weight: 900;
+  line-height: 1;
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.category-tag {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 0.3em 0.85em;
+  border-radius: 2px;
+}
+
+.source-tag {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  opacity: 0.75;
+}
+
+.rank-line {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.story-title {
+  font-family: var(--serif);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.exec-badge {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.6rem 1rem;
+  margin-bottom: 1.5rem;
+  background: rgba(255,255,255,0.05);
+}
+
+.exec-label {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.exec-why {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 400;
+  line-height: 1.4;
+  opacity: 0.85;
+}
+
+.teaser {
+  font-family: var(--sans);
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  font-weight: 300;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  max-width: 72ch;
+  position: relative;
+  z-index: 2;
+}
+
+.read-link {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  padding-bottom: 0.1em;
+  position: relative;
+  z-index: 2;
+  transition: opacity 0.2s;
+}
+
+.read-link:hover { opacity: 0.7; }
+
+/* ── And Finally banner ─────────────────────────────────────── */
+.and-finally-banner {
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  opacity: 0.7;
+  position: relative;
+  z-index: 2;
+}
+
+/* ── Additional sources row ─────────────────────────────────── */
+.also-row {
+  margin-top: 1.25rem;
+  padding-top: 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.6rem;
+  position: relative;
+  z-index: 2;
+}
+.also-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  flex-shrink: 0;
+  margin-right: 0.25rem;
+}
+
+/* ── Footer ─────────────────────────────────────────────────── */
+.footer {
+  background: #0A0E1A;
+  color: rgba(245,240,232,0.4);
+  text-align: center;
+  padding: 3rem 2rem;
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .bg-numeral { font-size: 8rem; }
+  .story-title { font-size: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Cover -->
+<div class="cover">
+  <div class="cover-kicker">Golf Industry Intelligence</div>
+  <h1 class="cover-title">The Morning<br><em>Edition</em></h1>
+  <div class="cover-date">Saturday, November 28, 2026</div>
+  <div class="cover-issue">Issue #0697 &nbsp;·&nbsp; 10 Curated Stories</div>
+  <span class="exec-count">3 exec alerts inside</span>
+  <div class="cover-scroll">Scroll to read ↓</div>
+</div>
+
+
+  <section class="spread" style="background:#F5F0E8; color:#1A1A2E; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(26,26,46,0.08);">01</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#1A1A2E; color:#F5F0E8;">Investment & M&A</span>
+        <span class="source-tag" style="color:#1A1A2E;">Bloomberg.com</span>
+      </div>
+
+      <div class="rank-line" style="color:#1A1A2E;">No. 1</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1A1A2E;">
+        <a href="https://www.bloomberg.com/news/articles/2026-11-25/bc-partners-buys-gse-sport-agency-with-golfer-dechambeau-on-list" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">BC Partners Acquires Majority Stake in GSE Worldwide Sports Agency</a>
+      </h2>
+
+      
+    <div class="exec-badge" style="border-left: 4px solid #1A1A2E; color: #1A1A2E;">
+      <span class="exec-label">⚑ EXEC ALERT</span>
+      <span class="exec-why">Major PE acquisition in golf-adjacent sports marketing — signals valuation benchmarks for talent agencies.</span>
+    </div>
+
+      <p class="teaser" style="color:#1A1A2E; opacity:0.82;">BC Partners' credit arm has agreed to acquire a majority stake in GSE Worldwide, the sports marketing agency representing Bryson DeChambeau among other high-profile athletes. The deal signals continued private equity appetite for sports representation businesses with golf-centric client rosters.</p>
+
+      <a class="read-link" href="https://www.bloomberg.com/news/articles/2026-11-25/bc-partners-buys-gse-sport-agency-with-golfer-dechambeau-on-list" target="_blank" rel="noopener"
+         style="color:#1A1A2E; border-bottom: 2px solid #1A1A2E;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#0D1B2A; color:#E8E0D0; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(201,168,76,0.12);">02</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#C9A84C; color:#0D1B2A;">Technology</span>
+        <span class="source-tag" style="color:#C9A84C;">Pulse2</span>
+      </div>
+
+      <div class="rank-line" style="color:#C9A84C;">No. 2</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#E8E0D0;">
+        <a href="https://pulse2.com/trugolf-adds-strategic-advisors-and-confirms-post-acquisition-board-leadership/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">TruGolf Appoints Strategic Advisors, Names Board Chair Post-Acquisition</a>
+      </h2>
+
+      
+    <div class="exec-badge" style="border-left: 4px solid #C9A84C; color: #C9A84C;">
+      <span class="exec-label">⚑ EXEC ALERT</span>
+      <span class="exec-why">Post-acquisition board restructuring at a public golf tech company — watch for strategic pivots and market expansion.</span>
+    </div>
+
+      <p class="teaser" style="color:#E8E0D0; opacity:0.82;">TruGolf Holdings has named Richard Dolan, Kevin Dent, and Roger Premo as strategic advisors and confirmed David Hackett as board chairman following the company's October 2026 acquisition. The leadership restructuring signals an aggressive growth phase for the golf simulation technology firm.</p>
+
+      <a class="read-link" href="https://pulse2.com/trugolf-adds-strategic-advisors-and-confirms-post-acquisition-board-leadership/" target="_blank" rel="noopener"
+         style="color:#C9A84C; border-bottom: 2px solid #C9A84C;">
+        Read full story &#8599;
+      </a>
+      
+      <div class="also-row" style="border-top:1px solid #C9A84C33;">
+        <span class="also-label" style="color:#C9A84C;">Also reported by:</span>
+        <a href="https://www.stocktitan.net/news/TRUG/tru-golf-names-richard-dolan-kevin-dent-and-roger-premo-as-strategic-tbh7hu3z86pm.html" target="_blank" rel="noopener" style="color:#C9A84C; text-decoration:none; border-bottom:1px solid #C9A84C66;">Stock Titan&nbsp;&#8599;</a> &nbsp;·&nbsp; <a href="https://www.newmediawire.com/news/trugolf-holdings-trug-appoints-three-strategic-advisors-names-david-hackett-board-chairman-7091527" target="_blank" rel="noopener" style="color:#C9A84C; text-decoration:none; border-bottom:1px solid #C9A84C66;">NewMediaWire&nbsp;&#8599;</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="spread" style="background:#FAF0F0; color:#1A0A0A; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(192,57,43,0.07);">03</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#C0392B; color:#FAF0F0;">Sustainability</span>
+        <span class="source-tag" style="color:#C0392B;">Golf Business News</span>
+      </div>
+
+      <div class="rank-line" style="color:#C0392B;">No. 3</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1A0A0A;">
+        <a href="https://golfbusinessnews.com/news/environment-and-sustainability/frilford-heath-golf-club-finalises-4m-water-infrastructure-transformation-with-green-course-irrigation-overhaul/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Frilford Heath Completes £4M Water Infrastructure Transformation</a>
+      </h2>
+
+      
+    <div class="exec-badge" style="border-left: 4px solid #C0392B; color: #C0392B;">
+      <span class="exec-label">⚑ EXEC ALERT</span>
+      <span class="exec-why">£4M sustainability capex at a single club — benchmark for water-infrastructure planning industry-wide.</span>
+    </div>
+
+      <p class="teaser" style="color:#1A0A0A; opacity:0.82;">Frilford Heath Golf Club has finalised a £4 million overhaul of its water infrastructure, centred on the Green Course irrigation system. The scale of investment underscores the growing capital commitments UK clubs face to secure water resilience amid tightening environmental regulations.</p>
+
+      <a class="read-link" href="https://golfbusinessnews.com/news/environment-and-sustainability/frilford-heath-golf-club-finalises-4m-water-infrastructure-transformation-with-green-course-irrigation-overhaul/" target="_blank" rel="noopener"
+         style="color:#C0392B; border-bottom: 2px solid #C0392B;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#0A1A0A; color:#CCFFCC; font-family: 'Courier New', monospace;">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(0,255,65,0.08);">04</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#00FF41; color:#0A1A0A;">International</span>
+        <span class="source-tag" style="color:#00FF41;">Golf Business News</span>
+      </div>
+
+      <div class="rank-line" style="color:#00FF41;">No. 4</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#CCFFCC;">
+        <a href="https://golfbusinessnews.com/news/travel/vietnam-golf-coast-toasts-landmark-2026-as-nations-golf-reputation-soars/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Vietnam Golf Coast Celebrates Landmark Year as Tourism Reputation Surges</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#CCFFCC; opacity:0.82;">Vietnam Golf Coast is reporting a breakthrough 2026 as the country's golf tourism reputation reaches new heights. The development coincides with broader Trump-branded real estate activity in Vietnam, highlighting the Southeast Asian nation's emergence as a premier golf destination market.</p>
+
+      <a class="read-link" href="https://golfbusinessnews.com/news/travel/vietnam-golf-coast-toasts-landmark-2026-as-nations-golf-reputation-soars/" target="_blank" rel="noopener"
+         style="color:#00FF41; border-bottom: 2px solid #00FF41;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#FEFBF3; color:#2C1810; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(92,61,30,0.07);">05</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#5C3D1E; color:#FEFBF3;">Travel & Development</span>
+        <span class="source-tag" style="color:#5C3D1E;">Reuters</span>
+      </div>
+
+      <div class="rank-line" style="color:#5C3D1E;">No. 5</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#2C1810;">
+        <a href="https://www.reuters.com/business/aerospace-defense/vietnamese-partners-trump-organization-plan-trump-tower-hanoi-sources-say-2026-11-27/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Trump Organisation Partners Plan Trump Tower in Hanoi Amid Vietnam Golf Boom</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#2C1810; opacity:0.82;">Vietnamese partners of the Trump Organization are planning a Trump Tower in Hanoi, adding to three Trump-branded projects already in development across the country, including a $1.5 billion resort. The pipeline reflects accelerating international hospitality and real estate investment in Vietnam's golf corridor.</p>
+
+      <a class="read-link" href="https://www.reuters.com/business/aerospace-defense/vietnamese-partners-trump-organization-plan-trump-tower-hanoi-sources-say-2026-11-27/" target="_blank" rel="noopener"
+         style="color:#5C3D1E; border-bottom: 2px solid #5C3D1E;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#1C1C1C; color:#F0F0F0; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(240,224,64,0.10);">06</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#F0E040; color:#1C1C1C;">Investment & M&A</span>
+        <span class="source-tag" style="color:#F0E040;">Investing.com</span>
+      </div>
+
+      <div class="rank-line" style="color:#F0E040;">No. 6</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#F0F0F0;">
+        <a href="https://www.investing.com/news/insider-trading-news/newton-golf-director-john-b-bode-buys-22500-in-stock-93CH-5050072" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Newton Golf Director Bode Signals Confidence With 30,000-Share Purchase</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#F0F0F0; opacity:0.82;">Newton Golf director John B. Bode purchased 30,000 shares at $0.75 each, a $22,500 insider buy that signals boardroom confidence in the company's trajectory. Insider purchases in micro-cap golf companies are a useful sentiment indicator for the sector.</p>
+
+      <a class="read-link" href="https://www.investing.com/news/insider-trading-news/newton-golf-director-john-b-bode-buys-22500-in-stock-93CH-5050072" target="_blank" rel="noopener"
+         style="color:#F0E040; border-bottom: 2px solid #F0E040;">
+        Read full story &#8599;
+      </a>
+      
+      <div class="also-row" style="border-top:1px solid #F0E04033;">
+        <span class="also-label" style="color:#F0E040;">Also reported by:</span>
+        <a href="https://kalkinemedia.com/us/news/announcements/newton-golf-director-john-b-bode-acquires-30000-shares-at-075-each" target="_blank" rel="noopener" style="color:#F0E040; text-decoration:none; border-bottom:1px solid #F0E04066;">Kalkine Media&nbsp;&#8599;</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="spread" style="background:#EEF2EE; color:#1A2E18; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(45,90,39,0.07);">07</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#2D5A27; color:#EEF2EE;">Travel & Development</span>
+        <span class="source-tag" style="color:#2D5A27;">Gulfshore Business</span>
+      </div>
+
+      <div class="rank-line" style="color:#2D5A27;">No. 7</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1A2E18;">
+        <a href="https://www.gulfshorebusiness.com/gb-daily/wilderness-country-club-acquires-land-for-future-expansion/article_798b139a-3f26-4b74-be7a-8c3a1efd46e6.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Wilderness Country Club Acquires Land for Major Expansion</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#1A2E18; opacity:0.82;">Wilderness Country Club has acquired adjacent land to enable future expansion of its facilities. The move reflects the ongoing arms race among premium private clubs in Florida to add amenities and capacity in a competitive membership market.</p>
+
+      <a class="read-link" href="https://www.gulfshorebusiness.com/gb-daily/wilderness-country-club-acquires-land-for-future-expansion/article_798b139a-3f26-4b74-be7a-8c3a1efd46e6.html" target="_blank" rel="noopener"
+         style="color:#2D5A27; border-bottom: 2px solid #2D5A27;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#FFFFFF; color:#000000; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(0,0,0,0.05);">08</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#000000; color:#FFFFFF;">Travel & Development</span>
+        <span class="source-tag" style="color:#000000;">The Golf Business</span>
+      </div>
+
+      <div class="rank-line" style="color:#000000;">No. 8</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#000000;">
+        <a href="https://thegolfbusiness.co.uk/2026/11/trafford-golf-centre-becomes-englands-only-three-tier-driving-range/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Trafford Golf Centre Opens England's Only Three-Tier Driving Range</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#000000; opacity:0.82;">Trafford Golf Centre has unveiled England's only three-tier driving range, a significant capital investment in the commercial range segment. The facility upgrade reflects growing operator confidence in the off-course golf experience market.</p>
+
+      <a class="read-link" href="https://thegolfbusiness.co.uk/2026/11/trafford-golf-centre-becomes-englands-only-three-tier-driving-range/" target="_blank" rel="noopener"
+         style="color:#000000; border-bottom: 2px solid #000000;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#FDF4EE; color:#1E0E00; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(181,84,26,0.08);">09</div>
+
+      
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#B5541A; color:#FDF4EE;">Other</span>
+        <span class="source-tag" style="color:#B5541A;">Auto Rental News</span>
+      </div>
+
+      <div class="rank-line" style="color:#B5541A;">No. 9</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#1E0E00;">
+        <a href="https://www.autorentalnews.com/news/how-go-rentals-landed-a-major-league-partnership-in-professional-golf" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Go Rentals Lands Major Sponsorship Partnership in Professional Golf</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#1E0E00; opacity:0.82;">New Zealand-based Go Rentals has secured a significant sponsorship deal in professional golf, marking a cross-industry partnership that highlights golf's broadening appeal to non-endemic brands in the mobility and travel sector.</p>
+
+      <a class="read-link" href="https://www.autorentalnews.com/news/how-go-rentals-landed-a-major-league-partnership-in-professional-golf" target="_blank" rel="noopener"
+         style="color:#B5541A; border-bottom: 2px solid #B5541A;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+  <section class="spread" style="background:#1E2329; color:#E2E8F0; ">
+    <div class="spread-inner">
+      <div class="bg-numeral" style="color:rgba(160,174,192,0.10);">10</div>
+
+      
+      <div class="and-finally-banner" style="color:#A0AEC0;">
+        &#10022;&nbsp; And Finally&hellip;
+      </div>
+
+      <div class="meta-row">
+        <span class="category-tag" style="background:#A0AEC0; color:#1E2329;">Other</span>
+        <span class="source-tag" style="color:#A0AEC0;">Reuters</span>
+      </div>
+
+      <div class="rank-line" style="color:#A0AEC0;">No. 10</div>
+
+      <h2 class="story-title" style="font-size:clamp(2rem, 4vw, 3.2rem); color:#E2E8F0;">
+        <a href="https://www.reuters.com/sports/golf/lee-blames-f1-drivers-missing-eight-iron-australian-pga-championship-2026-11-26/" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Min Woo Lee Blames F1 Drivers for Missing Eight-Iron at Australian PGA</a>
+      </h2>
+
+      
+
+      <p class="teaser" style="color:#E2E8F0; opacity:0.82;">Min Woo Lee turned up to the Australian PGA Championship without his eight-iron after leaving it in Las Vegas with Formula One stars. A delightful crossover moment that proves even elite golfers lose clubs — just in more glamorous circumstances.</p>
+
+      <a class="read-link" href="https://www.reuters.com/sports/golf/lee-blames-f1-drivers-missing-eight-iron-australian-pga-championship-2026-11-26/" target="_blank" rel="noopener"
+         style="color:#A0AEC0; border-bottom: 2px solid #A0AEC0;">
+        Read full story &#8599;
+      </a>
+      
+    </div>
+  </section>
+
+<footer class="footer">
+  <p>Golf Morning Edition · 2026-11-28 · Curated by Claude for Shane</p>
+  <p style="margin-top:0.5rem; font-size:0.65rem;">
+    Sources: Golf Business News · The Golf Business · Bunkered · Google Alert
+  </p>
+</footer>
+
+</body>
+</html>
